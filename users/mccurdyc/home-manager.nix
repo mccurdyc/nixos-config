@@ -48,19 +48,25 @@ in {
     jq
     ngrok
     niv
+    nodePackages.bash-language-server
+    nodePackages.dockerfile-language-server-nodejs
+    nodePackages.lua-fmt
+    nodePackages.webpack
+    nodePackages.webpack-cli
+    nodePackages.yaml-language-server
     nodejs
     pinentry-curses
     python39Packages.grip
     python3Full
     ripgrep
+    rnix-lsp
     starship
     subnetcalc
+    sumneko-lua-language-server
     tmux
     tree
     trivy
     watch
-    zsh-fzf-tab
-    zsh-z
   ];
 
   programs = {
@@ -348,6 +354,147 @@ in {
         # bell
         set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
       '';
+    };
+
+    neovim = {
+      enable = true;
+      # https://github.com/nix-community/home-manager/issues/1907#issuecomment-934316296
+      extraConfig = ''
+        luafile ${config.xdg.configHome}/nvim/main.lua
+      '';
+      vimdiffAlias = true;
+      plugins = with pkgs.vimPlugins; [
+        vim-surround
+        vim-unimpaired
+        tcomment_vim
+        plenary-nvim
+        telescope-fzf-native-nvim
+        telescope-dap-nvim
+        vim-fugitive
+        vim-gh-line
+        vim-go
+        rust-vim
+        nvim-dap-ui
+        nvim-web-devicons
+        coq_nvim
+        {
+          plugin = mccurdyc-base16-vim;
+          config = ''
+            colorscheme base16-eighties-minimal
+          '';
+        }
+        {
+          plugin = nvim-bqf;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/quickfix.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = formatter-nvim;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/formatter.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = telescope-nvim;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/telescope.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-tree-lua;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/nvim-tree.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-lspconfig;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/lsp.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-ale-diagnostic;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/ale.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = gitsigns-nvim;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/gitsigns.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = neogit;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/neogit.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = vim-terraform;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/terraform.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-treesitter;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/treesitter.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-ts-rainbow;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/rainbow.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = nvim-dap;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/dap.lua}
+            EOF
+          '';
+        }
+        {
+          plugin = lualine-nvim;
+          config = ''
+            lua << EOF
+            ${builtins.readFile ./nvim/config/statusline.lua}
+            EOF
+          '';
+        }
+      ];
+    };
+  };
+
+  xdg.configFile = {
+    nvim = {
+      source = ./nvim;
+      recursive = true;
     };
   };
 
