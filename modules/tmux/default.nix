@@ -1,0 +1,88 @@
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib; let
+  cfg = config.modules.tmux;
+in {
+  options.modules.tmux = {enable = mkEnableOption "tmux";};
+  config = mkIf cfg.enable {
+    programs.tmux = {
+      enable = true;
+      baseIndex = 1;
+      clock24 = true;
+      newSession = true;
+      keyMode = "vi";
+      customPaneNavigationAndResize = true;
+      shortcut = "a";
+      terminal = "xterm-256color";
+      escapeTime = 1;
+      plugins = [
+        pkgs.tmuxPlugins.resurrect
+        pkgs.tmuxPlugins.continuum
+      ];
+      extraConfig = ''
+        # clear scrollback buffer - https://stackoverflow.com/questions/10543684/how-can-i-clear-scrollback-buffer-in-tmux#10553992
+        bind -n C-k clear-history
+
+        # bind key for synchronizing panes
+        bind-key y set-window-option synchronize-panes \; display "toggled synchronize-pages #{?pane_synchronized,on,off}"
+
+        # This tmux statusbar config was created by tmuxline.vim
+        # on Tue, 24 Dec 2019
+
+        set -g status-justify "left"
+        set -g status "on"
+        set -g status-left-style "none"
+        set -g message-command-style "fg=colour7,bg=colour19"
+        set -g status-right-style "none"
+        set -g pane-active-border-style "fg=colour16"
+        set -g status-style "none,bg=colour18"
+        set -g message-style "fg=colour7,bg=colour19"
+        set -g pane-border-style "fg=colour19"
+        set -g status-right-length "100"
+        set -g status-left-length "100"
+        setw -g window-status-activity-style "none"
+        setw -g window-status-separator ""
+        setw -g window-status-style "none,fg=colour15,bg=colour18"
+        set -g status-left "#[fg=colour0,bg=colour16] #S #[fg=colour16,bg=colour18,nobold,nounderscore,noitalics]"
+        set -g status-right "#[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]#[fg=colour8,bg=colour19] %Y-%m-%d | %H:%M #[fg=colour8,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour18,bg=colour8] #h "
+        setw -g window-status-format "#[fg=colour15,bg=colour18] #I |#[fg=colour15,bg=colour18] #W "
+        setw -g window-status-current-format "#[fg=colour18,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour19] #I |#[fg=colour7,bg=colour19] #W #[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]"
+
+        # COLOUR (base16)
+        # https://github.com/mattdavis90/base16-tmux/blob/master/colors/base16-eighties.conf
+        # default statusbar colors
+        set-option -g status-style "fg=#a09f93,bg=#393939"
+
+        # default window title colors
+        set-window-option -g window-status-style "fg=#a09f93,bg=default"
+
+        # active window title colors
+        set-window-option -g window-status-current-style "fg=#f99157,bg=default"
+
+        # pane border
+        set-option -g pane-border-style "fg=#f99157"
+        set-option -g pane-active-border-style "fg=#393939"
+
+        # message text
+        set-option -g message-style "fg=#d3d0c8,bg=#393939"
+
+        # pane number display
+        set-option -g display-panes-active-colour "#f99157"
+        set-option -g display-panes-colour "#393939"
+
+        # clock
+        set-window-option -g clock-mode-colour "#f99157"
+
+        # copy mode highlight
+        set-window-option -g mode-style "fg=#2d2d2d,bg=#f99157"
+
+        # bell
+        set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
+      '';
+    };
+  };
+}

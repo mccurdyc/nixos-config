@@ -17,14 +17,36 @@
     home-manager,
     ...
   } @ inputs: let
-    mkHost = import ./lib/mkhost.nix;
+    system = "x86_64-linux"; #current system
+    pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    lib = nixpkgs.lib;
+
+    mkSystem = pkgs: system: hostname:
+      pkgs.lib.nixosSystem {
+        system = system;
+        modules = [
+          {networking.hostName = hostname;}
+          # General configuration (users, networking, sound, etc)
+          ./modules/system/configuration.nix
+          # Hardware config (bootloader, kernel modules, filesystems, etc)
+          (./. + "/hosts/${hostname}/hardware-configuration.nix")
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useUserPackages = true;
+              useGlobalPkgs = true;
+              extraSpecialArgs = {inherit inputs;};
+              users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
+            };
+          }
+        ];
+        specialArgs = {inherit inputs;};
+      };
   in {
-    # Default container template
-    # nixosConfigurations.container = nixpkgs.lib.nixosSystem
-    nixosConfigurations.intel = mkHost "intel" rec {
-      inherit nixpkgs home-manager;
-      system = "x86_64-linux";
-      user = "mccurdyc";
+    nixosConfigurations = {
+      # Now, defining a new system is can be done in one line
+      #                                Architecture   Hostname
+      nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
     };
   };
 }
