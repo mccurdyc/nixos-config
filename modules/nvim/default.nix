@@ -16,94 +16,100 @@ in {
         luafile ${config.xdg.configHome}/nvim/main.lua
       '';
       vimdiffAlias = true;
-      plugins = with pkgs.vimPlugins; [
-        vim-surround
-        vim-unimpaired
-        tcomment_vim
-        plenary-nvim
-        telescope-fzf-native-nvim
-        telescope-dap-nvim
-        vim-fugitive
-        vim-gh-line
-        vim-go
-        rust-vim
-        nvim-dap-ui
-        nvim-web-devicons
-        coq_nvim
+      plugins = with pkgs; [
+        vimPlugins.vim-surround
+        vimPlugins.vim-unimpaired
+        vimPlugins.tcomment_vim
+        vimPlugins.plenary-nvim
+        vimPlugins.telescope-fzf-native-nvim
+        vimPlugins.telescope-dap-nvim
+        vimPlugins.vim-fugitive
+        vimPlugins.vim-gh-line
+        vimPlugins.vim-go
+        vimPlugins.rust-vim
+        vimPlugins.nvim-dap-ui
+        vimPlugins.nvim-web-devicons
+        vimPlugins.coq_nvim
         {
-          plugin = nvim-bqf;
+          plugin = vimPlugins.base16-vim-mccurdyc;
+          config = ''
+            colorscheme base16-eighties-minimal
+          '';
+        }
+        {
+          plugin = vimPlugins.nvim-bqf;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/quickfix.lua
           '';
         }
         {
-          plugin = formatter-nvim;
+          plugin = vimPlugins.formatter-nvim;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/formatter.lua
           '';
         }
         {
-          plugin = telescope-nvim;
+          plugin = vimPlugins.telescope-nvim;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/telescope.lua
           '';
         }
         {
-          plugin = nvim-tree-lua;
+          plugin = vimPlugins.nvim-tree-lua;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/nvim-tree.lua
           '';
         }
         {
-          plugin = nvim-lspconfig;
+          plugin = vimPlugins.nvim-lspconfig;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/lsp.lua
           '';
         }
         {
-          plugin = nvim-ale-diagnostic;
+          plugin = vimPlugins.nvim-ale-diagnostic;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/ale.lua
           '';
         }
         {
-          plugin = gitsigns-nvim;
+          plugin = vimPlugins.gitsigns-nvim;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/gitsigns.lua
           '';
         }
         {
-          plugin = neogit;
+          plugin = vimPlugins.neogit;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/neogit.lua
           '';
         }
         {
-          plugin = vim-terraform;
+          plugin = vimPlugins.vim-terraform;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/terraform.lua
           '';
         }
         {
-          plugin = nvim-treesitter;
+          plugin = vimPlugins.nvim-treesitter;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/treesitter.lua
           '';
         }
         {
-          plugin = nvim-ts-rainbow;
+          plugin = vimPlugins.nvim-ts-rainbow;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/rainbow.lua
           '';
         }
         {
-          plugin = nvim-dap;
+          plugin = vimPlugins.nvim-dap;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/dap.lua
           '';
         }
         {
-          plugin = lualine-nvim;
+          plugin = vimPlugins.lualine-nvim;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/statusline.lua
           '';
