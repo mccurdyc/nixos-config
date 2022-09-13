@@ -78,7 +78,7 @@
       };
   in {
     nixosConfigurations = {
-      nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
+    nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
     };
   };
 }
