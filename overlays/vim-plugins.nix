@@ -1,5 +1,5 @@
 nixpkgs: plugins: system: final: prev: let
-  buildVimPlugins = nikpks: system: plugins: let
+  buildVimPlugins = nixpkgs: system: plugins: let
     buildVimPlugin = system: plugin: let
       inherit (nixpkgs.legacyPackages.${system}) vimUtils;
     in
