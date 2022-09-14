@@ -24,7 +24,7 @@ in {
         tn = "(){ tmux new-session -s $1 \\; split-window -v -p 15 \\; select-pane -t 1 ;}";
         dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
         cdld = ''(){ if [ -f ~/.last_dir ]; then; cd "`cat ~/.last_dir`"; fi ;}'';
-        cd = ''(){ builtin cd $@; pwd > ~/.last_dir ;}'';
+        cd = ''(){ z $@; pwd > ~/.last_dir ;}'';
         tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
         whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
         ghpr = "(){ gh pr create --fill --draft $@ ;}";
