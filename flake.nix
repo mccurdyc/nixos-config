@@ -17,6 +17,137 @@
       url = "github:mccurdyc/base16-vim";
       flake = false;
     };
+
+    vim-surround = {
+      url = "github:tpope/vim-surround";
+      flake = false;
+    };
+
+    vim-unimpaired = {
+      url = "github:tpope/vim-unimpaired";
+      flake = false;
+    };
+
+    vim-fugitive = {
+      url = "github:tpope/vim-fugitive";
+      flake = false;
+    };
+
+    tcomment_vim = {
+      url = "github:tomtom/tcomment_vim";
+      flake = false;
+    };
+
+    plenary-nvim = {
+      url = "github:nvim-lua/plenary.nvim";
+      flake = false;
+    };
+
+    telescope-fzf-native-nvim = {
+      url = "github:nvim-telescope/telescope-fzf-native.nvim";
+      flake = false;
+    };
+
+    telescope-dap-nvim = {
+      url = "github:nvim-telescope/telescope-dap.nvim";
+      flake = false;
+    };
+
+    vim-gh-line = {
+      url = "github:ruanyl/vim-gh-line";
+      flake = false;
+    };
+
+    vim-go = {
+      url = "github:fatih/vim-go";
+      flake = false;
+    };
+
+    rust-vim = {
+      url = "github:rust-lang/rust.vim";
+      flake = false;
+    };
+
+    nvim-dap-ui = {
+      url = "github:rcarriga/nvim-dap-ui";
+      flake = false;
+    };
+
+    nvim-web-devicons = {
+      url = "github:kyazdani42/nvim-web-devicons";
+      flake = false;
+    };
+
+    nvim-tree-lua = {
+      url = "github:kyazdani42/nvim-tree.lua";
+      flake = false;
+    };
+
+    coq_nvim = {
+      url = "github:ms-jpq/coq_nvim";
+      flake = false;
+    };
+
+    nvim-bqf = {
+      url = "github:kevinhwang91/nvim-bqf";
+      flake = false;
+    };
+
+    formatter-nvim = {
+      url = "github:mhartington/formatter.nvim";
+      flake = false;
+    };
+
+    telescope-nvim = {
+      url = "github:nvim-telescope/telescope.nvim";
+      flake = false;
+    };
+
+    nvim-lspconfig = {
+      url = "github:neovim/nvim-lspconfig";
+      flake = false;
+    };
+
+    # TODO: replace with null-ls. deprecated.
+    nvim-ale-diagnostic = {
+      url = "github:nathanmsmith/nvim-ale-diagnostic";
+      flake = false;
+    };
+
+    gitsigns-nvim = {
+      url = "github:lewis6991/gitsigns.nvim";
+      flake = false;
+    };
+
+    neogit = {
+      url = "github:TimUntersberger/neogit";
+      flake = false;
+    };
+
+    vim-terraform = {
+      url = "github:hashivim/vim-terraform";
+      flake = false;
+    };
+
+    nvim-treesitter = {
+      url = "github:nvim-treesitter/nvim-treesitter";
+      flake = false;
+    };
+
+    nvim-ts-rainbow = {
+      url = "github:p00f/nvim-ts-rainbow";
+      flake = false;
+    };
+
+    nvim-dap = {
+      url = "github:mfussenegger/nvim-dap";
+      flake = false;
+    };
+
+    lualine-nvim = {
+      url = "github:nvim-lualine/lualine.nvim";
+      flake = false;
+    };
   };
 
   # outputs: A function that, given an attribute set containing the outputs of each
@@ -78,7 +209,7 @@
       };
   in {
     nixosConfigurations = {
-    nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
+      nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
     };
   };
 }

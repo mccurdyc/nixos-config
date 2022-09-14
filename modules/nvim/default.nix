@@ -17,19 +17,19 @@ in {
       '';
       vimdiffAlias = true;
       plugins = with pkgs.vimPlugins; [
-        vim-surround
-        vim-unimpaired
-        tcomment_vim
+        coq_nvim
+        nvim-dap-ui
+        nvim-web-devicons
         plenary-nvim
-        telescope-fzf-native-nvim
+        rust-vim
+        tcomment_vim
         telescope-dap-nvim
+        telescope-fzf-native-nvim
         vim-fugitive
         vim-gh-line
         vim-go
-        rust-vim
-        nvim-dap-ui
-        nvim-web-devicons
-        coq_nvim
+        vim-surround
+        vim-unimpaired
         {
           plugin = base16-vim-mccurdyc;
           config = ''
