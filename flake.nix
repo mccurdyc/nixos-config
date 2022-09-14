@@ -167,6 +167,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     ...
     # https://nixos.org/manual/nix/stable/language/constructs.html#functions
@@ -175,6 +176,14 @@
     system = "x86_64-linux"; #current system
     pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     lib = nixpkgs.lib;
+
+    # https://nixos.wiki/wiki/Flakes#Importing_packages_from_multiple_channels
+    overlay-unstable = final: prev: {
+      unstable = import nixpkgs-unstable {
+        inherit system;
+        inputs.nixpkgs.config.allowUnfree = true;
+      };
+    };
 
     vimPlugins = {
       inherit (inputs) base16-vim-mccurdyc;
@@ -202,6 +211,7 @@
           {
             nixpkgs.overlays = [
               (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
+              overlay-unstable
             ];
           }
         ];
