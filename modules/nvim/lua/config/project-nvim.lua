@@ -1,4 +1,4 @@
 require("project_nvim").setup {
-  patterns = {".git"}
+    patterns = {".git"}
 }
 require("telescope").load_extension("projects")

@@ -3,11 +3,11 @@ local autocmd = autocmd
 local g = vim.g
 
 autocmd(
-  "lang_go_aucmds",
-  {
-    [[Filetype go set nolist]]
-  },
-  true
+    "lang_go_aucmds",
+    {
+        [[Filetype go set nolist]]
+    },
+    true
 )
 
 -- Plugin: https://github.com/fatih/vim-go
