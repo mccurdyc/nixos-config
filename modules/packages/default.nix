@@ -24,15 +24,10 @@ in {
       gopls
       hadolint
       htop
-      hugo
       jq
-      ngrok
-      niv
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.lua-fmt
-      nodePackages.webpack
-      nodePackages.webpack-cli
       nodePackages.yaml-language-server
       nodejs
       pinentry-curses

@@ -33,6 +33,17 @@ in {
         gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
         gp = "git push";
         kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
+        # https://github.com/nix-community/nix-direnv/wiki/Shell-integration
+        flakify = ''
+          (){
+            if [ ! -e flake.nix ]; then
+              nix flake new -t github:nix-community/nix-direnv .
+            elif [ ! -e .envrc ]; then
+              echo "use flake" > .envrc
+              direnv allow
+            fi
+          }
+        '';
       };
       history = {
         size = 10000;
@@ -75,6 +86,7 @@ in {
         setopt interactive_comments
         setopt nobeep
 
+        eval "$(direnv hook zsh)"
         eval "$(starship init zsh)"
 
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh

@@ -10,8 +10,10 @@
   services.xserver.desktopManager.xterm.enable = false;
   programs.zsh.enable = true;
   environment.systemPackages = with pkgs; [
+    direnv
     git
     mosh
+    nix-direnv
     vim
     wget
     zsh
@@ -29,6 +31,7 @@
     };
     extraOptions = ''
       experimental-features = nix-command flakes
+      # nix options for derivations to persist garbage collection
       keep-outputs = true
       keep-derivations = true
     '';
@@ -66,6 +69,15 @@
     NIXOS_CONFIG_DIR = "$HOME/.config/nixos/";
     EDITOR = "nvim";
   };
+
+  environment.pathsToLink = [
+    "/share/nix-direnv"
+  ];
+
+  # if you also want support for flakes
+  nixpkgs.overlays = [
+    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
+  ];
 
   # Lots of stuff that claims doesn't work, actually works.
   nixpkgs.config = {
