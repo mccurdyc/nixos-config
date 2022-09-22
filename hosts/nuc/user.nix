@@ -1,10 +1,9 @@
-{
-  config,
-  lib,
-  inputs,
-  ...
+{ config
+, lib
+, inputs
+, ...
 }: {
-  imports = [../../modules/default.nix];
+  imports = [ ../../modules/default.nix ];
   config.modules = {
     # gui
     # TODO

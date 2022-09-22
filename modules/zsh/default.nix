@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.zsh;
-in {
-  options.modules.zsh = {enable = mkEnableOption "zsh";};
+in
+{
+  options.modules.zsh = { enable = mkEnableOption "zsh"; };
   config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
@@ -69,7 +69,7 @@ in {
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
         export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
       '';
-      sessionVariables = {};
+      sessionVariables = { };
       loginExtra = "";
       initExtraFirst = ''
       '';

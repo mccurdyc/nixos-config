@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.git;
-in {
-  options.modules.git = {enable = mkEnableOption "git";};
+in
+{
+  options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
@@ -18,7 +18,7 @@ in {
         signByDefault = true;
       };
       extraConfig = {
-        init = {defaultBranch = "main";};
+        init = { defaultBranch = "main"; };
         core = {
           excludesfile = "$NIXOS_CONFIG_DIR/scripts/gitignore";
         };

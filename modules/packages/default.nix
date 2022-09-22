@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.packages;
-in {
-  options.modules.packages = {enable = mkEnableOption "packages";};
+in
+{
+  options.modules.packages = { enable = mkEnableOption "packages"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       _1password
@@ -27,8 +27,11 @@ in {
       jq
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
+      nodePackages.jsonlint
       nodePackages.lua-fmt
+      nodePackages.markdownlint-cli
       nodePackages.yaml-language-server
+      nodePackages.fixjson
       nodejs
       pinentry-curses
       python39Packages.grip
@@ -42,6 +45,15 @@ in {
       tree
       trivy
       watch
+      lua53Packages.luacheck
+      statix
+      vale
+      yamllint
+      gofumpt
+      rustfmt
+      shfmt
+      nixpkgs-fmt
+      nodePackages.lua-fmt
     ];
   };
 }

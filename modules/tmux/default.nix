@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.tmux;
-in {
-  options.modules.tmux = {enable = mkEnableOption "tmux";};
+in
+{
+  options.modules.tmux = { enable = mkEnableOption "tmux"; };
   config = mkIf cfg.enable {
     programs.tmux = {
       enable = true;
@@ -29,6 +29,12 @@ in {
 
         # bind key for synchronizing panes
         bind-key y set-window-option synchronize-panes \; display "toggled synchronize-pages #{?pane_synchronized,on,off}"
+
+        # Undercurl
+        # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
+        set -g default-terminal "xterm-256color"
+        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+        set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
         # This tmux statusbar config was created by tmuxline.vim
         # on Tue, 24 Dec 2019

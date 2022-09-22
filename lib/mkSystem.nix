@@ -1,7 +1,7 @@
-{self, ...} @ inputs: name: system:
+{ self, ... } @ inputs: name: system:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
-  specialArgs = {inherit inputs self;};
+  specialArgs = { inherit inputs self; };
   modules = [
     "${self}/hosts/${name}/system.nix"
     "${self}/hosts/${name}/user.nix"

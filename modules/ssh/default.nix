@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.ssh;
-in {
-  options.modules.ssh = {enable = mkEnableOption "ssh";};
+in
+{
+  options.modules.ssh = { enable = mkEnableOption "ssh"; };
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
@@ -17,8 +17,7 @@ in {
       forwardAgent = true;
 
       matchBlocks = {
-        "*" = {
-        };
+        "*" = { };
 
         "github.com" = {
           hostname = "ssh.github.com";

@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib; let
   cfg = config.modules.nvim;
-in {
-  options.modules.nvim = {enable = mkEnableOption "nvim";};
+in
+{
+  options.modules.nvim = { enable = mkEnableOption "nvim"; };
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
@@ -42,12 +42,12 @@ in {
             luafile ${config.xdg.configHome}/nvim/config/quickfix.lua
           '';
         }
-        {
-          plugin = formatter-nvim;
-          config = ''
-            luafile ${config.xdg.configHome}/nvim/config/formatter.lua
-          '';
-        }
+        # {
+        #   plugin = formatter-nvim;
+        #   config = ''
+        #     luafile ${config.xdg.configHome}/nvim/config/formatter.lua
+        #   '';
+        # }
         {
           plugin = telescope-nvim;
           config = ''
@@ -67,11 +67,23 @@ in {
           '';
         }
         {
-          plugin = nvim-ale-diagnostic;
+          plugin = trouble;
           config = ''
-            luafile ${config.xdg.configHome}/nvim/config/ale.lua
+            luafile ${config.xdg.configHome}/nvim/config/trouble.lua
           '';
         }
+        {
+          plugin = null-ls-nvim;
+          config = ''
+            luafile ${config.xdg.configHome}/nvim/config/lint.lua
+          '';
+        }
+        # {
+        #   plugin = ale;
+        #   config = ''
+        #     luafile ${config.xdg.configHome}/nvim/config/ale.lua
+        #   '';
+        # }
         {
           plugin = gitsigns-nvim;
           config = ''

@@ -1,11 +1,10 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
+{ config
+, pkgs
+, inputs
+, ...
 }: {
   # Remove unecessary preinstalled packages
-  environment.defaultPackages = [];
+  environment.defaultPackages = [ ];
 
   services.xserver.desktopManager.xterm.enable = false;
   programs.zsh.enable = true;
@@ -23,7 +22,7 @@
   # Nix settings, auto cleanup and enable flakes
   nix = {
     settings.auto-optimise-store = true;
-    settings.allowed-users = ["mccurdyc"];
+    settings.allowed-users = [ "mccurdyc" ];
     gc = {
       automatic = true;
       dates = "weekly";
@@ -57,7 +56,7 @@
   users.users.mccurdyc = {
     isNormalUser = true;
     home = "/home/mccurdyc";
-    extraGroups = ["docker" "wheel"];
+    extraGroups = [ "docker" "wheel" ];
     shell = pkgs.zsh;
     # https://github.com/NixOS/nixpkgs/blob/8a053bc2255659c5ca52706b9e12e76a8f50dbdd/nixos/modules/config/users-groups.nix#L43
     # mkpasswd -m sha-512
@@ -76,7 +75,7 @@
 
   # if you also want support for flakes
   nixpkgs.overlays = [
-    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
+    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
   ];
 
   # Lots of stuff that claims doesn't work, actually works.
@@ -94,9 +93,9 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [22];
-      trustedInterfaces = ["tailscale0"];
-      allowedUDPPorts = [config.services.tailscale.port];
+      allowedTCPPorts = [ 22 ];
+      trustedInterfaces = [ "tailscale0" ];
+      allowedUDPPorts = [ config.services.tailscale.port ];
       allowedUDPPortRanges = [
         {
           from = 60000;

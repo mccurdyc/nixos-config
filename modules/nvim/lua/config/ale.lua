@@ -56,23 +56,24 @@ g.ale_yaml_yamllint_options = "{extends: default, rules: {line-length: disable}}
 -- -- ALE supported tools - https://github.com/dense-analysis/ale/blob/master/supported-tools.md
 -- -- :ALEInfo
 g.ale_linters = {
-    ["go"] = {"gopls", "staticcheck", "gosimple"},
-    ["rust"] = {"rustc", "analyzer", "cargo"},
-    ["terraform"] = {"terraform", "terraform_lsp", "tflint"},
-    ["docker"] = {"hadolint"},
-    ["json"] = {"jsonlint"},
-    ["md"] = {"markdownlint"}
+  ["go"] = {"gopls", "staticcheck", "gosimple"},
+  ["rust"] = {"rustc", "analyzer", "cargo"},
+  ["terraform"] = {"terraform", "terraform_lsp", "tflint"},
+  ["docker"] = {"hadolint"},
+  ["json"] = {"jsonlint"},
+  ["nix"] = {"rnix-lsp"},
+  ["md"] = {"markdownlint"}
 }
 
 g.ale_linters_ignore = {
-    ["docker"] = {"dockerfile_lint"}
+  ["docker"] = {"dockerfile_lint"}
 }
 
 g.ale_fixers = {
-    ["*"] = {"trim_whitespace"},
-    ["go"] = {"gofmt", "goimports"},
-    ["rust"] = {"rustfmt"},
-    ["terraform"] = {"terraform"},
-    ["json"] = {"jq"},
-    ["md"] = {"markdownlint"}
+  ["*"] = {"trim_whitespace"},
+  ["go"] = {"gofmt", "goimports"},
+  ["rust"] = {"rustfmt"},
+  ["terraform"] = {"terraform"},
+  ["json"] = {"jq"},
+  ["md"] = {"markdownlint"}
 }
