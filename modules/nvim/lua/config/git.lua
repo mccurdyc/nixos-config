@@ -1,5 +1,4 @@
 -- Plugin: https://github.com/ruanyl/vim-gh-line
-
 local g = vim.g
 
 g.gh_line_map_default = 0

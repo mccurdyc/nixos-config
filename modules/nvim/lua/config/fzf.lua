@@ -1,5 +1,4 @@
 -- https://github.com/ibhagwan/fzf-lua/wiki
-
 local actions = require("fzf-lua.actions")
 
 require("fzf-lua").setup {
@@ -13,28 +12,16 @@ require("fzf-lua").setup {
     preview_layout = "vertical",
     preview_vertical = "hidden:down:20%",
     previewers = {
-        cmd = {
-            cmd = "echo",
-            args = ""
-        },
-        cat = {
-            cmd = "cat",
-            args = "--number"
-        },
+        cmd = {cmd = "echo", args = ""},
+        cat = {cmd = "cat", args = "--number"},
         bat = {
             cmd = "bat",
             args = "--style=numbers,changes --color always",
             theme = "Coldark-Dark", -- bat preview theme (bat --list-themes)
             config = nil -- nil uses $BAT_CONFIG_PATH
         },
-        head = {
-            cmd = "head",
-            args = nil
-        },
-        git_diff = {
-            cmd = "git diff",
-            args = "--color"
-        }
+        head = {cmd = "head", args = nil},
+        git_diff = {cmd = "git diff", args = "--color"}
     },
     files = {
         prompt = "Files❯ ",
@@ -48,9 +35,7 @@ require("fzf-lua").setup {
             ["ctrl-v"] = actions.file_vsplit,
             ["ctrl-t"] = actions.file_tabedit,
             ["ctrl-q"] = actions.file_sel_to_qf,
-            ["ctrl-y"] = function(selected)
-                print(selected[2])
-            end
+            ["ctrl-y"] = function(selected) print(selected[2]) end
         }
     },
     git = {
@@ -73,9 +58,7 @@ require("fzf-lua").setup {
             prompt = "Commits❯ ",
             cmd = "git log --pretty=oneline --abbrev-commit --color --reflog",
             preview = "git show --pretty='%Cred%H%n%Cblue%an%n%Cgreen%s' --color {1}",
-            actions = {
-                ["default"] = actions.git_checkout
-            }
+            actions = {["default"] = actions.git_checkout}
         },
         bcommits = {
             prompt = "BCommits❯ ",
@@ -92,9 +75,7 @@ require("fzf-lua").setup {
             prompt = "Branches❯ ",
             cmd = "git branch --all --color --reflog",
             preview = "git log --graph --pretty=oneline --abbrev-commit --color {1}",
-            actions = {
-                ["default"] = actions.git_switch
-            }
+            actions = {["default"] = actions.git_switch}
         },
         icons = {
             ["M"] = {icon = "M", color = "yellow"},
@@ -121,15 +102,10 @@ require("fzf-lua").setup {
             ["ctrl-v"] = actions.file_vsplit,
             ["ctrl-t"] = actions.file_tabedit,
             ["ctrl-q"] = actions.file_sel_to_qf,
-            ["ctrl-y"] = function(selected)
-                print(selected[2])
-            end
+            ["ctrl-y"] = function(selected) print(selected[2]) end
         }
     },
-    oldfiles = {
-        prompt = "History❯ ",
-        cwd_only = false
-    },
+    oldfiles = {prompt = "History❯ ", cwd_only = false},
     buffers = {
         -- previewer      = false,        -- disable the builtin previewer?
         prompt = "Buffers❯ ",
@@ -159,14 +135,9 @@ require("fzf-lua").setup {
         live_preview = true, -- apply the colorscheme on preview?
         actions = {
             ["default"] = actions.colorscheme,
-            ["ctrl-y"] = function(selected)
-                print(selected[2])
-            end
+            ["ctrl-y"] = function(selected) print(selected[2]) end
         },
-        winopts = {
-            win_height = 0.55,
-            win_width = 0.30
-        },
+        winopts = {win_height = 0.55, win_width = 0.30},
         post_reset_cb = function()
             -- reset statusline highlights after
             -- a live_preview of the colorscheme
@@ -202,9 +173,7 @@ require("fzf-lua").setup {
     -- available colors (terminal):
     --    clear, bold, black, red, green, yellow
     --    blue, magenta, cyan, grey, dark_grey, white
-    file_icon_colors = {
-        ["lua"] = "blue"
-    }
+    file_icon_colors = {["lua"] = "blue"}
 }
 
 vim.cmd([[

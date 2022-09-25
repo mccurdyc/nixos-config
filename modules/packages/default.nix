@@ -28,7 +28,6 @@ in
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.jsonlint
-      nodePackages.lua-fmt
       nodePackages.markdownlint-cli
       nodePackages.yaml-language-server
       nodePackages.fixjson
@@ -46,6 +45,7 @@ in
       trivy
       watch
       lua53Packages.luacheck
+      luaformatter
       statix
       vale
       yamllint
@@ -53,7 +53,6 @@ in
       rustfmt
       shfmt
       nixpkgs-fmt
-      nodePackages.lua-fmt
     ];
   };
 }

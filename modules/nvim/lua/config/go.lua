@@ -2,13 +2,7 @@ local opt = opt
 local autocmd = autocmd
 local g = vim.g
 
-autocmd(
-    "lang_go_aucmds",
-    {
-        [[Filetype go set nolist]]
-    },
-    true
-)
+autocmd("lang_go_aucmds", {[[Filetype go set nolist]]}, true)
 
 -- Plugin: https://github.com/fatih/vim-go
 -- No gofmt on save. Use ALE.

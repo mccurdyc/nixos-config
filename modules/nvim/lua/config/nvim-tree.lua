@@ -4,7 +4,7 @@ local g = vim.g
 -- vim.cmd [[autocmd VimEnter * NvimTreeOpen]]
 --
 
-require "nvim-tree".setup {
+require"nvim-tree".setup {
     actions = {
         open_file = {
             quit_on_open = false,
@@ -44,11 +44,7 @@ require "nvim-tree".setup {
         -- the command arguments as a list
         args = {}
     },
-    git = {
-        enable = true,
-        ignore = false,
-        timeout = 300
-    },
+    git = {enable = true, ignore = false, timeout = 300},
     view = {
         -- width of the window, can be either a number (columns) or a string in `%`
         width = 30,

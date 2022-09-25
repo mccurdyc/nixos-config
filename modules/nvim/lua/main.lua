@@ -5,36 +5,24 @@ local map_key = vim.api.nvim_set_keymap
 local g = vim.g
 
 local function opt(op, v, scopes)
-  scopes = scopes or {o}
-  for _, s in ipairs(scopes) do
-    s[op] = v
-  end
+    scopes = scopes or {o}
+    for _, s in ipairs(scopes) do s[op] = v end
 end
 
 local function autocmd(group, cmds, clear)
-  clear = clear == nil and false or clear
-  if type(cmds) == "string" then
-    cmds = {cmds}
-  end
-  cmd("augroup " .. group)
-  if clear then
-    cmd [[au!]]
-  end
-  for _, c in ipairs(cmds) do
-    cmd("autocmd " .. c)
-  end
-  cmd [[augroup END]]
+    clear = clear == nil and false or clear
+    if type(cmds) == "string" then cmds = {cmds} end
+    cmd("augroup " .. group)
+    if clear then cmd [[au!]] end
+    for _, c in ipairs(cmds) do cmd("autocmd " .. c) end
+    cmd [[augroup END]]
 end
 
 local function map(modes, lhs, rhs, opts)
-  opts = opts or {}
-  opts.noremap = opts.noremap == nil and true or opts.noremap
-  if type(modes) == "string" then
-    modes = {modes}
-  end
-  for _, mode in ipairs(modes) do
-    map_key(mode, lhs, rhs, opts)
-  end
+    opts = opts or {}
+    opts.noremap = opts.noremap == nil and true or opts.noremap
+    if type(modes) == "string" then modes = {modes} end
+    for _, mode in ipairs(modes) do map_key(mode, lhs, rhs, opts) end
 end
 
 g.t_Co = 256
@@ -42,14 +30,10 @@ g.base16colorspace = 256
 
 cmd("filetype plugin indent on")
 
-autocmd(
-  "misc_aucmds",
-  {
+autocmd("misc_aucmds", {
     [[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
     [[FileType yaml setl indentkeys-=<:>]]
-  },
-  true
-)
+}, true)
 
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
@@ -129,20 +113,22 @@ map("n", "<leader>dui", ':lua require("dapui").toggle()<CR>', opts)
 
 -- Go
 local go_keybindings = function()
-  map("n", "<leader>gg", "<Plug>(go-doc)", opts)
-  map("n", "<leader>gv", "<Plug>(go-doc-vertical)", opts)
-  map("n", "<leader>gdb", "<Plug>(go-doc-browser)", opts)
-  map("n", "<leader>gta", "<Plug>(go-alternate-split)", opts)
-  map("n", "<leader>gtt", "<Plug>(go-test)", opts)
-  map("n", "<leader>gtf", ":GoTestFunc!<cr>", opts)
-  map("n", "<leader>gtc", "<Plug>(go-coverage-toggle)", opts)
-  map("n", "<leader>gcb", "<Plug>(go-cover-browser)", opts)
-  map("n", "<leader>dc", ":DlvConnect vim.env.DLV_SERVER_HOST<CR>", opts)
-  map("n", "<leader>ca", ":DlvClearAll <CR>", opts)
-  map("n", "<leader>dt", ":DlvToggleBreakpoint <CR>", opts)
+    map("n", "<leader>gg", "<Plug>(go-doc)", opts)
+    map("n", "<leader>gv", "<Plug>(go-doc-vertical)", opts)
+    map("n", "<leader>gdb", "<Plug>(go-doc-browser)", opts)
+    map("n", "<leader>gta", "<Plug>(go-alternate-split)", opts)
+    map("n", "<leader>gtt", "<Plug>(go-test)", opts)
+    map("n", "<leader>gtf", ":GoTestFunc!<cr>", opts)
+    map("n", "<leader>gtc", "<Plug>(go-coverage-toggle)", opts)
+    map("n", "<leader>gcb", "<Plug>(go-cover-browser)", opts)
+    map("n", "<leader>dc", ":DlvConnect vim.env.DLV_SERVER_HOST<CR>", opts)
+    map("n", "<leader>ca", ":DlvClearAll <CR>", opts)
+    map("n", "<leader>dt", ":DlvToggleBreakpoint <CR>", opts)
 end
 
 -- LSP
 -- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
 -- https://neovim.discourse.group/t/jump-to-definition-in-vertical-horizontal-split/2605/14
-map("n", "<leader>gd", ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>', opts)
+map("n", "<leader>gd",
+    ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
+    opts)

@@ -108,7 +108,7 @@
       flake = false;
     };
 
-    trouble = {
+    trouble-nvim = {
       url = "github:folke/trouble.nvim";
       flake = false;
     };

@@ -67,7 +67,7 @@ in
           '';
         }
         {
-          plugin = trouble;
+          plugin = trouble-nvim;
           config = ''
             luafile ${config.xdg.configHome}/nvim/config/trouble.lua
           '';
