@@ -1,4 +1,4 @@
-require("trouble").setup( -- settings without a patched font or icons{
+require("trouble").setup({ -- settings without a patched font or icons{
     icons = false,
     fold_open = "v", -- icon used for open folds
     fold_closed = ">", -- icon used for closed folds
