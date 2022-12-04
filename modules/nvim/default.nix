@@ -17,7 +17,7 @@ in
       '';
       vimdiffAlias = true;
       plugins = with pkgs.vimPlugins; [
-        coq_nvim
+        # coq_nvim
         nvim-dap-ui
         nvim-web-devicons
         plenary-nvim
@@ -30,6 +30,13 @@ in
         vim-go
         vim-surround
         vim-unimpaired
+        cmp-nvim-lsp
+        cmp-buffer
+        cmp-path
+        cmp-nvim-lua
+        luasnip
+        cmp_luasnip
+        lspkind-nvim
         {
           plugin = base16-vim-mccurdyc;
           config = ''
@@ -48,6 +55,12 @@ in
         #     luafile ${config.xdg.configHome}/nvim/config/formatter.lua
         #   '';
         # }
+        {
+          plugin = nvim-cmp;
+          config = ''
+            luafile ${config.xdg.configHome}/nvim/config/completion.lua
+          '';
+        }
         {
           plugin = telescope-nvim;
           config = ''

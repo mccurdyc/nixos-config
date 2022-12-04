@@ -93,10 +93,6 @@ map("n", "<leader>f", ":Telescope live_grep<CR>", opts)
 map("n", "<C-p>", ':lua require("telescope.builtin").git_files()<CR>', opts)
 map("n", "<leader>gs", ":Telescope git_files<CR>", opts)
 
--- Completion
-map("i", "<tab>", "<Plug>(completion_smart_tab)", opts)
-map("i", "<s-tab>", "<Plug>(completion_smart_s_tab)", opts)
-
 -- ALE
 map("n", "<silent> <C-k>", "<Plug>(ale_previous)", opts)
 map("n", "<silent> <C-j>", "<Plug>(ale_next)", opts)
