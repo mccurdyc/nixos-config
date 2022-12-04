@@ -2,6 +2,7 @@
 local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local map_key = vim.api.nvim_set_keymap
+local luasnip = require "luasnip"
 local g = vim.g
 
 local function opt(op, v, scopes)
@@ -100,12 +101,26 @@ map("n", "<leader>rn", ":ALERename<CR>", opts)
 map("n", "<leader>ss", ":ALESymbolSearch", opts)
 
 -- Nvim-Tree
-map("n", "<C-n>", ':lua require("nvim-tree").toggle()<CR>', opts)
+map("n", "<C-t>", ':lua require("nvim-tree").toggle()<CR>', opts)
 
 -- DAP
 map("n", "<leader>bp", ':lua require("dap").toggle_breakpoint()<CR>', opts)
 map("n", "<leader>dap", ':lua require("dap").continue()<CR>', opts)
 map("n", "<leader>dui", ':lua require("dapui").toggle()<CR>', opts)
+
+-- Snippets
+-- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/luasnip.lua#L271-L285
+-- <c-j> is my expansion key
+-- this will expand the current item or jump to the next item within the snippet.
+vim.keymap.set({"i", "s"}, "<c-j>", function()
+    if luasnip.expand_or_jumpable() then luasnip.expand_or_jump() end
+end, {silent = true})
+
+-- <c-p> is my jump backwards key.
+-- this always moves to the previous item within the snippet
+vim.keymap.set({"i", "s"}, "<c-p>", function()
+    if luasnip.jumpable(-1) then luasnip.jump(-1) end
+end, {silent = true})
 
 -- Go
 local go_keybindings = function()

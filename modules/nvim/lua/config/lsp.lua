@@ -1,4 +1,5 @@
-local nvim_lsp = require("lspconfig")
+local lspconfig = require("lspconfig")
+local util = require("lspconfig.util")
 local map = vim.api.nvim_set_keymap
 local option = vim.api.nvim_set_option
 
@@ -61,11 +62,49 @@ vim.diagnostic.config({
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
-    "rust_analyzer", "gopls", "bashls", "dockerls", "terraformls", "tflint",
-    "rnix", "sumneko_lua"
+    "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint", "rnix",
+    "sumneko_lua"
 }
-for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {on_attach = on_attach}
-    -- nvim_lsp[lsp].setup(coq.lsp_ensure_capabilities())
-    nvim_lsp[lsp].setup {capabilities = capabilities}
+-- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
+local function get_forced_lsp_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.resolveSupport = {
+        properties = {"documentation", "detail", "additionalTextEdits"}
+    }
+    return capabilities
 end
+
+local function my_lsp_on_attach(client, bufnr)
+    local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp
+                                                                          .protocol
+                                                                          .make_client_capabilities())
+end
+
+util.default_config = vim.tbl_extend("force", util.default_config, {
+    autostart = true,
+    on_attach = my_lsp_on_attach,
+    capabilities = get_forced_lsp_capabilities()
+})
+
+-- NOTE: Call setup last
+-- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup {on_attach = on_attach}
+    -- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
+    -- lspconfig[lsp].setup {capabilities = capabilities}
+end
+
+lspconfig['gopls'].setup {
+    cmd = {'gopls'},
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        gopls = {
+            experimentalPostfixCompletions = true,
+            analyses = {unusedparams = true, shadow = true},
+            staticcheck = true
+        }
+    },
+    init_options = {usePlaceholders = true}
+}
