@@ -213,58 +213,61 @@
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
+    , flake-utils
     , ...
       # https://nixos.org/manual/nix/stable/language/constructs.html#functions
       # An @-pattern provides a means of referring to the whole value being matched
     } @ inputs:
-    let
-      system = "x86_64-linux"; #current system
-      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    flake-utils.lib.eachDefaultSystem
+      (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
 
-      # https://nixos.wiki/wiki/Flakes#Importing_packages_from_multiple_channels
-      overlay-unstable = final: prev: {
-        unstable = import nixpkgs-unstable {
-          inherit system;
-          inputs.nixpkgs.config.allowUnfree = true;
+        # https://nixos.wiki/wiki/Flakes#Importing_packages_from_multiple_channels
+        overlay-unstable = final: prev: {
+          unstable = import nixpkgs-unstable {
+            inherit system;
+            inputs.nixpkgs.config.allowUnfree = true;
+          };
         };
-      };
 
-      vimPlugins = {
-        inherit (inputs) base16-vim-mccurdyc;
-      };
-
-      mkSystem = pkgs: system: hostname:
-        pkgs.lib.nixosSystem {
-          inherit system;
-          # replaces the older configuration.nix
-          modules = [
-            { networking.hostName = hostname; }
-            # General configuration (users, networking, sound, etc)
-            ./modules/system/configuration.nix
-            # Hardware config (bootloader, kernel modules, filesystems, etc)
-            (./. + "/hosts/${hostname}/hardware-configuration.nix")
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
-              };
-            }
-            {
-              nixpkgs.overlays = [
-                (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
-                overlay-unstable
-              ];
-            }
-          ];
-          specialArgs = { inherit inputs; };
+        vimPlugins = {
+          inherit (inputs) base16-vim-mccurdyc;
         };
-    in
-    {
-      nixosConfigurations = {
-        nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
-      };
-    };
+
+        mkSystem = pkgs: system: hostname:
+          pkgs.lib.nixosSystem {
+            inherit system;
+            # replaces the older configuration.nix
+            modules = [
+              { networking.hostName = hostname; }
+              # General configuration (users, networking, sound, etc)
+              ./modules/system/configuration.nix
+              # Hardware config (bootloader, kernel modules, filesystems, etc)
+              (./. + "/hosts/${hostname}/hardware-configuration.nix")
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useUserPackages = true;
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
+                };
+              }
+              {
+                nixpkgs.overlays = [
+                  (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
+                  overlay-unstable
+                ];
+              }
+            ];
+            specialArgs = { inherit inputs; };
+          };
+      in
+      {
+        nixosConfigurations = {
+          nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
+        };
+      }
+      );
 }
