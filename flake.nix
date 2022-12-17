@@ -213,16 +213,14 @@
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
+    , flake-utils
     , ...
       # https://nixos.org/manual/nix/stable/language/constructs.html#functions
       # An @-pattern provides a means of referring to the whole value being matched
     } @ inputs:
     let
-      system = "x86_64-linux"; #current system
-      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-
       # https://nixos.wiki/wiki/Flakes#Importing_packages_from_multiple_channels
-      overlay-unstable = final: prev: {
+      overlay-unstable = system: final: prev: {
         unstable = import nixpkgs-unstable {
           inherit system;
           inputs.nixpkgs.config.allowUnfree = true;
@@ -233,16 +231,25 @@
         inherit (inputs) base16-vim-mccurdyc;
       };
 
-      mkSystem = pkgs: system: hostname:
-        pkgs.lib.nixosSystem {
+      mkSystem =
+        { nixpkgs ? inputs.nixpkgs-unstable
+        , system
+        , hostname
+        ,
+        }:
+        nixpkgs.lib.nixosSystem {
           inherit system;
+
           # replaces the older configuration.nix
           modules = [
             { networking.hostName = hostname; }
+
             # General configuration (users, networking, sound, etc)
             ./modules/system/configuration.nix
+
             # Hardware config (bootloader, kernel modules, filesystems, etc)
             (./. + "/hosts/${hostname}/hardware-configuration.nix")
+
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -255,16 +262,26 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
-                overlay-unstable
+                (overlay-unstable system)
               ];
             }
           ];
-          specialArgs = { inherit inputs; };
+          # WHY?
+          # specialArgs = { inherit self inputs nixpkgs; };
         };
     in
     {
       nixosConfigurations = {
-        nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
+        nuc = mkSystem {
+          system = "x86_64-linux";
+          hostname = "nuc";
+        };
+
+        # GCE Arm Nix
+        ganix = mkSystem {
+          system = "aarch64-linux";
+          hostname = "ganix";
+        };
       };
     };
 }
