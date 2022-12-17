@@ -40,9 +40,6 @@ with lib;
   services.udev.packages = [ pkgs.google-guest-configs ];
   services.udev.path = [ pkgs.google-guest-configs ];
 
-  # Force getting the hostname from Google Compute.
-  networking.hostName = "fastly-nixos";
-
   environment.systemPackages = [
     pkgs.git
     pkgs.mosh
