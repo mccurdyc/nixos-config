@@ -52,9 +52,6 @@ with lib;
     pkgs.zsh
   ];
 
-  # Rely on GCP's firewall instead
-  networking.firewall.enable = false;
-
   # At this point, we are past packer, so we can just rely on tailscale.
   services.openssh.enable = false;
   services.openssh.permitRootLogin = "prohibit-password";
