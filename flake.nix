@@ -238,13 +238,17 @@
         mkSystem = pkgs: system: hostname:
           pkgs.lib.nixosSystem {
             inherit system;
+
             # replaces the older configuration.nix
             modules = [
               { networking.hostName = hostname; }
+
               # General configuration (users, networking, sound, etc)
               ./modules/system/configuration.nix
+
               # Hardware config (bootloader, kernel modules, filesystems, etc)
               (./. + "/hosts/${hostname}/hardware-configuration.nix")
+
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
@@ -267,6 +271,8 @@
       {
         nixosConfigurations = {
           nuc = mkSystem inputs.nixpkgs "x86_64-linux" "nuc";
+          # GCE Arm Nix
+          ganix = mkSystem inputs.nixpkgs "aarch64-linux" "ganix";
         };
       }
       );
