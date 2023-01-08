@@ -31,6 +31,7 @@ with lib;
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 0;
   # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
