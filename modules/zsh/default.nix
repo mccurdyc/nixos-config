@@ -23,27 +23,13 @@ in
         ta = "tmux attach -t ";
         tn = "(){ tmux new-session -s $1 \\; split-window -v -p 15 \\; select-pane -t 1 ;}";
         dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
-        cdld = ''(){ if [ -f ~/.last_dir ]; then; cd "`cat ~/.last_dir`"; fi ;}'';
-        cd = ''(){ z $@; pwd > ~/.last_dir ;}'';
         tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
         whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
         ghpr = "(){ gh pr create --fill --draft $@ ;}";
         gitc = "nvim -c Neogit";
         gits = "git status";
         gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
-        gp = "git push";
         kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
-        # https://github.com/nix-community/nix-direnv/wiki/Shell-integration
-        flakify = ''
-          (){
-            if [ ! -e flake.nix ]; then
-              nix flake new -t github:nix-community/nix-direnv .
-            elif [ ! -e .envrc ]; then
-              echo "use flake" > .envrc
-              direnv allow
-            fi
-          }
-        '';
       };
       history = {
         size = 10000;
