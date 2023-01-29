@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , inputs
 , ...
 }: {
@@ -19,5 +20,9 @@
     # system
     xdg.enable = true;
     packages.enable = true;
+    packages.additional-packages = with pkgs; [
+      kubectl
+      infra
+    ];
   };
 }

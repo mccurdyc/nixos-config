@@ -235,40 +235,35 @@
         { nixpkgs ? inputs.nixpkgs-unstable
         , system
         , hostname
-        ,
         }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
+        nixpkgs.lib.nixosSystem
+          {
+            inherit system;
 
-          # replaces the older configuration.nix
-          modules = [
-            { networking.hostName = hostname; }
+            modules = [
+              {
+                networking.hostName = hostname;
+              }
+              ./modules/system/configuration.nix
+              (./. + "/hosts/${hostname}/hardware-configuration.nix")
 
-            # General configuration (users, networking, sound, etc)
-            ./modules/system/configuration.nix
-
-            # Hardware config (bootloader, kernel modules, filesystems, etc)
-            (./. + "/hosts/${hostname}/hardware-configuration.nix")
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
-              };
-            }
-            {
-              nixpkgs.overlays = [
-                (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
-                (overlay-unstable system)
-              ];
-            }
-          ];
-          # WHY?
-          # specialArgs = { inherit self inputs nixpkgs; };
-        };
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useUserPackages = true;
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
+                };
+              }
+              {
+                nixpkgs.overlays = [
+                  (import ./overlays/vim-plugins.nix nixpkgs vimPlugins system)
+                  (overlay-unstable system)
+                ];
+              }
+            ];
+          };
     in
     {
       nixosConfigurations = {
