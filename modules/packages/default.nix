@@ -15,50 +15,54 @@ in
     };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      _1password
-      alejandra
-      bat
-      docker
-      fd
-      fzf
-      gcc
-      git-crypt
-      gitui
-      go
-      google-cloud-sdk
-      gopls
-      hadolint
-      htop
-      jq
-      nodePackages.bash-language-server
-      nodePackages.dockerfile-language-server-nodejs
-      nodePackages.jsonlint
-      nodePackages.markdownlint-cli
-      nodePackages.yaml-language-server
-      nodePackages.fixjson
-      nodejs
-      pinentry-curses
-      python39Packages.grip
-      python3Full
-      ripgrep
-      rnix-lsp
-      starship
-      subnetcalc
-      sumneko-lua-language-server
-      tmux
-      tree
-      trivy
-      watch
-      lua53Packages.luacheck
-      luaformatter
-      statix
-      vale
-      yamllint
-      gofumpt
-      rustfmt
-      shfmt
-      nixpkgs-fmt
-    ] ++ cfg.additional-packages;
+    home.packages = with pkgs;
+      [
+        _1password
+        alejandra
+        bat
+        cachix
+        docker
+        fd
+        fzf
+        gcc
+        gh
+        git-crypt
+        gitui
+        go
+        gofumpt
+        google-cloud-sdk
+        gopls
+        hadolint
+        htop
+        jq
+        lua53Packages.luacheck
+        luaformatter
+        nixpkgs-fmt
+        nodePackages.bash-language-server
+        nodePackages.dockerfile-language-server-nodejs
+        nodePackages.fixjson
+        nodePackages.jsonlint
+        nodePackages.markdownlint-cli
+        nodePackages.yaml-language-server
+        nodejs
+        pinentry-curses
+        python39Packages.grip
+        python3Full
+        ripgrep
+        rnix-lsp
+        rustfmt
+        shfmt
+        starship
+        statix
+        subnetcalc
+        sumneko-lua-language-server
+        tmux
+        tree
+        trivy
+        vale
+        watch
+        yamllint
+      ]
+      ++ cfg.additional-packages;
   };
 }
