@@ -21,8 +21,11 @@
 
   # Nix settings, auto cleanup and enable flakes
   nix = {
-    settings.auto-optimise-store = true;
-    settings.allowed-users = [ "mccurdyc" ];
+    settings = {
+      auto-optimise-store = true;
+      allowed-users = [ "mccurdyc" ];
+      trusted-users = [ "root" "mccurdyc" ];
+    };
     gc = {
       automatic = true;
       dates = "weekly";
@@ -67,6 +70,7 @@
     NIXOS_CONFIG = "$HOME/.config/nixos/configuration.nix";
     NIXOS_CONFIG_DIR = "$HOME/.config/nixos/";
     EDITOR = "nvim";
+    # DOCKER_DEFAULT_PLATFORM needs to be set based on system.
   };
 
   environment.pathsToLink = [
