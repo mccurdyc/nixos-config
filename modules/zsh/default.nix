@@ -160,18 +160,51 @@ in
           style = "bold #005aff";
         };
 
-        docker_context.symbol = "docker:";
-        golang.symbol = "go:";
-        lua.symbol = "lua:";
-        memory_usage.symbol = "mem:";
-        nix_shell.symbol = "nix:";
-        nodejs.symbol = "nodejs:";
-        package.symbol = "pkg:";
-        python.symbol = "py:";
-        ruby.symbol = "rb:";
-        rust.symbol = "rs:";
+        memory_usage = {
+          symbol = "mem:";
+          format = "|[$symbol($version )]($style)";
+        };
+        docker_context = {
+          symbol = "docker:";
+          format = "|[$symbol($version )]($style)";
+        };
+        golang = {
+          symbol = "go:";
+          format = "|[$symbol($version )]($style)";
+        };
+        lua = {
+          symbol = "lua:";
+          format = "|[$symbol($version )]($style)";
+        };
+        nix_shell = {
+          symbol = "nix:";
+          format = "|[$symbol($version )]($style)";
+        };
+        nodejs = {
+          symbol = "nodejs:";
+          format = "|[$symbol($version )]($style)";
+        };
+        package = {
+          symbol = "pkg:";
+          format = "|[$symbol($version )]($style)";
+        };
+        python = {
+          symbol = "py:";
+          format = "|[$symbol($version )]($style)";
+        };
+        ruby = {
+          symbol = "rb:";
+          format = "|[$symbol($version )]($style)";
+        };
+        rust = {
+          symbol = "rs:";
+          format = "|[$symbol($version )]($style)";
+        };
+        terraform = {
+          symbol = "tf:";
+          format = "|[$symbol($version )]($style)";
+        };
         sudo.symbol = "sudo:";
-        terraform.symbol = "tf:";
         cmd_duration = {
           min_time = 2000;
           format = "took [$duration]($style)";
