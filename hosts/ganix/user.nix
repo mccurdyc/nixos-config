@@ -21,8 +21,11 @@
     xdg.enable = true;
     packages.enable = true;
     packages.additional-packages = with pkgs; [
-      kubectl
+      awscli2
       infra
+      kubectl
+      kubie
+      wireguard-tools
     ];
   };
 }
