@@ -32,24 +32,18 @@ with lib;
   boot.initrd.kernelModules = [ "virtio_scsi" ];
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
-  # Generate a GRUB menu.
-  boot.loader.grub.device = "/dev/sda";
+  # Trusting google-compute-config.nix
+  boot.kernelModules = [ "virtio_pci" "virtio_net" ];
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 0;
-
-  # Don't put old configurations in the GRUB menu.  The user has no
-  # way to select them anyway.
-  boot.loader.grub.configurationLimit = 0;
-
   # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
   # instance or project level
   security.googleOsLogin.enable = true;
-
   # Use GCE udev rules for dynamic disk volumes
   services.udev.packages = [ pkgs.google-guest-configs ];
   services.udev.path = [ pkgs.google-guest-configs ];
-
-  # Force getting the hostname from Google Compute.
-  networking.hostName = "fgnix";
 
   environment.systemPackages = [
     pkgs.git
@@ -60,14 +54,8 @@ with lib;
     pkgs.zsh
   ];
 
-  # Rely on GCP's firewall instead
-  networking.firewall.enable = false;
-
-  # TODO: Packer doesn't use tailscale ssh, so leaving this.
-  # I think it could work using tailscale ssh, just haven't spent the time yet to figure it out.
-  # Allow root logins only using SSH keys
-  # and disable password authentication in general
-  services.openssh.enable = true;
+  # At this point, we are past packer, so we can just rely on tailscale.
+  services.openssh.enable = false;
   services.openssh.permitRootLogin = "prohibit-password";
   services.openssh.passwordAuthentication = mkDefault false;
 
@@ -83,22 +71,6 @@ with lib;
 
   # GC has 1460 MTU
   networking.interfaces.eth0.mtu = 1460;
-
-  # Custom systemd services
-  # https://nixos.org/manual/nixos/stable/options.html#opt-systemd.services._name_.enable
-  # systemd.services.tailscale-up = {
-  #   enable = true;
-  #   # enable=true does not make a unit start by default at boot; if you want that, see wantedBy.
-  #   wantedBy = [ "multi-user.target" ];
-  #   script = "tailscale up --ssh=true --auth-key $TAILSCALE_AUTH_KEY";
-  #   # If auth-key doesnt work this way, we could use <(cat /some/file) instead.
-  # };
-  #
-  # systemd.services.mosh-up = {
-  #   enable = true;
-  #   wantedBy = [ "multi-user.target" ];
-  #   script = "mosh"; # might need to be mosh-server
-  # };
 
   systemd.packages = [ pkgs.google-guest-agent ];
 
