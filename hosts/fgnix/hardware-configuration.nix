@@ -106,6 +106,4 @@ with lib;
     # We set up network interfaces declaratively.
     setup = false
   '';
-
-  system.stateVersion = "22.11";
 }
