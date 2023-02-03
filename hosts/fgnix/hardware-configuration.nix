@@ -33,7 +33,6 @@ with lib;
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   # Trusting google-compute-config.nix
-  boot.kernelModules = [ "virtio_pci" "virtio_net" ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.efi.canTouchEfiVariables = true;
