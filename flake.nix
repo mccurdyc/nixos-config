@@ -74,6 +74,11 @@
           system = "aarch64-linux";
           hostname = "ganix";
         };
+
+        fgnix = mkSystem {
+          system = "x86_64-linux";
+          hostname = "fgnix";
+        };
       };
     };
 }
