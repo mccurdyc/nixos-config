@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , inputs
 , ...
 }: {
@@ -19,5 +20,13 @@
     # system
     xdg.enable = true;
     packages.enable = true;
+    packages.additional-packages = with pkgs; [
+      awscli2
+      infra
+      kubectl
+      kubernetes-helm
+      kubie
+      wireguard-tools
+    ];
   };
 }

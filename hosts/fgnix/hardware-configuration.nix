@@ -49,7 +49,7 @@ with lib;
   services.udev.path = [ pkgs.google-guest-configs ];
 
   # Force getting the hostname from Google Compute.
-  networking.hostName = "ganix";
+  networking.hostName = "fgnix";
 
   environment.systemPackages = [
     pkgs.git
