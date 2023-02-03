@@ -24,6 +24,7 @@
       awscli2
       infra
       kubectl
+      kubernetes-helm
       kubie
       wireguard-tools
     ];
