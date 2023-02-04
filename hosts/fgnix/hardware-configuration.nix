@@ -60,9 +60,6 @@ with lib;
     pkgs.zsh
   ];
 
-  # Rely on GCP's firewall instead
-  networking.firewall.enable = false;
-
   # TODO: Packer doesn't use tailscale ssh, so leaving this.
   # I think it could work using tailscale ssh, just haven't spent the time yet to figure it out.
   # Allow root logins only using SSH keys
