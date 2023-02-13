@@ -11,6 +11,7 @@
   environment.systemPackages = with pkgs; [
     direnv
     git
+    keychain
     mosh
     nix-direnv
     vim
