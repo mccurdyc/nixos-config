@@ -21,6 +21,7 @@ in
         alejandra
         bat
         cachix
+        dig
         docker
         docker-compose
         fd
