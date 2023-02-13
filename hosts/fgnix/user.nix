@@ -27,6 +27,8 @@
       kubectl
       kubernetes-helm
       kubie
+      terraform-ls
+      tflint
       wireguard-tools
     ];
   };
