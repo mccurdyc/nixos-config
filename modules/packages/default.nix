@@ -22,6 +22,7 @@ in
         bat
         cachix
         docker
+        docker-compose
         fd
         fzf
         gcc
