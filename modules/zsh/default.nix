@@ -81,6 +81,8 @@ in
         source ${pkgs.fzf}/share/fzf/completion.zsh
         # NOTE: I had issues with zsh-vi-mode overwriting ^R
         source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+
+        eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
       '';
     };
 
