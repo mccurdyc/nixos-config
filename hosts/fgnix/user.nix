@@ -16,6 +16,7 @@
     git.enable = true;
     gpg.enable = true;
     tmux.enable = true;
+    home.enable = true;
 
     # system
     xdg.enable = true;

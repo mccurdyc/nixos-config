@@ -18,6 +18,7 @@
     # ./direnv
 
     # system
+    ./home
     ./xdg
     ./packages
   ];
