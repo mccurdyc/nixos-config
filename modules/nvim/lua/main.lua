@@ -119,26 +119,14 @@ require("lazy").setup({
         config = function()
             vim.cmd([[colorscheme base16-eighties-minimal]])
         end
-    }, "tpope/vim-fugitive", "tomtom/tcomment_vim", "nvim-lua/plenary.nvim",
-    "lukas-reineke/indent-blankline.nvim", --[[{
+    }, "tpope/vim-fugitive", "tpope/vim-rhubarb", "tomtom/tcomment_vim",
+    "nvim-lua/plenary.nvim", "lukas-reineke/indent-blankline.nvim" --[[{
 	      "nvim-telescope/telescope-fzf-native.nvim",
 	      dependencies = {
 			    "nvim-telescope/telescope.nvim",
 	      },
 	    },
-	    ]] {
-        "ruanyl/vim-gh-line",
-        config = function()
-            -- Plugin: https://github.com/ruanyl/vim-gh-line
-            local g = vim.g
-
-            g.gh_line_map_default = 0
-            g.gh_line_blame_map_default = 0
-            g.gh_line_map = "<leader>gh"
-            g.gh_line_blame_map = "<leader>gb"
-            g.gh_open_command = "xdg-open "
-        end
-    }, {
+	    ]] , {
         "fatih/vim-go",
         ft = "go",
         config = function()
@@ -283,22 +271,19 @@ require("lazy").setup({
                             select = true
                         }, {"i", "c"})
                 },
-
                 snippet = {
                     expand = function(args)
                         luasnip.lsp_expand(args.body)
                     end
                 },
-
                 sources = cmp.config.sources({
                     {name = "nvim_lua"}, {name = "luasnip"}, {name = "nvim_lsp"}
                 }, {{name = "path"}, {name = "buffer", keyword_length = 5}}),
-
                 formatting = {
                     format = lspkind.cmp_format({
-                        mode = 'text',
+                        mode = "text",
                         maxwidth = 50,
-                        ellipsis_char = '...',
+                        ellipsis_char = "...",
                         menu = {
                             buffer = "[buf]",
                             nvim_lsp = "[LSP]",
@@ -307,7 +292,6 @@ require("lazy").setup({
                             luasnip = "[snip]"
                         }
                     }),
-
                     experimental = {native_menu = false, ghost_text = true}
                 }
 
@@ -354,42 +338,6 @@ require("lazy").setup({
                     }
                 }
             })
-        end
-    }, {
-        "mhartington/formatter.nvim",
-        config = function()
-            require("formatter").setup({
-                filetype = {
-                    sh = {
-                        function()
-                            return
-                                {exe = "shfmt", args = {"-i", 2}, stdin = true}
-                        end
-                    },
-                    lua = {
-                        function()
-                            return {
-                                exe = "luafmt",
-                                args = {"--indent-count", 2, "--stdin"},
-                                stdin = true
-                            }
-                        end
-                    },
-                    nix = {
-                        function()
-                            return {exe = "alejandra", stdin = true}
-                        end
-                    }
-                }
-            })
-
-            -- https://github.com/mhartington/formatter.nvim#format-on-save
-            vim.api.nvim_exec([[
-			augroup FormatAutogroup
-			  autocmd!
-			  autocmd BufWritePost * FormatWrite
-			augroup END
-			]], true)
         end
     }, {
         "nvim-telescope/telescope.nvim",
@@ -522,7 +470,7 @@ require("lazy").setup({
             -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             local servers = {
                 "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint",
-                "rnix", "sumneko_lua"
+                "rnix"
             }
             -- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
             local function get_forced_lsp_capabilities()
@@ -559,8 +507,8 @@ require("lazy").setup({
                 -- lspconfig[lsp].setup {capabilities = capabilities}
             end
 
-            lspconfig['gopls'].setup {
-                cmd = {'gopls'},
+            lspconfig["gopls"].setup {
+                cmd = {"gopls"},
                 on_attach = on_attach,
                 capabilities = capabilities,
                 settings = {
@@ -576,63 +524,63 @@ require("lazy").setup({
     }, {
         "folke/trouble.nvim",
         config = function()
-            require("trouble").setup(
-                { -- settings without a patched font or icons
-                    icons = false,
-                    fold_open = "v", -- icon used for open folds
-                    fold_closed = ">", -- icon used for closed folds
-                    position = "bottom", -- position of the list can be: bottom, top, left, right
-                    height = 5, -- height of the trouble list when position is top or bottom
-                    width = 50, -- width of the list when position is left or right
-                    group = true, -- group results by file
-                    padding = true, -- add an extra new line on top of the list
-                    indent_lines = true, -- add an indent guide below the fold icons
-                    auto_open = true, -- automatically open the list when you have diagnostics
-                    auto_close = true, -- automatically close the list when you have no diagnostics
-                    auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
-                    auto_fold = false, -- automatically fold a file trouble list at creation
-                    auto_jump = {"lsp_definitions"}, -- for the given modes, automatically jump if there is only a single result
-                    signs = {
-                        -- icons / text used for a diagnostic
-                        error = "ERR",
-                        warning = "WARN",
-                        hint = "HINT",
-                        information = "INFO"
-                    },
-                    mode = "document_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
-                    action_keys = {
-                        -- key mappings for actions in the trouble list
-                        -- map to {} to remove a mapping, for example:
-                        -- close = {},
-                        close = "q", -- close the list
-                        cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
-                        refresh = "r", -- manually refresh
-                        jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
-                        open_split = {"<c-x>"}, -- open buffer in new split
-                        open_vsplit = {"<c-v>"}, -- open buffer in new vsplit
-                        open_tab = {"<c-t>"}, -- open buffer in new tab
-                        jump_close = {"o"}, -- jump to the diagnostic and close the list
-                        toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
-                        toggle_preview = "P", -- toggle auto_preview
-                        hover = "K", -- opens a small popup with the full multiline message
-                        preview = "p", -- preview the diagnostic location
-                        close_folds = {"zM", "zm"}, -- close all folds
-                        open_folds = {"zR", "zr"}, -- open all folds
-                        toggle_fold = {"zA", "za"}, -- toggle fold of current file
-                        previous = "k", -- previous item
-                        next = "j" -- next item
-                    },
-                    use_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
-                })
+            require("trouble").setup({
+                -- settings without a patched font or icons
+                icons = false,
+                fold_open = "v", -- icon used for open folds
+                fold_closed = ">", -- icon used for closed folds
+                position = "bottom", -- position of the list can be: bottom, top, left, right
+                height = 5, -- height of the trouble list when position is top or bottom
+                width = 50, -- width of the list when position is left or right
+                group = true, -- group results by file
+                padding = true, -- add an extra new line on top of the list
+                indent_lines = true, -- add an indent guide below the fold icons
+                auto_open = true, -- automatically open the list when you have diagnostics
+                auto_close = true, -- automatically close the list when you have no diagnostics
+                auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+                auto_fold = false, -- automatically fold a file trouble list at creation
+                auto_jump = {"lsp_definitions"}, -- for the given modes, automatically jump if there is only a single result
+                signs = {
+                    -- icons / text used for a diagnostic
+                    error = "ERR",
+                    warning = "WARN",
+                    hint = "HINT",
+                    information = "INFO"
+                },
+                mode = "document_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
+                action_keys = {
+                    -- key mappings for actions in the trouble list
+                    -- map to {} to remove a mapping, for example:
+                    -- close = {},
+                    close = "q", -- close the list
+                    cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
+                    refresh = "r", -- manually refresh
+                    jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
+                    open_split = {"<c-x>"}, -- open buffer in new split
+                    open_vsplit = {"<c-v>"}, -- open buffer in new vsplit
+                    open_tab = {"<c-t>"}, -- open buffer in new tab
+                    jump_close = {"o"}, -- jump to the diagnostic and close the list
+                    toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
+                    toggle_preview = "P", -- toggle auto_preview
+                    hover = "K", -- opens a small popup with the full multiline message
+                    preview = "p", -- preview the diagnostic location
+                    close_folds = {"zM", "zm"}, -- close all folds
+                    open_folds = {"zR", "zr"}, -- open all folds
+                    toggle_fold = {"zA", "za"}, -- toggle fold of current file
+                    previous = "k", -- previous item
+                    next = "j" -- next item
+                },
+                use_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
+            })
         end
     }, {
         "jose-elias-alvarez/null-ls.nvim",
         config = function()
             local null_ls = require("null-ls")
 
+            local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             null_ls.setup({
-                -- format on save
-                -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
+                -- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
                 on_attach = function(client, bufnr)
                     if client.supports_method("textDocument/formatting") then
                         vim.api.nvim_clear_autocmds({
@@ -643,9 +591,13 @@ require("lazy").setup({
                             group = augroup,
                             buffer = bufnr,
                             callback = function()
-                                -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                                vim.lsp.buf.formatting_seq_sync(nil, 1000,
-                                                                {"null-ls"})
+                                -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#choosing-a-client-for-formatting
+                                vim.lsp.buf.format({
+                                    bufnr = bufnr,
+                                    filter = function(client)
+                                        return client.name == "null-ls"
+                                    end
+                                })
                             end
                         })
                     end

@@ -44,11 +44,12 @@ in
         nodePackages.dockerfile-language-server-nodejs
         nodePackages.fixjson
         nodePackages.jsonlint
+        nodePackages.lua-fmt
         nodePackages.markdownlint-cli
         nodePackages.yaml-language-server
         nodejs
         pinentry-curses
-        python39Packages.grip
+        python310Packages.grip
         python3Full
         ripgrep
         rnix-lsp
@@ -57,7 +58,7 @@ in
         starship
         statix
         subnetcalc
-        sumneko-lua-language-server
+        tfswitch
         tmux
         tree
         trivy
