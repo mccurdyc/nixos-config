@@ -14,6 +14,10 @@ in
         source = ../nvim/lua;
         recursive = true;
       };
+      "pip/pip.conf".text = ''
+        [global]
+        target=/home/mccurdyc/site-packages/
+      '';
     };
   };
 }
