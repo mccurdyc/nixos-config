@@ -8,6 +8,12 @@ These are notes on things that I always forget how to do.
 sudo nixos-rebuild switch --flake '.#fgnix'
 ```
 
+## Making ZSH / shell changes
+
+You need to fully reload the shell i.e., kill tmux (shouldn't need to), not just close and open a new tmux pane.
+
+TODO - look into this. Stop being lazy and putting up with this crap.
+
 ## Install a Nvim plugin via Lazy
 
 NixOS is a read-only filesystem, so I've overriden my `lazy-lock.json` path to
