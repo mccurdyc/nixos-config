@@ -93,7 +93,14 @@
   security.sudo.wheelNeedsPassword = false;
 
   # Virtualization settings
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+      flags = [ "--all" ];
+    };
+  };
 
   networking = {
     firewall = {
