@@ -127,43 +127,15 @@ require("lazy").setup({
 	      },
 	    },
 	    ]] , {
-        "fatih/vim-go",
-        ft = "go",
-        config = function()
-            local opt = opt
-            local autocmd = autocmd
-            local g = vim.g
-
-            autocmd("lang_go_aucmds", {[[Filetype go set nolist]]}, true)
-
-            -- Plugin: https://github.com/fatih/vim-go
-            -- No gofmt on save. Use ALE.
-            g.go_fmt_autosave = 0
-            g.go_autodetect_gopath = 1
-            g.go_snippet_engine = ""
-
-            -- Use the LSP
-            g.go_auto_type_info = 0
-            g.go_def_mapping_enabled = 0
-            g.go_code_completion_enabled = 0
-            g.go_doc_keywordprg_enabled = 0
-            g.go_echo_go_info = 0
-            g.go_fmt_fail_silently = 0
-            g.go_list_type = "quickfix"
-            g.go_test_show_name = 1
-            g.go_list_autoclose = 0
-
-            -- https://github.com/neoclide/coc.nvim/issues/472#issuecomment-475848284
-            g.go_template_autocreate = 0
-            g.go_decls_mode = "fzf"
-            g.go_term_enabled = 1
-            g.go_term_height = 20
-            g.go_term_mode = "split"
-
-            -- Plugin: https://github.com/sebdah/vim-delve
-            -- Open Delve with a horizontal split rather than a vertical split.
-            g.delve_new_command = "new"
-        end
+        "ray-x/go.nvim",
+        dependencies = { -- optional packages
+            "ray-x/guihua.lua", "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter"
+        },
+        config = function() require("go").setup() end,
+        event = {"CmdlineEnter"},
+        ft = {"go", 'gomod'},
+        build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
     }, {"rust-lang/rust.vim", ft = "rs"}, "kyazdani42/nvim-web-devicons", {
         "kyazdani42/nvim-tree.lua",
         config = function()
@@ -336,6 +308,81 @@ require("lazy").setup({
                             "--bind", "ctrl-o:toggle-all", "--prompt", "> "
                         }
                     }
+                }
+            })
+        end
+    }, {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+            require("dapui").setup({
+                icons = {expanded = "▾", collapsed = "▸"},
+                mappings = {
+                    -- Use a table to apply multiple mappings
+                    expand = {"<CR>"},
+                    open = "o",
+                    remove = "d",
+                    edit = "e",
+                    repl = "r",
+                    toggle = "t"
+                },
+                expand_lines = false,
+                -- Layouts define sections of the screen to place windows.
+                -- The position can be "left", "right", "top" or "bottom".
+                -- The size specifies the height/width depending on position. It can be an Int
+                -- or a Float. Integer specifies height/width directly (i.e. 20 lines/columns) while
+                -- Float value specifies percentage (i.e. 0.3 - 30% of available lines/columns)
+                -- Elements are the elements shown in the layout (in order).
+                -- Layouts are opened in order so that earlier layouts take priority in window sizing.
+                layouts = {
+                    {
+                        elements = {
+                            -- Elements can be strings or table with id and size keys.
+                            {id = "scopes", size = 0.8}, "breakpoints",
+                            "stacks", "repl"
+                        },
+                        size = 50,
+                        position = "left"
+                    }, {
+                        elements = {"console"},
+                        size = 0.25, -- 25% of total lines
+                        position = "bottom"
+                    }
+                },
+                floating = {
+                    max_height = 0.8, -- These can be integers or a float between 0 and 1.
+                    max_width = 0.8, -- Floats will be treated as percentage of your screen.
+                    border = "single", -- Border style. Can be "single", "double" or "rounded"
+                    mappings = {close = {"q", "<Esc>"}}
+                },
+                windows = {indent = 1},
+                render = {
+                    max_type_length = nil -- Can be integer or nil.
+                }
+            })
+        end
+    }, {"mfussenegger/nvim-dap"}, {
+        "leoluz/nvim-dap-go",
+        config = function()
+            require("dap-go").setup({
+                -- https://github.com/leoluz/nvim-dap-go#configuring
+                dap_configurations = {
+                    {
+                        -- Must be "go" or it will be ignored by the plugin
+                        type = "go",
+                        name = "Attach remote",
+                        mode = "remote",
+                        request = "attach"
+                    }
+                },
+                -- delve configurations
+                delve = {
+                    -- time to wait for delve to initialize the debug session.
+                    -- default to 20 seconds
+                    initialize_timeout_sec = 20,
+                    -- a string that defines the port to start delve debugger.
+                    -- default to string "${port}" which instructs nvim-dap
+                    -- to start the process in a random available port
+                    port = "${port}"
                 }
             })
         end
@@ -618,16 +665,17 @@ require("lazy").setup({
                     -- null_ls.builtins.formatting.cbfmt,
                     null_ls.builtins.formatting.fixjson,
                     null_ls.builtins.formatting.gofumpt,
-                    -- null_ls.builtins.formatting.goimports,
-                    -- null_ls.builtins.formatting.goimports_reviser,
+                    null_ls.builtins.formatting.goimports,
+                    null_ls.builtins.formatting.goimports_reviser,
                     null_ls.builtins.formatting.jq,
                     null_ls.builtins.formatting.lua_format,
                     null_ls.builtins.formatting.markdownlint,
                     -- null_ls.builtins.formatting.alejandra,
                     null_ls.builtins.formatting.nixpkgs_fmt,
                     null_ls.builtins.formatting.rustfmt,
-                    null_ls.builtins.formatting.shfmt,
-                    -- null_ls.builtins.formatting.terraform_fmt,
+                    null_ls.builtins.formatting.shfmt
+                        .with({extra_args = {"-i", "4", "-ci"}}),
+                    null_ls.builtins.formatting.terraform_fmt,
                     null_ls.builtins.formatting.yamlfmt
                 }
             })
@@ -695,7 +743,11 @@ require("lazy").setup({
                     ["n <leader>hU"] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
                     -- Text objects
                     ["o ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-                    ["x ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+                    ["x ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+
+                    -- TODO - WRONG PLACE
+                    -- dap-go - https://github.com/leoluz/nvim-dap-go#mappings
+                    ["n <leader>td"] = '<cmd>lua require"dap-go".debug_test()<CR>'
                 },
                 watch_gitdir = {interval = 1000, follow_files = true},
                 attach_to_untracked = true,
@@ -852,4 +904,5 @@ require("lazy").setup({
             }
         end
     }
-}, {lockfile = "/home/mccurdyc/lazy-lock.json"})
+}, -- This is because nixos is a read-only filesystem
+{lockfile = "/home/mccurdyc/lazy-lock.json"})
