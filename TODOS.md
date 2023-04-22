@@ -1,3 +1,14 @@
+# ZSH / shell
+
+## reloading
+
+You need to fully reload the shell i.e., kill tmux (shouldn't need to), not just close and open a new tmux pane.
+TODO - look into this. Stop being lazy and putting up with this crap.
+
+- <https://unix.stackexchange.com/a/320496>
+
+## why does tmux launch with 0,1 windows?
+
 # vim
 
 ## lazy.nvim
@@ -14,3 +25,4 @@
 - <https://github.com/Integralist/nvim/blob/main/lua/plugins/null-ls.lua#L28>
 - <https://github.com/Integralist/nvim/blob/main/lua/plugins/lsp.lua#L65-L74>
 - read through more of <https://github.com/ray-x/go.nvim> readme
+- run :GoTest async (not on save)
