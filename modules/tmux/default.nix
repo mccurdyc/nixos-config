@@ -17,7 +17,7 @@ in
       keyMode = "vi";
       customPaneNavigationAndResize = true;
       shortcut = "a";
-      terminal = "xterm-256color";
+      terminal = "screen-256color";
       escapeTime = 1;
       plugins = [
         pkgs.tmuxPlugins.resurrect
@@ -32,15 +32,20 @@ in
 
         # Undercurl
         # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
-        set -g default-terminal "xterm-256color"
+        set -g default-terminal "screen-256color"
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
         set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+
+        # https://unix.stackexchange.com/a/320496
+        # necessary to reload shell config changes
+        set -g default-shell "/usr/bin/zsh"
 
         # This tmux statusbar config was created by tmuxline.vim
         # on Tue, 24 Dec 2019
 
         set -g status-justify "left"
         set -g status "on"
+        set -s set-clipboard on
         set -g status-left-style "none"
         set -g message-command-style "fg=colour7,bg=colour19"
         set -g status-right-style "none"
@@ -57,6 +62,8 @@ in
         set -g status-right "#[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]#[fg=colour8,bg=colour19] %Y-%m-%d | %H:%M #[fg=colour8,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour18,bg=colour8] #h "
         setw -g window-status-format "#[fg=colour15,bg=colour18] #I |#[fg=colour15,bg=colour18] #W "
         setw -g window-status-current-format "#[fg=colour18,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour19] #I |#[fg=colour7,bg=colour19] #W #[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]"
+
+        set-option -g mouse on
 
         # COLOUR (base16)
         # https://github.com/mattdavis90/base16-tmux/blob/master/colors/base16-eighties.conf
