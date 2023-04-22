@@ -21,6 +21,7 @@ in
         alejandra
         bat
         cachix
+        cargo
         dig
         docker
         docker-compose
@@ -30,15 +31,18 @@ in
         gh
         git-crypt
         gitui
+        gnumake
         go
         gofumpt
         google-cloud-sdk
         gopls
+        gron
         hadolint
         htop
         jq
         lua53Packages.luacheck
         luaformatter
+        nix-tree
         nixpkgs-fmt
         nodePackages.bash-language-server
         nodePackages.dockerfile-language-server-nodejs
@@ -49,7 +53,9 @@ in
         nodePackages.yaml-language-server
         nodejs
         pinentry-curses
+        poetry
         python310Packages.grip
+        python310Packages.pip
         python3Full
         ripgrep
         rnix-lsp
@@ -58,12 +64,15 @@ in
         starship
         statix
         subnetcalc
+        terraform
         tfswitch
         tmux
         tree
         trivy
+        unzip
         vale
         watch
+        wdiff
         yamllint
       ]
       ++ cfg.additional-packages;
