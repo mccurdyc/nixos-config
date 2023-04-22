@@ -11,8 +11,17 @@ in
   config = mkIf cfg.enable {
     # force it to create the directory
     home.file."src/github.com/mccurdyc".text = "";
+    home.file.".vale.ini".text = ''
+      StylesPath = styles
+      Vocab = Blog
+
+      [*.md]
+      BasedOnStyles = Vale, write-good
+    '';
     home.sessionPath = [
       "$HOME/go/bin"
+      # gem env gemdir
+      "$HOME/.local/share/gem/ruby/3.1.0/bin"
     ];
   };
 }
