@@ -16,7 +16,6 @@ in
       enableAutosuggestions = true;
       enableSyntaxHighlighting = true;
       shellAliases = {
-        diff = "diff -u";
         tree = "tree --dirsfirst --noreport -ACF";
         grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
         tl = "tmux list-sessions";
@@ -54,6 +53,8 @@ in
         export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude vendor --exclude .git'
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
         export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+        export FASTLY_CHEF_USERNAME="cmccurdy"
       '';
       sessionVariables = { };
       loginExtra = "";
