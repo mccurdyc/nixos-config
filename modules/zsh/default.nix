@@ -20,7 +20,7 @@ in
         grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
         tl = "tmux list-sessions";
         ta = "tmux attach -t ";
-        tn = "(){ tmux new-session -s $1 -c $(zshz -e $1) \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
+        tn = "(){ tmux new-session -s $1 -c \"$(zshz -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
         dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
         tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
         whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
