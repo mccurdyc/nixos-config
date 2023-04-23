@@ -11,7 +11,7 @@ in
   config = mkIf cfg.enable {
     programs.tmux = {
       enable = true;
-      baseIndex = 1;
+      baseIndex = 0;
       clock24 = true;
       newSession = true;
       keyMode = "vi";
@@ -38,7 +38,7 @@ in
 
         # https://unix.stackexchange.com/a/320496
         # necessary to reload shell config changes
-        set -g default-shell "/usr/bin/zsh"
+        set -g default-shell "${pkgs.zsh}/bin/zsh"
 
         # This tmux statusbar config was created by tmuxline.vim
         # on Tue, 24 Dec 2019
