@@ -22,6 +22,8 @@ in
       "$HOME/go/bin"
       # gem env gemdir
       "$HOME/.local/share/gem/ruby/3.1.0/bin"
+      # python -m ensurepip --default-pip
+      "$HOME/.local/bin"
     ];
   };
 }

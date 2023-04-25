@@ -15,7 +15,7 @@
     ./ssh
     ./tmux
     ./gpg
-    # ./direnv
+    ./direnv
 
     # system
     ./home

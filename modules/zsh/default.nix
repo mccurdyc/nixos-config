@@ -24,6 +24,8 @@ in
         dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
         tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
         whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
+        # pip = "${pkgs.python310Packages.pip}/bin/pip";
+        # pip3 = "${pkgs.python310Packages.pip}/bin/pip3";
         ghpr = "(){ gh pr create --fill --draft $@ ;}";
         gitc = "nvim -c Neogit";
         gits = "git status";

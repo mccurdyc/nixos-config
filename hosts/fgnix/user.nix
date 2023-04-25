@@ -17,6 +17,7 @@
     gpg.enable = true;
     tmux.enable = true;
     home.enable = true;
+    direnv.enable = true;
 
     # system
     xdg.enable = true;

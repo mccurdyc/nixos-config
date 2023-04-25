@@ -55,7 +55,7 @@ in
         pinentry-curses
         poetry
         python310Packages.grip
-        python310Packages.pip
+        # python310Packages.pip - use "python -m ensurepip --default-pip"
         python3Full
         ripgrep
         rnix-lsp

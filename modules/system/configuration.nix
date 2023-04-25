@@ -9,11 +9,9 @@
   services.xserver.desktopManager.xterm.enable = false;
   programs.zsh.enable = true;
   environment.systemPackages = with pkgs; [
-    direnv
     git
     keychain
     mosh
-    nix-direnv
     vim
     wget
     zsh
