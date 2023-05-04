@@ -33,13 +33,40 @@ in
         kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       };
       history = {
-        size = 10000;
-        save = 10000;
+        size = 2000;
+        save = 2000;
         ignoreDups = true;
         ignoreSpace = true;
+        # - https://zsh.sourceforge.io/Doc/Release/Options.html#History
+        # 'share' basically enables 'extended' automatically.
+        share = true;
+        extended = true;
+        # https://askubuntu.com/questions/999923/syntax-in-history-ignore
         ignorePatterns = [
-          "rm *"
-          "pkill *"
+          ":w"
+          "cd#( *)#"
+          "cp#( *)#*"
+          "fg"
+          "git add#( *)#*"
+          "git checkout#( *)#*"
+          "git clone#( *)#*"
+          "git commit#( *)#*"
+          "git diff#( *)#*"
+          "git ll"
+          "git log"
+          "git pull#( *)#+"
+          "git push#( *)#"
+          "git show#( *)#"
+          "gits"
+          "kill#( *)#"
+          "l[sa]#( *)#"
+          "mv #( *)#"
+          "nvim#( *)#"
+          "pkill#( *)#"
+          "rm#( *)#"
+          "tn#( *)#"
+          "tn#( *)#"
+          "z#( *)#"
         ];
       };
       profileExtra = "";
@@ -66,14 +93,12 @@ in
         zstyle ':completion:*' menu select
       '';
       initExtra = ''
-        setopt HIST_IGNORE_ALL_DUPS
-        setopt HIST_FIND_NO_DUPS
-        setopt HIST_IGNORE_SPACE
         setopt clobber
         setopt extendedglob
-        setopt inc_append_history
         setopt interactive_comments
         setopt nobeep
+        setopt HIST_IGNORE_ALL_DUPS
+        setopt HIST_REDUCE_BLANKS
 
         eval "$(direnv hook zsh)"
         eval "$(starship init zsh)"
