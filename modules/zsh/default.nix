@@ -114,6 +114,8 @@ in
       '';
     };
 
+    xdg.configFile."zsh/.zsh_history.default".source = ./.zsh_history.default;
+
     programs.starship = {
       enable = true;
       settings = {
