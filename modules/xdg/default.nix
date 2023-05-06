@@ -10,10 +10,6 @@ in
   options.modules.xdg = { enable = mkEnableOption "xdg"; };
   config = mkIf cfg.enable {
     xdg.configFile = {
-      nvim = {
-        source = ../nvim/lua;
-        recursive = true;
-      };
       "pip/pip.conf".text = ''
         [global]
         target=/home/mccurdyc/site-packages/

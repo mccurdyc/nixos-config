@@ -100,6 +100,7 @@ map("n", "<leader>gd",
     ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
     opts)
 
+-- $HOME/.local/share/nvim/lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     -- bootstrap lazy.nvim
@@ -904,5 +905,4 @@ require("lazy").setup({
             }
         end
     }
-}, -- This is because nixos is a read-only filesystem
-{lockfile = "/home/mccurdyc/lazy-lock.json"})
+})

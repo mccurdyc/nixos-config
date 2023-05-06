@@ -36,4 +36,25 @@ opt("showmode", false)
 opt("foldminlines", 5)
 opt("foldmethod", "indent")
 
-require("lualine").setup()
+-- $HOME/.local/share/nvim/lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    -- bootstrap lazy.nvim
+    -- stylua: ignore
+    vim.fn.system({
+        "git", "clone", "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath
+    })
+end
+vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+
+require("lazy").setup(
+{
+        url = "git@github.com:mccurdyc/base16-vim",
+        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
+        config = function()
+            vim.cmd([[colorscheme base16-eighties-minimal]])
+        end
+}
+    )
