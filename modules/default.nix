@@ -5,21 +5,14 @@
 }: {
   home.stateVersion = "22.11";
   imports = [
-    # gui
-    # ./firefox
-
-    # cli
-    ./nvim
-    ./zsh
+    ./direnv
     ./git
+    ./gpg
+    ./home
+    ./nvim
+    ./packages
     ./ssh
     ./tmux
-    ./gpg
-    ./direnv
-
-    # system
-    ./home
-    ./xdg
-    ./packages
+    ./zsh
   ];
 }
