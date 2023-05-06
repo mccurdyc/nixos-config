@@ -19,6 +19,7 @@ in
     '';
     home.sessionPath = [
       "$HOME/go/bin"
+      "$HOME/.cargo/bin"
       # gem env gemdir
       "$HOME/.local/share/gem/ruby/3.1.0/bin"
       # python -m ensurepip --default-pip
