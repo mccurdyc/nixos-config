@@ -10,7 +10,6 @@ in
   options.modules.home = { enable = mkEnableOption "home"; };
   config = mkIf cfg.enable {
     # force it to create the directory
-    home.file."src/github.com/mccurdyc/.keep".text = "";
     home.file.".vale.ini".text = ''
       StylesPath = styles
       Vocab = Blog
