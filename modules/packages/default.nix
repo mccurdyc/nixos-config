@@ -30,6 +30,7 @@ in
         gcc
         gh
         git-crypt
+        git-workspace
         gitui
         gnumake
         go

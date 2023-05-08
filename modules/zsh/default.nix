@@ -84,6 +84,7 @@ in
         export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
         export FASTLY_CHEF_USERNAME="cmccurdy"
+        export GITHUB_TOKEN="$(gh auth token)"
       '';
       sessionVariables = { };
       loginExtra = "";
