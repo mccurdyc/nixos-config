@@ -3,3 +3,4 @@
 : 0000000000:0;date +%s
 : 0000000000:0;docker system prune --all --force
 : 0000000000:0;sudo du / -cha --max-depth=1 --exclude=/{proc,mnt} | sort -h
+: 0000000000:0;op item get 'github token' --fields label=password | gh auth login --with-token
