@@ -184,59 +184,42 @@ in
 
         aws = {
           symbol = "aws:";
-          format = "[($profile )(\\\($region\\\) )(\\\[$duration\\\] )]($style)";
+          format = "[($profile)(\\\($region\\\))]($style)";
           style = "bold #ffe500";
         };
-
         gcloud = {
           symbol = "gcp:";
           format = "[(\\\($project\\\))]($style)";
           style = "bold #005aff";
         };
-
-        memory_usage = {
-          symbol = "mem:";
-          format = "|[$symbol($version )]($style)";
-        };
-        docker_context = {
-          symbol = "docker:";
-          format = "|[$symbol($version )]($style)";
-        };
         golang = {
           symbol = "go:";
-          format = "|[$symbol($version )]($style)";
+          format = "[$symbol($version)]($style)";
         };
         lua = {
           symbol = "lua:";
-          format = "|[$symbol($version )]($style)";
+          format = "[$symbol($version)]($style)";
         };
         nix_shell = {
-          symbol = "nix:";
-          format = "|[$symbol($version )]($style)";
-        };
-        nodejs = {
-          symbol = "nodejs:";
-          format = "|[$symbol($version )]($style)";
-        };
-        package = {
-          symbol = "pkg:";
-          format = "|[$symbol($version )]($style)";
+          symbol = "nix-shell";
+          format = "[$symbol]($style)";
         };
         python = {
           symbol = "py:";
-          format = "|[$symbol($version )]($style)";
+          format = "[$symbol($version)]($style)";
         };
         ruby = {
           symbol = "rb:";
-          format = "|[$symbol($version )]($style)";
+          format = "[$symbol($version)]($style)";
         };
         rust = {
           symbol = "rs:";
-          format = "|[$symbol($version )]($style)";
+          style = "bold #cf4910";
+          format = "[$symbol($version)]($style)";
         };
         terraform = {
           symbol = "tf:";
-          format = "|[$symbol($version )]($style)";
+          format = "[$symbol($version)]($style)";
         };
         sudo.symbol = "sudo:";
         cmd_duration = {
