@@ -9,11 +9,11 @@ in
 {
   options.modules.home = { enable = mkEnableOption "home"; };
   config = mkIf cfg.enable {
-    # force it to create the directory
+    # Need to run `vale sync` to install styles.
     home.file.".vale.ini".text = ''
-      StylesPath = styles
-      Vocab = Blog
-
+      StylesPath = .config/vale
+      MinAlertLevel = suggestion
+      Packages = write-good
       [*.md]
       BasedOnStyles = Vale, write-good
     '';
