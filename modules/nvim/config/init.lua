@@ -659,8 +659,11 @@ require("lazy").setup({
                     -- null_ls.builtins.diagnostics.shellcheck,
                     -- null_ls.builtins.diagnostics.staticcheck,
                     null_ls.builtins.diagnostics.statix,
-                    null_ls.builtins.diagnostics.vale,
-                    null_ls.builtins.diagnostics.yamllint,
+                    null_ls.builtins.diagnostics.vale.with({
+                        extra_args = {
+                            "--config", vim.fn.stdpath("config") .. "/.vale.ini"
+                        }
+                    }), null_ls.builtins.diagnostics.yamllint,
                     -- null_ls.builtins.formatting.beautysh,
                     -- null_ls.builtins.formatting.buf,
                     -- null_ls.builtins.formatting.cbfmt,
