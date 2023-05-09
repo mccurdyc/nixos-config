@@ -60,9 +60,6 @@ in
         python3Full
         ripgrep
         rnix-lsp
-        rust-analyzer
-        rustc
-        rustfmt
         shfmt
         starship
         statix
