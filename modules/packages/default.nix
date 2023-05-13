@@ -58,6 +58,7 @@ in
         python310Packages.grip
         # python310Packages.pip - use "python -m ensurepip --default-pip"
         python3Full
+        qrencode
         ripgrep
         rnix-lsp
         shfmt
