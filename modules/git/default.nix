@@ -78,6 +78,13 @@ in
           minus-style = ''red bold "#ffcccc"'';
         };
       };
+      ignores = [
+        ".devenv"
+        ".direnv"
+        ".envrc"
+        "flake.lock"
+        "flake.nix"
+      ];
     };
 
     programs.gitui = {
