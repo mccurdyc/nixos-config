@@ -66,8 +66,6 @@
   };
 
   environment.variables = {
-    NIXOS_CONFIG = "$HOME/.config/nixos/configuration.nix";
-    NIXOS_CONFIG_DIR = "$HOME/.config/nixos/";
     EDITOR = "nvim";
     # DOCKER_DEFAULT_PLATFORM needs to be set based on system.
   };

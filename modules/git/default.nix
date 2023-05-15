@@ -20,7 +20,7 @@ in
       extraConfig = {
         init = { defaultBranch = "main"; };
         core = {
-          excludesfile = "$NIXOS_CONFIG_DIR/scripts/gitignore";
+          excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
         };
         url = {
           # https://gist.github.com/StevenACoffman/866b06ed943394fbacb60a45db5982f2#how-to-go-get-private-repos-using-ssh-key-auth-instead-of-password-auth
@@ -84,6 +84,7 @@ in
         ".envrc"
         "flake.lock"
         "flake.nix"
+        "build_"
       ];
     };
 
