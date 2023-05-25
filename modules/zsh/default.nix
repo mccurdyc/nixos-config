@@ -24,13 +24,14 @@ in
         dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
         tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
         whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
+        curls = ''curl -o /dev/null -s -w "%{ http_code }\n"'';
         # pip = "${pkgs.python310Packages.pip}/bin/pip";
         # pip3 = "${pkgs.python310Packages.pip}/bin/pip3";
         ghpr = "(){ gh pr create --fill --draft $@ ;}";
         gitc = "nvim -c Neogit";
         gits = "git status";
         gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
-        kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
+        kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       };
       history = {
         size = 2000;
