@@ -24,3 +24,5 @@ wg-quick up wg0
 : 0000000000:0;kubie ctx
 : 0000000000:0;kubie ns default
 : 0000000000:0;shred -uzv foo
+: 0000000000:0;openssl x509 -text -noout -in cert.pem
+: 0000000000:0;openssl s_client -connect <host> </dev/null 2>/dev/null | openssl x509 -noout -dates
