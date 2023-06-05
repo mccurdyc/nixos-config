@@ -678,8 +678,8 @@ require("lazy").setup({
                     null_ls.builtins.formatting.rustfmt,
                     null_ls.builtins.formatting.shfmt
                         .with({extra_args = {"-i", "4", "-ci"}}),
-                    null_ls.builtins.formatting.terraform_fmt,
-                    null_ls.builtins.formatting.yamlfmt
+                    null_ls.builtins.formatting.terraform_fmt
+                    -- null_ls.builtins.formatting.yamlfmt
                 }
             })
         end

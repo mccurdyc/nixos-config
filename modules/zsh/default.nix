@@ -32,6 +32,7 @@ in
         gits = "git status";
         gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
         kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
+        k = "kubectl";
       };
       history = {
         size = 2000;
