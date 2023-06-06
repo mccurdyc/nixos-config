@@ -53,6 +53,7 @@ in
         nodePackages.markdownlint-cli
         nodePackages.yaml-language-server
         nodejs
+        openssl
         pinentry-curses
         poetry
         python310Packages.grip
