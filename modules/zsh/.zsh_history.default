@@ -29,3 +29,6 @@ wg-quick up wg0
 : 0000000000:0;openssl x509 -text -noout -in cert.pem
 : 0000000000:0;openssl s_client -connect <host> </dev/null 2>/dev/null | openssl x509 -noout -dates
 : 0000000000:0;git commit --allow-empty -m "Retrigger CI"
+: 0000000000:0;nvim -c :NvimTreeToggle
+: 0000000000:0;kubectl run debug --image=nixos/nix:2.16.1 --restart=Never -- sleep Inf
+: 0000000000:0;kubectl exec -it debug -c debug -- /bin/sh
