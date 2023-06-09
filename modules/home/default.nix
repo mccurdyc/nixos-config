@@ -18,5 +18,7 @@ in
       # python -m ensurepip --default-pip
       "$HOME/.local/bin"
     ];
+
+    xdg.configFile."yamllint.config".source = ../../static/yamllint/config;
   };
 }
