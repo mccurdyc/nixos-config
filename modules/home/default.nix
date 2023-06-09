@@ -19,6 +19,6 @@ in
       "$HOME/.local/bin"
     ];
 
-    xdg.configFile."yamllint.config".source = ../../static/yamllint/config;
+    xdg.configFile."yamllint/config".source = ../../static/yamllint/config;
   };
 }
