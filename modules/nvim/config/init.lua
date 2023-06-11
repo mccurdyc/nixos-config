@@ -276,8 +276,12 @@ require("lazy").setup({
         end
     }, {
         "L3MON4D3/LuaSnip",
+        dependencies = {"honza/vim-snippets"},
         config = function()
             local luasnip = require "luasnip"
+            require("luasnip.loaders.from_snipmate").lazy_load({
+                paths = vim.fn.stdpath("data") .. "/lazy/vim-snippets/snippets"
+            })
             -- Snippets
             -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/luasnip.lua#L271-L285
             -- <c-j> is my expansion key
