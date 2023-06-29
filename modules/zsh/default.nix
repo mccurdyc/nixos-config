@@ -120,6 +120,12 @@ in
         source ${pkgs.fzf}/share/fzf/key-bindings.zsh
 
         eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
+
+        # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
+        autoload bashcompinit && bashcompinit
+        autoload -Uz compinit && compinit
+
+        complete -C '/etc/profiles/per-user/mccurdyc/bin/aws_completer' aws
       '';
     };
 
