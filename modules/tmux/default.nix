@@ -95,6 +95,11 @@ in
 
         # bell
         set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
+
+        # copy-paste Mac -> ssh -> tmux -> vim
+        # https://github.com/kovidgoyal/kitty/issues/1807
+        # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
+        set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
       '';
     };
   };
