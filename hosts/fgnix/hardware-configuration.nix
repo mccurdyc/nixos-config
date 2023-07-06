@@ -69,8 +69,10 @@ with lib;
   # Allow root logins only using SSH keys
   # and disable password authentication in general
   services.openssh.enable = true;
-  services.openssh.permitRootLogin = "prohibit-password";
-  services.openssh.passwordAuthentication = mkDefault false;
+  services.openssh.settings = {
+    PermitRootLogin = "prohibit-password";
+    PasswordAuthentication = mkDefault false;
+  };
 
   services.tailscale.enable = true;
 
@@ -143,5 +145,5 @@ with lib;
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 }

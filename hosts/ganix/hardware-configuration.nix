@@ -52,8 +52,10 @@ with lib;
 
   # At this point, we are past packer, so we can just rely on tailscale.
   services.openssh.enable = false;
-  services.openssh.permitRootLogin = "prohibit-password";
-  services.openssh.passwordAuthentication = mkDefault false;
+  services.openssh.settings = {
+    PermitRootLogin = "prohibit-password";
+    PasswordAuthentication = mkDefault false;
+  };
 
   services.tailscale.enable = true;
 
