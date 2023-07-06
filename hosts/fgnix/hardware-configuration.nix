@@ -4,6 +4,10 @@ with lib;
   # https://nixos.wiki/wiki/Flakes#NixOS
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # https://floxdev.com/docs/install-flox/
+  nix.settings.extra-trusted-substituters = [ "https://cache.floxdev.com" ];
+  nix.settings.extra-trusted-public-keys = [ "_FLOX_PUBLIC_KEYS()" ];
+
   # https://nixos.org/manual/nixos/stable/options.html
 
   imports = [
@@ -133,5 +137,11 @@ with lib;
     setup = false
   '';
 
-  system.stateVersion = "22.11";
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }

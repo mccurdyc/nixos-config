@@ -15,7 +15,7 @@
     vim
     wget
     zsh
-    unstable.tailscale
+    tailscale
   ];
 
   # Nix settings, auto cleanup and enable flakes
@@ -123,7 +123,7 @@
   # 2. setup some IP routes to route through the TUN
   services.tailscale = {
     enable = true;
-    package = pkgs.unstable.tailscale;
+    package = pkgs.tailscale;
   };
 
   # This value determines the NixOS release from which the default
