@@ -3,7 +3,7 @@
   # inputs: An attrset specifying the dependencies of the flake (described below).
   # https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html#flake-inputs
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
