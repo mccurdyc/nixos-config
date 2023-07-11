@@ -88,6 +88,7 @@ in
         export FASTLY_CHEF_USERNAME="cmccurdy"
 
         export GITHUB_TOKEN="$(gh auth token)"
+        export INFRA_SKIP_VERSION_CHECK=true
       '';
       sessionVariables = { };
       loginExtra = "";
