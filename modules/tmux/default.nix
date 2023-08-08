@@ -45,7 +45,24 @@ in
 
         set -g status-justify "left"
         set -g status "on"
-        set -s set-clipboard on
+
+        # copy-paste Mac -> kitty -> ssh -> tmux -> vim
+        # Cmd+c (copy), Cmd+v (paste)
+        # NOTE: if you make changes here, you should kill tmux (tmux kill-server)
+        # and restart after rebuilding nixos with the new tmux config.
+
+        # https://github.com/tmux/tmux/wiki/Clipboard/
+        set -s set-clipboard external
+
+        # https://github.com/tmux/tmux/wiki/Clipboard#terminal-support---kitty
+        # https://github.com/kovidgoyal/kitty/issues/1807
+        # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
+        # This must match the value of default-termainal and TERM.
+        # for tmux version (tmux -V) >3.2
+        set -as terminal-features ',screen-256color:clipboard'
+        # for tmux version (tmux -V) <3.2
+        # set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
+
         set -g status-left-style "none"
         set -g message-command-style "fg=colour7,bg=colour19"
         set -g status-right-style "none"
@@ -95,11 +112,6 @@ in
 
         # bell
         set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
-
-        # copy-paste Mac -> ssh -> tmux -> vim
-        # https://github.com/kovidgoyal/kitty/issues/1807
-        # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
-        set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
       '';
     };
   };
