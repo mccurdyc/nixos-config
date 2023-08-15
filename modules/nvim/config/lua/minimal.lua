@@ -33,7 +33,7 @@ opt("hlsearch", false)
 opt("splitbelow", true)
 opt("splitright", true)
 opt("showmode", false)
-opt("foldminlines", 5)
+opt("foldminlines", 1)
 opt("foldmethod", "indent")
 
 -- $HOME/.local/share/nvim/lazy
@@ -48,13 +48,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
-require("lazy").setup(
-{
-        url = "git@github.com:mccurdyc/base16-vim",
-        lazy = false, -- make sure we load this during startup if it is your main colorscheme
-        priority = 1000, -- make sure to load this before all the other start plugins
-        config = function()
-            vim.cmd([[colorscheme base16-eighties-minimal]])
-        end
-}
-    )
+require("lazy").setup({
+    url = "git@github.com:mccurdyc/base16-vim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function() vim.cmd([[colorscheme base16-eighties-minimal]]) end
+})

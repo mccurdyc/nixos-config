@@ -66,7 +66,7 @@ opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
 opt("showmode", false)
-opt("foldminlines", 5)
+opt("foldminlines", 1)
 opt("foldmethod", "indent")
 
 local map = vim.api.nvim_set_keymap
@@ -139,6 +139,7 @@ require("lazy").setup({
         build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
     }, {"rust-lang/rust.vim", ft = "rs"}, "kyazdani42/nvim-web-devicons", {
         "kyazdani42/nvim-tree.lua",
+        "sindrets/diffview.nvim",
         config = function()
             local g = vim.g
 
