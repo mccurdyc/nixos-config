@@ -17,7 +17,7 @@ in
       keyMode = "vi";
       customPaneNavigationAndResize = true;
       shortcut = "a";
-      terminal = "screen-256color";
+      terminal = "xterm-256color";
       escapeTime = 1;
       plugins = [
         pkgs.tmuxPlugins.resurrect
@@ -32,7 +32,7 @@ in
 
         # Undercurl
         # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
-        set -g default-terminal "screen-256color"
+        set -g default-terminal "xterm-256color"
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
         set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
@@ -48,20 +48,26 @@ in
 
         # copy-paste Mac -> kitty -> ssh -> tmux -> vim
         # Cmd+c (copy), Cmd+v (paste)
+        #
         # NOTE: if you make changes here, you should kill tmux (tmux kill-server)
         # and restart after rebuilding nixos with the new tmux config.
+        #
+        # NOTE: copy-paste doesn't work if you use mosh instead of ssh.
+        # https://github.com/mobile-shell/mosh/pull/1054
 
         # https://github.com/tmux/tmux/wiki/Clipboard/
-        set -s set-clipboard external
+        set -g set-clipboard on
+        set -g mouse on
 
         # https://github.com/tmux/tmux/wiki/Clipboard#terminal-support---kitty
         # https://github.com/kovidgoyal/kitty/issues/1807
         # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
         # This must match the value of default-termainal and TERM.
         # for tmux version (tmux -V) >3.2
-        set -as terminal-features ',screen-256color:clipboard'
+        # set -ag terminal-features ',xterm-256color:clipboard'
         # for tmux version (tmux -V) <3.2
-        # set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
+        # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
+        set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
 
         set -g status-left-style "none"
         set -g message-command-style "fg=colour7,bg=colour19"
@@ -79,8 +85,6 @@ in
         set -g status-right "#[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]#[fg=colour8,bg=colour19] %Y-%m-%d | %H:%M #[fg=colour8,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour18,bg=colour8] #h "
         setw -g window-status-format "#[fg=colour15,bg=colour18] #I |#[fg=colour15,bg=colour18] #W "
         setw -g window-status-current-format "#[fg=colour18,bg=colour19,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour19] #I |#[fg=colour7,bg=colour19] #W #[fg=colour19,bg=colour18,nobold,nounderscore,noitalics]"
-
-        set-option -g mouse on
 
         # COLOUR (base16)
         # https://github.com/mattdavis90/base16-tmux/blob/master/colors/base16-eighties.conf

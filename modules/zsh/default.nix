@@ -79,6 +79,7 @@ in
 
         export EDITOR="$(which nvim)"
         export TERMINAL="$(which alacritty)"
+        export TERM="xterm-256color"
         export BROWSER="$(which firefox)"
 
         export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude vendor --exclude .git'
