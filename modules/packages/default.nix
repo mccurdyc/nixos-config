@@ -21,7 +21,7 @@ in
         alejandra
         bat
         cachix
-        cargo
+        crane
         dig
         docker
         docker-compose
@@ -41,6 +41,7 @@ in
         hadolint
         htop
         jq
+        lsof
         lua53Packages.luacheck
         luaformatter
         nix-tree
@@ -62,9 +63,11 @@ in
         qrencode
         ripgrep
         rnix-lsp
+        rustup
         shfmt
         starship
         statix
+        stern
         subnetcalc
         terraform
         tfswitch

@@ -18,7 +18,7 @@ ssh-add /home/mccurdyc/.ssh/fastly_rsa
 : 0000000000:0;ssh -F ~/.ssh/fastly_config bastion
 : 0000000000:0;mkdir -p $HOME/.aws && \
 op document get fastly_aws_config --output $HOME/.aws/config
-: 0000000000:0;aws sso login
+: 0000000000:0;aws sso login --no-browser
 : 0000000000:0;sudo mkdir -p /etc/wireguard && \
 op document get wg0.conf | sudo tee /etc/wireguard/wg0.conf > /dev/null && \
 wg-quick up wg0
@@ -33,3 +33,4 @@ wg-quick up wg0
 : 0000000000:0;kubectl run debug --image=nixos/nix:2.16.1 --restart=Never -- sleep Inf
 : 0000000000:0;kubectl exec -it debug -c debug -- /bin/sh
 : 0000000000:0;aws ssm start-session --target "$(aws ec2 describe-instances --output text --query 'Reservations[].Instances[].[InstanceId,Tags[?Key==`Name`].Value | [0]]' | fzf | awk '{print $1}')"
+: 0000000000:0;eval $(op signin) && SSH_PRIVKEY_PASS="$(op item get fastly_ssh_rsa --fields=label=passphrase)" SSH_PRIVKEY_PATH="/home/mccurdyc/.ssh/fastly_rsa" gitrs sync

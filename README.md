@@ -11,7 +11,7 @@
 
 ```zsh
 # rebuild system
-% sudo nixos-rebuild switch --flake '.#nuc'
+sudo nixos-rebuild switch --upgrade --flake '.#fgnix'
 ```
 
 ## My Notes
