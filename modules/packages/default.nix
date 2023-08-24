@@ -25,6 +25,7 @@ in
         dig
         docker
         docker-compose
+        fastly
         fd
         fzf
         gcc
