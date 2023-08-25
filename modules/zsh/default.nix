@@ -122,6 +122,8 @@ in
 
         source <(stern --completion=zsh)
 
+         eval "$(fastly --completion-script-zsh)"
+
         eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
 
         # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
