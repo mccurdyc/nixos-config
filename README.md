@@ -11,10 +11,28 @@
 - [notusknot/dotfiles-nix](https://github.com/notusknot/dotfiles-nix)
 - [kclejeune/system](https://github.com/kclejeune/system)
 
+## Common Commands
+
+### faamac Rebuild
+
+```bash
+NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#faamac'
+```
+
+### fgnix Rebuild
+
+```bash
+sudo nixos-rebuild switch --upgrade --flake '.#fgnix'
+```
+
+### Update Flake
+
+```bash
+nix flake update
+```
 
 ### Formatting
 
 ```bash
 nix fmt
 ```
-
