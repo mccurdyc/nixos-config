@@ -139,7 +139,7 @@
       };
 
       hostname = {
-        ssh_only = true;
+        ssh_only = false;
         disabled = false;
         format = "[$hostname]($style)";
         style = "bold white";
