@@ -1,38 +1,20 @@
-# nixos-config
-
-<img width="1180" alt="PNG image" src="https://user-images.githubusercontent.com/5546264/188339768-da20bdbc-d80e-441b-8a9f-a90239b6e4b4.png">
-
-## Commands
-
-```zsh
-# update flake
-% nix flake update
-```
-
-```zsh
-# rebuild system
-sudo nixos-rebuild switch --upgrade --flake '.#fgnix'
-```
-
-## My Notes
-
-https://www.mccurdyc.dev/posts/2022/09/nixos-config/
 
 ## Inspiration
 
+- [MatthiasBenaets/nixos-config](https://github.com/MatthiasBenaets/nixos-config/tree/76eea152f56e1a8f4c908b65028e8aa2f7bafaaa)
+    - [For Mac](https://github.com/MatthiasBenaets/nixos-config/blob/76eea152f56e1a8f4c908b65028e8aa2f7bafaaa/README.org#nix-darwin-installation-guide)
+- [cors/nixos-config](https://github.com/cor/nixos-config/blob/3156d0ca560a8561187b0f4ab3cb25bbbb4ddc9f/flake.nix#L62)
+    - Shared modules
+- [mitchellh/nixos-config](https://github.com/mitchellh/nixos-config)
+    - Single `lib/mkSystem.nix` shared across nixos and nix-darwin
 - [phamann/nixos-config](https://github.com/phamann/nixos-config)
 - [notusknot/dotfiles-nix](https://github.com/notusknot/dotfiles-nix)
 - [kclejeune/system](https://github.com/kclejeune/system)
-- [mitchellh/nixos-config](https://github.com/mitchellh/nixos-config)
 
-## Thanks
 
-I couldn't have done it without the help of two friends: @phamann and @whiteley.
+### Formatting
 
-@whiteley was the one who kept on me about trying Nix and NixOS out in our weekly
-1:1s.
+```bash
+nix fmt
+```
 
-@phamann helped me achieve NeoVim packages via the Flake and took the time to
-help me understand Overlays. Check out @phamann's nixos-configs.
-
-- [phamann/nixos-config](https://github.com/phamann/nixos-config)

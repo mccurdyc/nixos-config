@@ -1,68 +1,68 @@
-# https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html#flake-references
+# https://github.com/cor/nixos-config/blob/3156d0ca560a8561187b0f4ab3cb25bbbb4ddc9f/flake.nix
 {
-  # inputs: An attrset specifying the dependencies of the flake (described below).
-  # https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html#flake-inputs
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05"; # Stable Nix Packages (Default)
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
+
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
+      # User Environment Manager
       url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    darwin = {
+      # MacOS Package Management
+      url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , flake-utils
-    , ...
-    } @ inputs:
-    let
-      mkSystem =
-        { nixpkgs ? inputs.nixpkgs
-        , system
-        , hostname
-        }:
-        nixpkgs.lib.nixosSystem
-          {
-            inherit system;
-
-            modules = [
-              {
-                networking.hostName = hostname;
-              }
-              ./modules/system/configuration.nix
-              (./. + "/hosts/${hostname}/hardware-configuration.nix")
-
-              home-manager.nixosModules.home-manager
-              {
-                home-manager = {
-                  useUserPackages = true;
-                  useGlobalPkgs = true;
-                  extraSpecialArgs = { inherit inputs; };
-                  users.mccurdyc = ./. + "/hosts/${hostname}/user.nix";
-                };
-              }
-            ];
-          };
-    in
-    {
-      nixosConfigurations = {
-        nuc = mkSystem {
-          system = "x86_64-linux";
-          hostname = "nuc";
-        };
-
-        # GCE Arm Nix
-        ganix = mkSystem {
-          system = "aarch64-linux";
-          hostname = "ganix";
-        };
-
-        fgnix = mkSystem {
-          system = "x86_64-linux";
-          hostname = "fgnix";
-        };
-      };
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    flake-utils,
+    darwin,
+    ...
+  } @ inputs: let
+    mkSystem = import ./lib/mkSystem.nix {
+      inherit nixpkgs nixpkgs-unstable inputs;
+      inherit (nixpkgs) lib;
     };
+
+    user = "mccurdyc";
+  in
+    {
+      nixosConfigurations.fgnix = mkSystem "fgnix" {
+        system = "x86_64-linux";
+        profile = "work";
+        inherit user;
+      };
+
+      nixosConfigurations.nuc = mkSystem "nuc" {
+        system = "x86_64-linux";
+        inherit user;
+      };
+
+      darwinConfigurations.faamac = mkSystem "faamac" {
+        system = "aarch64-darwin";
+        profile = "work";
+        darwin = true;
+        inherit user;
+      };
+    }
+    // (flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {inherit system;};
+      in {
+        formatter = pkgs.alejandra;
+
+        devShells = {
+          default = import ./shell.nix {inherit pkgs;};
+        };
+      }
+    ));
 }
