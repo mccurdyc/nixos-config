@@ -1,3 +1,6 @@
+# mccurdyc nixos-config
+
+![](./docs/imgs/screenshot.png)
 
 ## Inspiration
 
@@ -10,6 +13,12 @@
 - [phamann/nixos-config](https://github.com/phamann/nixos-config)
 - [notusknot/dotfiles-nix](https://github.com/notusknot/dotfiles-nix)
 - [kclejeune/system](https://github.com/kclejeune/system)
+
+## References
+
+- [nix-darwin options](https://mynixos.com/options)
+    - https://daiderd.com/nix-darwin/manual/index.html
+- [nixos options](https://search.nixos.org/options)
 
 ## Installation Docs
 
