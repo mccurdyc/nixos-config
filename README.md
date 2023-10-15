@@ -11,6 +11,12 @@
 - [notusknot/dotfiles-nix](https://github.com/notusknot/dotfiles-nix)
 - [kclejeune/system](https://github.com/kclejeune/system)
 
+## Installation Docs
+
+- [nix-darwin](./docs/nix-darwin-install.md)
+- [nixos](./docs/nix-darwin-install.md)
+- [shared](./docs/shared.md)
+
 ## Common Commands
 
 ### faamac Rebuild
