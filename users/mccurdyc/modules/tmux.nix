@@ -23,7 +23,7 @@
       # Undercurl
       # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
       # https://github.com/alacritty/alacritty/issues/109#issuecomment-507026155
-      # set -ag terminal-overrides ",alacritty:RGB,screen-256color:RGB"
+      set -ag terminal-overrides ",alacritty:RGB,screen-256color:RGB"
       set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
       set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
@@ -31,7 +31,7 @@
       # necessary to reload shell config changes
       set -g default-shell "${pkgs.zsh}/bin/zsh"
 
-      set -s default-terminal 'screen-256color'
+      # set -s default-terminal 'screen-256color'
       set-option -ga terminal-overrides ",alacritty:Tc,screen-256color:Tc"
 
       # This tmux statusbar config was created by tmuxline.vim
@@ -58,10 +58,10 @@
       # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
       # This must match the value of default-termainal and TERM.
       # for tmux version (tmux -V) >3.2
-      # set -ag terminal-features ',screen-256color:clipboard'
+      set -ag terminal-features ',screen-256color:clipboard'
       # for tmux version (tmux -V) <3.2
       # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
-      # set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
+      set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
 
       # Base16 Eighties
       # Scheme author: Chris Kempson (http://chriskempson.com)
