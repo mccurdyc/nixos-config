@@ -39,7 +39,7 @@
 
         # Normal colors
         normal = {
-          black = "0x202020";
+          black = "0x414141"; # zsh comments
           red = "0xf2777a";
           green = "0x99cc99";
           yellow = "0xffcc66";
