@@ -626,8 +626,12 @@ require("lazy").setup({
                     -- null_ls.builtins.diagnostics.shellcheck,
                     -- null_ls.builtins.diagnostics.staticcheck,
                     null_ls.builtins.diagnostics.statix,
-                    null_ls.builtins.diagnostics.yamllint,
-                    -- null_ls.builtins.formatting.beautysh,
+                    null_ls.builtins.diagnostics.yamllint.with({
+                        extra_args = {
+                            "-d",
+                            '{extends: relaxed, rules: {line-length: {max: 120}, document-start: disable}}'
+                        }
+                    }), -- null_ls.builtins.formatting.beautysh,
                     -- null_ls.builtins.formatting.buf,
                     -- null_ls.builtins.formatting.cbfmt,
                     null_ls.builtins.formatting.fixjson,
