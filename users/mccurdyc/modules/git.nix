@@ -71,9 +71,6 @@
     ignores = [
       ".devenv"
       ".direnv"
-      ".envrc"
-      "flake.lock"
-      "flake.nix"
       "build_"
     ];
   };
