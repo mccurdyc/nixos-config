@@ -640,7 +640,7 @@ require("lazy").setup({
                     null_ls.builtins.formatting.goimports_reviser,
                     null_ls.builtins.formatting.jq,
                     null_ls.builtins.formatting.lua_format,
-                    null_ls.builtins.formatting.alejandra,
+                    null_ls.builtins.formatting.nixpkgs_fmt,
                     null_ls.builtins.formatting.rustfmt,
                     null_ls.builtins.formatting.shfmt
                         .with({extra_args = {"-i", "4", "-ci"}}),
