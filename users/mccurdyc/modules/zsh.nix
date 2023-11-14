@@ -169,11 +169,11 @@
         style = "bold white";
       };
 
-      kubernetes = {
-        symbol = "k8s:";
-        disabled = false;
-        format = "[$symbol$context( \($namespace\))]($style)";
-      };
+      # kubernetes = {
+      #   symbol = "k8s:";
+      #   disabled = false;
+      #   format = "[$symbol$context( \($namespace\))]($style)";
+      # };
 
       aws = {
         symbol = "aws:";
