@@ -1,18 +1,18 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, ...
 }:
 with lib; let
   cfg = config.modules.packages;
-in {
+in
+{
   options.modules.packages = {
     enable = mkEnableOption "packages";
     additionalPackages = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
     };
     basePackages = mkOption {
       type = types.listOf types.package;
@@ -31,6 +31,7 @@ in {
         hadolint
         htop
         jq
+        keychain
         lsof
         lua53Packages.luacheck
         luaformatter
@@ -60,8 +61,8 @@ in {
   };
   config =
     mkIf cfg.enable
-    {
-      home.packages = with pkgs;
-        cfg.basePackages ++ cfg.additionalPackages;
-    };
+      {
+        home.packages = with pkgs;
+          cfg.basePackages ++ cfg.additionalPackages;
+      };
 }
