@@ -34,3 +34,5 @@ wg-quick up wg0
 : 0000000000:0;kubectl exec -it debug -c debug -- /bin/sh
 : 0000000000:0;aws ssm start-session --target "$(aws ec2 describe-instances --output text --query 'Reservations[].Instances[].[InstanceId,Tags[?Key==`Name`].Value | [0]]' | fzf | awk '{print $1}')"
 : 0000000000:0;eval $(op signin) && SSH_PRIVKEY_PASS="$(op item get fastly_ssh_rsa --fields=label=passphrase)" SSH_PRIVKEY_PATH="/home/mccurdyc/.ssh/fastly_rsa" gitrs sync
+: 0000000000:0;gcloud compute images list --project <project> --no-standard-images --format="table(name,creationTimestamp)"
+: 0000000000:0;rsync -av --progress old/ new/ --exclude .git/
