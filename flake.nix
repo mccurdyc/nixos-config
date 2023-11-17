@@ -58,7 +58,7 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
       in {
-        formatter = pkgs.alejandra;
+        formatter = pkgs.nixpkgs-fmt;
 
         devShells = {
           default = import ./shell.nix {inherit pkgs;};
