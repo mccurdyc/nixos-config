@@ -13,6 +13,8 @@
 - [phamann/nixos-config](https://github.com/phamann/nixos-config)
 - [notusknot/dotfiles-nix](https://github.com/notusknot/dotfiles-nix)
 - [kclejeune/system](https://github.com/kclejeune/system)
+- [tfc/nixos-config](https://github.com/tfc/nixos-configs/tree/main)
+    - [Nixcademy Nix Training](https://nixcademy.com/)
 
 ## References
 
