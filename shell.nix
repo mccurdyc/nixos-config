@@ -3,8 +3,8 @@
 with pkgs;
   mkShell {
     buildInputs = with pkgs; [
-      alejandra
       statix
       rnix-lsp
+      nixpkgs-fmt
     ];
   }
