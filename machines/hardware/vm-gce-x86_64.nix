@@ -9,7 +9,13 @@ with lib; {
   boot.growPartition = true;
   boot.kernelParams = ["console=ttyS0" "panic=1" "boot.panic_on_fail"];
   boot.initrd.kernelModules = ["virtio_scsi"];
-  boot.kernelModules = ["virtio_pci" "virtio_net"];
+  boot.kernelModules = ["virtio_pci" "virtio_net" "kvm"];
+
+  boot.extraModprobeConfig = ''
+    options kvm_intel nested=1
+    options kvm_intel emulate_invalid_guest_state=0
+    options kvm ignore_msrs=1
+  '';
 
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.configurationLimit = 0;
@@ -56,8 +62,6 @@ with lib; {
   systemd.services.google-shutdown-scripts.wantedBy = ["multi-user.target"];
 
   users.groups.google-sudoers = mkIf config.users.mutableUsers {};
-
-  boot.extraModprobeConfig = lib.readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
 
   environment.etc."sysctl.d/60-gce-network-security.conf".source = "${pkgs.google-guest-configs}/etc/sysctl.d/60-gce-network-security.conf";
   environment.etc."default/instance_configs.cfg".text = ''
