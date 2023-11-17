@@ -1,8 +1,7 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }: {
   programs.ssh = {
     enable = true;
@@ -12,7 +11,7 @@
     forwardAgent = true;
 
     matchBlocks = {
-      "*" = {};
+      "*" = { };
 
       # programs.ssh doesn't work well for darwin.
       # home.file.".ssh/config".text = ''

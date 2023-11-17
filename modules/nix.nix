@@ -1,7 +1,6 @@
-{
-  config,
-  pkgs-unstable,
-  ...
+{ config
+, pkgs-unstable
+, ...
 }: {
   nix = {
     package = pkgs-unstable.nix;
@@ -15,8 +14,8 @@
       sandbox = "relaxed";
       auto-optimise-store = true;
 
-      allowed-users = ["mccurdyc"];
-      trusted-users = ["root" "mccurdyc"];
+      allowed-users = [ "mccurdyc" ];
+      trusted-users = [ "root" "mccurdyc" ];
 
       substituters = [
         "https://union.cachix.org/"

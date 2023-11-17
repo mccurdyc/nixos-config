@@ -1,4 +1,4 @@
-{config, ...}: {
+{ config, ... }: {
   programs.git = {
     enable = true;
     userName = "Colton J. McCurdy";
@@ -8,7 +8,7 @@
       signByDefault = true;
     };
     extraConfig = {
-      init = {defaultBranch = "main";};
+      init = { defaultBranch = "main"; };
       core = {
         excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
       };

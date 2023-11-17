@@ -1,10 +1,9 @@
-{
-  pkgs,
-  lib,
-  ...
+{ pkgs
+, lib
+, ...
 }: {
   environment = {
-    shells = with pkgs; [zsh]; # Default Shell
+    shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs; [
       _1password # export NIXPKGS_ALLOW_UNFREE=1

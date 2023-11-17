@@ -1,12 +1,12 @@
-{darwin, ...}:
+{ darwin, ... }:
 {
   programs.gpg = {
     enable = true;
   };
 }
-// (
+  // (
   if darwin
-  then {}
+  then { }
   else {
     services.gpg-agent = {
       enable = true;

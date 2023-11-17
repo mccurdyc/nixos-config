@@ -1,10 +1,9 @@
-{
-  inputs,
-  pkgs,
-  pkgs-unstable,
-  config,
-  lib,
-  ...
+{ inputs
+, pkgs
+, pkgs-unstable
+, config
+, lib
+, ...
 }: {
   security.sudo.wheelNeedsPassword = false;
 
@@ -14,7 +13,7 @@
     autoPrune = {
       enable = true;
       dates = "weekly";
-      flags = ["--all"];
+      flags = [ "--all" ];
     };
   };
 
@@ -25,7 +24,7 @@
 
   # if you also want support for flakes
   nixpkgs.overlays = [
-    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
+    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
   ];
 
   # This value determines the NixOS release from which the default

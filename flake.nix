@@ -19,22 +19,23 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    flake-utils,
-    darwin,
-    ...
-  } @ inputs: let
-    mkSystem = import ./lib/mkSystem.nix {
-      inherit nixpkgs nixpkgs-unstable inputs;
-      inherit (nixpkgs) lib;
-    };
+  outputs =
+    { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , flake-utils
+    , darwin
+    , ...
+    } @ inputs:
+    let
+      mkSystem = import ./lib/mkSystem.nix {
+        inherit nixpkgs nixpkgs-unstable inputs;
+        inherit (nixpkgs) lib;
+      };
 
-    user = "mccurdyc";
-  in
+      user = "mccurdyc";
+    in
     {
       nixosConfigurations.fgnix = mkSystem "fgnix" {
         system = "x86_64-linux";
@@ -55,13 +56,15 @@
       };
     }
     // (flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {inherit system;};
-      in {
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
         formatter = pkgs.nixpkgs-fmt;
 
         devShells = {
-          default = import ./shell.nix {inherit pkgs;};
+          default = import ./shell.nix { inherit pkgs; };
         };
       }
     ));

@@ -1,10 +1,10 @@
-{inputs, ...}: {
-  config,
-  lib,
-  profile,
-  pkgs,
-  ...
-}: let
+{ inputs, ... }: { config
+                 , lib
+                 , profile
+                 , pkgs
+                 , ...
+                 }:
+let
   inherit (pkgs.stdenv) isDarwin;
   inherit (pkgs.stdenv) isLinux;
 
@@ -19,7 +19,8 @@
       cat "$1" | col -bx | bat --language man --style plain
     ''
   );
-in {
+in
+{
   home.stateVersion = "23.05";
   xdg.enable = true;
 

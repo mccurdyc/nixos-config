@@ -1,9 +1,8 @@
-{
-  inputs,
-  pkgs,
-  config,
-  lib,
-  ...
+{ inputs
+, pkgs
+, config
+, lib
+, ...
 }: {
   homebrew = {
     enable = true;
