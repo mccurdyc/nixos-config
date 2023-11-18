@@ -35,25 +35,29 @@
       };
 
       user = "mccurdyc";
-    in
-    {
-      nixosConfigurations.fgnix = mkSystem "fgnix" {
+
+      fgnix = mkSystem "fgnix" {
         system = "x86_64-linux";
         profile = "work";
         inherit user;
       };
 
-      nixosConfigurations.nuc = mkSystem "nuc" {
+      nuc = mkSystem "nuc" {
         system = "x86_64-linux";
         inherit user;
       };
 
-      darwinConfigurations.faamac = mkSystem "faamac" {
+      faamac = mkSystem "faamac" {
         system = "aarch64-darwin";
         profile = "work";
         darwin = true;
         inherit user;
       };
+    in
+    {
+      nixosConfigurations.fgnix = fgnix;
+      nixosConfigurations.nuc =  nuc;
+      darwinConfigurations.faamac = faamac;
     }
     // (flake-utils.lib.eachDefaultSystem (
       system:
@@ -65,6 +69,23 @@
 
         devShells = {
           default = import ./shell.nix { inherit pkgs; };
+        };
+
+        # Writing tests - https://nixos.org/manual/nixos/stable/#sec-nixos-tests
+        # Running tests - https://nixos.org/manual/nixos/stable/#sec-running-nixos-tests
+        # nix build
+        # https://nixcademy.com/2023/10/24/nixos-integration-tests/
+        packages.default = pkgs.testers.runNixOSTest {
+          name = "Test connectivity to SSH";
+          nodes = {
+            # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
+            inherit fgnix;
+          };
+          testScript = ''
+            start_all()
+            fgnix.wait_for_unit("network-online.target")
+            fgnix.succeed("nc machine 22")
+          '';
         };
       }
     ));
