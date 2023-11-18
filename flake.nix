@@ -79,7 +79,19 @@
           name = "Test connectivity to SSH";
           nodes = {
             # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
-            inherit fgnix;
+            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath }: {
+              imports = [
+                # (./machines/fgnix.nix)
+                # (./modules/environment.nix)
+                # ./modules/nix.nix
+                # ./modules/zsh.nix
+                # ./modules/networking.nix
+                # ./modules/misc.nix
+                # ./modules/fonts.nix
+                # ./modules/nixpkgs.nix
+                # ./modules/openssh.nix
+              ];
+            };
           };
           testScript = ''
             start_all()
