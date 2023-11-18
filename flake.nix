@@ -79,24 +79,24 @@
           name = "Test connectivity to SSH";
           nodes = {
             # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
-            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath }: {
+            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath}: {
               imports = [
-                # (./machines/fgnix.nix)
-                # (./modules/environment.nix)
-                # ./modules/nix.nix
-                # ./modules/zsh.nix
-                # ./modules/networking.nix
-                # ./modules/misc.nix
-                # ./modules/fonts.nix
-                # ./modules/nixpkgs.nix
-                # ./modules/openssh.nix
+                (./machines/fgnix.nix)
+                (./modules/environment.nix)
+                # (./modules/nix.nix) # nixpkgs-unstable missing
+                (./modules/zsh.nix)
+                # (./modules/networking.nix) # currentSystemName missing
+                # (./modules/fonts.nix)  # nixpkgs-unstable missing
+                (./modules/openssh.nix)
+                # (./modules/nixpkgs.nix) # duplicate nixpkgs and config
+                # (./modules/misc.nix) # duplicate nixpkgs.overlays
               ];
             };
           };
           testScript = ''
             start_all()
             fgnix.wait_for_unit("network-online.target")
-            fgnix.succeed("nc machine 22")
+            fgnix.succeed("tailscale status")
           '';
         };
       }

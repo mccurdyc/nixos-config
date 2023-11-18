@@ -6,7 +6,7 @@
     shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs; [
-      _1password # export NIXPKGS_ALLOW_UNFREE=1
+      # _1password # export NIXPKGS_ALLOW_UNFREE=1
       curl
       git
       gnumake
