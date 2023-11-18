@@ -6,17 +6,18 @@
     shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs; [
-      # _1password # export NIXPKGS_ALLOW_UNFREE=1
+      _1password # export NIXPKGS_ALLOW_UNFREE=1
+      cmake
+      coreutils
       curl
+      gcc
       git
       gnumake
-      coreutils
-      cmake
-      openssl
-      gcc
       gnupg
       mosh
       neovim
+      openssl
+      python311Packages.google-compute-engine # needed for GCE startup-scripts
       tailscale
       wget
       wireguard-go

@@ -39,7 +39,8 @@ NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#faamac'
 ### fgnix Rebuild
 
 ```bash
-sudo nixos-rebuild switch --upgrade --flake '.#fgnix'
+sudo nixos-rebuild switch  --flake '.#fgnix'
+# sudo nixos-rebuild switch --flake 'git+https://github.com/mccurdyc/nixos-config.git#fgnix'
 ```
 
 ### Update Flake
