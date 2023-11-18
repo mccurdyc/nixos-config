@@ -6,20 +6,8 @@
 }: {
   networking = {
     hostName = currentSystemName;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [ 22 ];
-      trustedInterfaces = [ "tailscale0" ];
-      allowedUDPPorts = [ config.services.tailscale.port ];
-      allowedUDPPortRanges = [
-        {
-          from = 60000;
-          to = 60010;
-        }
-      ];
-      # tailscale
-      checkReversePath = "loose";
-    };
+    firewall.enable = false; # Use cloud firewall rules
+
     # https://man.archlinux.org/man/resolvconf.conf.5
     resolvconf.extraConfig = "name_servers=8.8.8.8";
   };
