@@ -14,7 +14,6 @@
       mosh
       neovim
       openssl
-      python311Packages.google-compute-engine # needed for GCE startup-scripts
       tailscale
       wget
       wireguard-go

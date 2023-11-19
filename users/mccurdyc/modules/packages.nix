@@ -56,6 +56,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # options.modules.packages.basePackages = options.modules.packages.basePackages ++ cfg.additionalPackages;
+    home.packages = cfg.basePackages ++ cfg.additionalPackages;
   };
 }

@@ -1,6 +1,4 @@
-# Refs
-# - https://bryce-s.com/yabai/
-{ pkgs }: {
+{ pkgs, ... }: {
   services.yabai = {
     enable = true;
     package = pkgs.yabai;

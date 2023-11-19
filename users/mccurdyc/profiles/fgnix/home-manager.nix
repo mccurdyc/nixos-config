@@ -7,8 +7,9 @@
       kubectl
       kubernetes-helm
       kubie
-      ssm-session-manager-plugin
+      python311Packages.google-compute-engine # needed for GCE startup-scripts
       ruby_3_1
+      ssm-session-manager-plugin
       terraform-docs
       terraform-ls
       tflint
