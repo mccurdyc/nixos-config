@@ -1,7 +1,4 @@
-{ pkgs
-, inputs
-, ...
-}: {
+{ pkgs, ... }: {
   environment.pathsToLink = [
     "/share/zsh" # required for zsh autocomplete
     "/share/nix-direnv"

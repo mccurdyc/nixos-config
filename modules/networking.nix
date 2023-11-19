@@ -1,9 +1,4 @@
-{ pkgs
-, pkgs-unstable
-, config
-, currentSystemName
-, ...
-}: {
+{ pkgs-unstable, config, currentSystemName, ... }: {
   networking = {
     hostName = currentSystemName;
     firewall.enable = false; # Use cloud firewall rules

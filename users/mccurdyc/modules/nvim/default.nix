@@ -1,8 +1,4 @@
-{ pkgs
-, lib
-, config
-, ...
-}: {
+{ nixpkgs, config, ... }: {
   programs.neovim = {
     enable = true;
     vimdiffAlias = true;

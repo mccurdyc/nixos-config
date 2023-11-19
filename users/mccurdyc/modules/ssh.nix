@@ -1,8 +1,4 @@
-{ pkgs
-, lib
-, config
-, ...
-}: {
+_: {
   programs.ssh = {
     enable = true;
     controlMaster = "no";

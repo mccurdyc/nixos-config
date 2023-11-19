@@ -1,21 +1,16 @@
-{ config
-, lib
-, pkgs
-, inputs
-, ...
-}:
-with lib; let
+{ config, pkgs, lib, options, ... }:
+let
   cfg = config.modules.packages;
 in
 {
   options.modules.packages = {
-    enable = mkEnableOption "packages";
-    additionalPackages = mkOption {
-      type = types.listOf types.package;
+    enable = lib.mkEnableOption "packages";
+
+    additionalPackages = lib.mkOption {
       default = [ ];
     };
-    basePackages = mkOption {
-      type = types.listOf types.package;
+
+    basePackages = lib.mkOption {
       default = with pkgs; [
         _1password
         bat
@@ -59,10 +54,8 @@ in
       ];
     };
   };
-  config =
-    mkIf cfg.enable
-      {
-        home.packages = with pkgs;
-          cfg.basePackages ++ cfg.additionalPackages;
-      };
+
+  config = lib.mkIf cfg.enable {
+    # options.modules.packages.basePackages = options.modules.packages.basePackages ++ cfg.additionalPackages;
+  };
 }

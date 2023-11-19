@@ -3,102 +3,91 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05"; # Stable Nix Packages (Default)
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
-
     flake-utils.url = "github:numtide/flake-utils";
-
     home-manager = {
       # User Environment Manager
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    darwin = {
+    nix-darwin = {
       # MacOS Package Management
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , nixpkgs-unstable
-    , home-manager
-    , flake-utils
-    , darwin
-    , ...
-    } @ inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, flake-utils, nix-darwin, ... }:
+
     let
+      # modules expect to pass a var named explicitly 'pkgs'.
+      pkgs = nixpkgs;
+      pkgs-unstable = nixpkgs-unstable;
+      config = nixpkgs.config;
+
       mkSystem = import ./lib/mkSystem.nix {
-        inherit nixpkgs nixpkgs-unstable inputs;
-        inherit (nixpkgs) lib;
+        inherit pkgs pkgs-unstable config nix-darwin home-manager;
+        inherit (pkgs) lib;
       };
 
       user = "mccurdyc";
 
-      fgnix = mkSystem "fgnix" {
+      fgnix = mkSystem {
+        name = "fgnix";
         system = "x86_64-linux";
         profile = "work";
         inherit user;
       };
 
-      nuc = mkSystem "nuc" {
+      nuc = mkSystem {
+        name = "nuc";
         system = "x86_64-linux";
         inherit user;
       };
 
-      faamac = mkSystem "faamac" {
+      faamac = mkSystem {
+        name = "faamac";
         system = "aarch64-darwin";
         profile = "work";
         darwin = true;
         inherit user;
       };
+
     in
     {
       nixosConfigurations.fgnix = fgnix;
       nixosConfigurations.nuc = nuc;
       darwinConfigurations.faamac = faamac;
     }
-    // (flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
+    // (flake-utils.lib.eachDefaultSystem (system:
+      let pkgs = nixpkgs.legacyPackages.${system}; in
       {
         formatter = pkgs.nixpkgs-fmt;
-
-        devShells = {
-          default = import ./shell.nix { inherit pkgs; };
-        };
+        devShells.default = import ./shell.nix { inherit pkgs; };
 
         # Writing tests - https://nixos.org/manual/nixos/stable/#sec-nixos-tests
         # Running tests - https://nixos.org/manual/nixos/stable/#sec-running-nixos-tests
         # nix build
         # https://nixcademy.com/2023/10/24/nixos-integration-tests/
-        packages.default = pkgs.testers.runNixOSTest {
-          name = "Test connectivity to SSH";
-          nodes = {
-            # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
-            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath }: {
-              imports = [
-                (./machines/fgnix.nix)
-                (./modules/environment.nix)
-                # (./modules/nix.nix) # nixpkgs-unstable missing
-                (./modules/zsh.nix)
-                # (./modules/networking.nix) # currentSystemName missing
-                # (./modules/fonts.nix)  # nixpkgs-unstable missing
-                (./modules/openssh.nix)
-                # (./modules/nixpkgs.nix) # duplicate nixpkgs and config
-                # (./modules/misc.nix) # duplicate nixpkgs.overlays
-              ];
+        checks.default = pkgs.testers.runNixOSTest
+          {
+            name = "Test connectivity to SSH";
+            nodes = {
+              # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
+              # Pattern from - https://github.com/NixOS/nixpkgs/blob/d3deaacfb475a62ceba63f34672280029ad6c738/nixos/tests/google-oslogin/default.nix#L20
+              # doesn't work
+              # foo = mkSystem {
+              #   name = "foo";
+              #   system = "x86_64-linux";
+              #   profile = "work";
+              #   user = "mccurdyc";
+              # };
             };
+            testScript = ''
+              start_all()
+              foo.wait_for_unit("network-online.target")
+              foo.succeed("tailscale status")
+            '';
           };
-          testScript = ''
-            start_all()
-            fgnix.wait_for_unit("network-online.target")
-            fgnix.succeed("tailscale status")
-          '';
-        };
       }
     ));
 }

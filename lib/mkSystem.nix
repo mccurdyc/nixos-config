@@ -1,57 +1,40 @@
-# This function creates a NixOS system based on our VM setup for a
-# particular architecture.
-{ nixpkgs
-, nixpkgs-unstable
-, inputs
-, lib
-,
-}: name: { system
-         , user
-         , profile
-         , darwin ? false
-         ,
-         }:
-let
-  machineConfig = ../machines/${name}.nix;
-  userOSConfig =
-    ../users/${user}/${
-      if darwin
-      then "darwin"
-      else "nixos"
-    }.nix;
-  userHMConfig = ../users/${user}/home-manager.nix;
+{ pkgs, pkgs-unstable, config, nix-darwin, home-manager, lib, }:
 
+{ name, system, user, profile, darwin ? false, }:
+
+let
   # NixOS vs nix-darwin functions
-  systemFunc =
+  systemFn =
     if darwin
-    then inputs.darwin.lib.darwinSystem
-    else nixpkgs.lib.nixosSystem;
-  home-manager =
+    then nix-darwin.lib.darwinSystem
+    else pkgs.lib.nixosSystem;
+  homeFn =
     if darwin
-    then inputs.home-manager.darwinModules
-    else inputs.home-manager.nixosModules;
+    then home-manager.darwinModules
+    else home-manager.nixosModules;
 in
-systemFunc rec {
+
+systemFn {
   inherit system;
 
   modules =
     [
-      machineConfig
-      userOSConfig
+      ../machines/${name}.nix
+      ../users/${user}/${ if darwin then "darwin" else "nixos" }.nix
 
-      home-manager.home-manager
+      homeFn.home-manager
       {
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
-          users.${user} = import userHMConfig {
-            inherit inputs nixpkgs-unstable;
+          users.${user} = import ../users/${user}/home-manager.nix {
+            inherit pkgs profile;
           };
 
           # passed to every `home-module`.
           extraSpecialArgs = {
-            inherit inputs darwin profile;
-            pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit darwin profile;
+            pkgs-unstable = import pkgs-unstable {
               inherit system;
               config.allowUnfree = true;
             };
@@ -62,11 +45,11 @@ systemFunc rec {
       # passed to every module
       {
         config._module.args = {
-          inherit inputs lib profile;
+          inherit lib profile;
           currentSystem = system;
           currentSystemName = name;
           currentSystemUser = user;
-          pkgs-unstable = import inputs.nixpkgs-unstable {
+          pkgs-unstable = import pkgs-unstable {
             inherit system;
             config.allowUnfree = true;
           };

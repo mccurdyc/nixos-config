@@ -1,7 +1,4 @@
-{ config
-, pkgs-unstable
-, ...
-}: {
+{ pkgs-unstable, ... }: {
   nix = {
     package = pkgs-unstable.nix;
 

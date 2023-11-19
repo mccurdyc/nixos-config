@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, ...
-}:
-with lib; {
+{ config, lib, pkgs, ... }: {
   boot.growPartition = true;
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
   boot.initrd.kernelModules = [ "virtio_scsi" ];
@@ -60,14 +54,14 @@ with lib; {
   systemd.services.google-startup-scripts.wantedBy = [ "multi-user.target" ];
   systemd.services.google-shutdown-scripts.wantedBy = [ "multi-user.target" ];
 
-  users.groups.google-sudoers = mkIf config.users.mutableUsers { };
+  users.groups.google-sudoers = lib.mkIf config.users.mutableUsers { };
 
   environment.etc."sysctl.d/60-gce-network-security.conf".source = "${pkgs.google-guest-configs}/etc/sysctl.d/60-gce-network-security.conf";
   environment.etc."default/instance_configs.cfg".text = ''
     [Accounts]
     useradd_cmd = useradd -m -s /run/current-system/sw/bin/bash -p * {user}
     [Daemons]
-    accounts_daemon = ${boolToString config.users.mutableUsers}
+    accounts_daemon = ${lib.boolToString config.users.mutableUsers}
     [InstanceSetup]
     # Make sure GCE image does not replace host key that NixOps sets.
     set_host_keys = false

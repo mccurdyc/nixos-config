@@ -1,10 +1,4 @@
-{ inputs
-, pkgs
-, pkgs-unstable
-, config
-, lib
-, ...
-}: {
+{ pkgs, ... }: {
   security.sudo.wheelNeedsPassword = false;
 
   # Virtualization settings
@@ -21,11 +15,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver.desktopManager.xterm.enable = false;
-
-  # if you also want support for flakes
-  nixpkgs.overlays = [
-    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
-  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

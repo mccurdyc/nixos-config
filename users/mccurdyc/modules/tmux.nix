@@ -9,10 +9,6 @@
     terminal = "xterm-256color";
     shortcut = "a";
     escapeTime = 1;
-    plugins = [
-      pkgs.tmuxPlugins.resurrect
-      pkgs.tmuxPlugins.continuum
-    ];
     extraConfig = ''
       # clear scrollback buffer - https://stackoverflow.com/questions/10543684/how-can-i-clear-scrollback-buffer-in-tmux#10553992
       bind -n C-k clear-history

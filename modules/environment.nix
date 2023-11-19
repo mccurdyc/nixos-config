@@ -1,7 +1,4 @@
-{ pkgs
-, lib
-, ...
-}: {
+{ pkgs, ... }: {
   environment = {
     shells = with pkgs; [ zsh ]; # Default Shell
 
