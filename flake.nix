@@ -56,7 +56,7 @@
     in
     {
       nixosConfigurations.fgnix = fgnix;
-      nixosConfigurations.nuc =  nuc;
+      nixosConfigurations.nuc = nuc;
       darwinConfigurations.faamac = faamac;
     }
     // (flake-utils.lib.eachDefaultSystem (
@@ -79,7 +79,7 @@
           name = "Test connectivity to SSH";
           nodes = {
             # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
-            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath}: {
+            fgnix = { config, pkgs, lib, options, specialArgs, modulesPath }: {
               imports = [
                 (./machines/fgnix.nix)
                 (./modules/environment.nix)
