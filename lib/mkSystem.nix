@@ -34,10 +34,6 @@ systemFn {
           # passed to every `home-module`.
           extraSpecialArgs = {
             inherit darwin profile;
-            pkgs-unstable = import pkgs-unstable {
-              inherit system;
-              config.allowUnfree = true;
-            };
           };
         };
       }
