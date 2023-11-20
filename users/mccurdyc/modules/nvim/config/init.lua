@@ -764,17 +764,20 @@ require("lazy").setup({
         }
     }, {
         "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter.configs").setup {
-                -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
-                -- NixOS is a RO filesystem, we don't want nvim trying to install things for us.
-                -- ensure_installed = {"comment", "lua", "rust", "yaml", "go", "hcl", "bash"},
-                -- :TSInstall comment lua rust yaml go hcl bash cue gitcommit json make nix terraform toml typescript
+            local configs = require("nvim-treesitter.configs")
+
+            configs.setup({
+                ensure_installed = {
+                    "go", "nix", "lua", "rust", "bash", "cue", "diff",
+                    "dockerfile", "gomod", "json", "make", "markdown",
+                    "terraform", "yaml"
+                },
                 sync_install = false,
-                auto_install = false,
-                indent = {enable = true},
-                highlight = {enable = true}
-            }
+                highlight = {enable = true},
+                indent = {enable = true}
+            })
         end
     }, {
         "p00f/nvim-ts-rainbow",
