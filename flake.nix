@@ -58,10 +58,13 @@
       # nixosConfigurations.nuc = nuc;
       darwinConfigurations.faamac = faamac;
     } // (flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      in
       {
         formatter = pkgs.nixpkgs-fmt;
-        devShells.default = import ./shell.nix { inherit pkgs; };
+        devShells.default = import ./shell.nix { inherit pkgs pkgs-unstable; };
 
         # Writing tests - https://nixos.org/manual/nixos/stable/#sec-nixos-tests
         # Running tests - https://nixos.org/manual/nixos/stable/#sec-running-nixos-tests

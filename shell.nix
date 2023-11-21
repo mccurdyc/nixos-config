@@ -1,9 +1,9 @@
 # https://nixos.wiki/wiki/Flakes#Super_fast_nix-shell
-{ pkgs }:
+{ pkgs, pkgs-unstable }:
 pkgs.mkShell {
-  buildInputs = with pkgs; [
-    statix
-    rnix-lsp
-    nixpkgs-fmt
+  buildInputs = [
+    pkgs.statix
+    pkgs.nixpkgs-fmt
+    pkgs-unstable.nixd
   ];
 }
