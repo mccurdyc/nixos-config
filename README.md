@@ -33,14 +33,14 @@
 ### faamac Rebuild
 
 ```bash
-NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#faamac'
+darwin-rebuild switch --flake '.#faamac'
 ```
 
 ### fgnix Rebuild
 
 ```bash
-sudo NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --impure --flake '.#fgnix'
-# sudo NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --impure --flake 'git+https://github.com/mccurdyc/nixos-config.git#fgnix'
+sudo nixos-rebuild switch --flake '.#fgnix'
+# sudo nixos-rebuild switch --flake 'git+https://github.com/mccurdyc/nixos-config.git#fgnix'
 ```
 
 ### Update Flake
@@ -60,7 +60,7 @@ nix fmt
 #### Automated
 
 ```bash
-NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#fgnix'
+nix build '.#fgnix'
 ```
 
 #### Interactive (debugging tests)
@@ -68,7 +68,7 @@ NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#fgnix'
 - https://blog.thalheim.io/2023/01/08/how-to-execute-nixos-tests-interactively-for-debugging/
 
 ```bash
-NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#packages.x86_64-linux.fgnix.driver'
+nix build '.#packages.x86_64-linux.fgnix.driver'
 ./result/bin/nixos-test-driver --interactive
 (repl) fgnix.start()
 (repl) fgnix.shell_interactive()
