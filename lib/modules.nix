@@ -9,7 +9,7 @@ let
     if darwin
     then home-manager.darwinModules
     else home-manager.nixosModules;
-  pkgs = import nixpkgs { inherit system; };
+  pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
   pkgs-unstable = import nixpkgs-unstable { inherit system; };
 
 in
@@ -58,6 +58,7 @@ in
   ]
   # TODO - move these to include the darwin conditional in each module
   else [
+    { nixpkgs = { config.allowUnfree = true; }; }
     ../modules/networking.nix
     ../modules/misc.nix
     ../modules/fonts.nix
