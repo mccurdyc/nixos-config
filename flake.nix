@@ -1,62 +1,53 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05"; # Stable Nix Packages (Default)
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
-      # User Environment Manager
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
-      # MacOS Package Management
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, flake-utils, nix-darwin, ... }:
-
     let
-      # modules expect to pass a var named explicitly 'pkgs'.
-      pkgs = nixpkgs;
-      pkgs-unstable = nixpkgs-unstable;
-      inherit (nixpkgs) config;
-
       mkSystem = import ./lib/mkSystem.nix {
-        inherit pkgs pkgs-unstable config nix-darwin home-manager;
-        inherit (pkgs) lib;
+        inherit nixpkgs nixpkgs-unstable nix-darwin home-manager;
       };
 
       user = "mccurdyc";
-
-      fgnix = mkSystem {
-        name = "fgnix";
-        system = "x86_64-linux";
-        profile = "fgnix";
-        inherit user;
-      };
-
-      # nuc = mkSystem {
-      #   name = "nuc";
-      #   system = "x86_64-linux";
-      #   profile = "nuc";
-      #   inherit user;
-      # };
-
-      faamac = mkSystem {
-        name = "faamac";
-        system = "aarch64-darwin";
-        profile = "faamac";
-        darwin = true;
-        inherit user;
-      };
-
     in
     {
-      nixosConfigurations.fgnix = fgnix;
-      # nixosConfigurations.nuc = nuc;
-      darwinConfigurations.faamac = faamac;
+      # sudo NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --impure --flake '.#fgnix'
+      nixosConfigurations = {
+        fgnix = mkSystem {
+          name = "fgnix";
+          system = "x86_64-linux";
+          profile = "fgnix";
+          inherit user;
+        };
+
+        # NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#faamac'
+        faamac = mkSystem {
+          name = "faamac";
+          system = "aarch64-darwin";
+          profile = "faamac";
+          darwin = true;
+          inherit user;
+        };
+
+        # nuc = mkSystem {
+        #   name = "nuc";
+        #   system = "x86_64-linux";
+        #   profile = "nuc";
+        #   inherit user;
+        # };
+      };
+
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -65,28 +56,33 @@
       {
         formatter = pkgs.nixpkgs-fmt;
         devShells.default = import ./shell.nix { inherit pkgs pkgs-unstable; };
-
-        # Writing tests - https://nixos.org/manual/nixos/stable/#sec-nixos-tests
-        # Running tests - https://nixos.org/manual/nixos/stable/#sec-running-nixos-tests
-        # https://nixcademy.com/2023/10/24/nixos-integration-tests/
-        # 'nix flake check'
-        checks.default = pkgs.testers.runNixOSTest
+      }
+    )) // (flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      in
+      {
+        # NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#fgnix'
+        packages.fgnix = pkgs.testers.runNixOSTest
           {
             name = "Test connectivity to SSH";
             nodes = {
-              # NixOS Configuration - https://nixos.org/manual/nixos/stable/options
-              foo = {
-                imports = [
-                  fgnix
-                ];
+              fgnix = {
+                imports = import ./lib/modules.nix {
+                  name = "fgnix";
+                  system = "x86_64-linux"; # if we do perSystem, I guess change this to system to check.
+                  profile = "fgnix";
+                  inherit user nixpkgs nixpkgs-unstable home-manager;
+                  darwin = false;
+                };
               };
-              testScript = ''
-                start_all()
-                foo.wait_for_unit("network-online.target")
-                foo.succeed("tailscale status")
-              '';
             };
+            testScript = ''
+              start_all()
+              fgnix.wait_for_unit("network-online.target")
+              fgnix.succeed("tailscale status")
+            '';
           };
-      }
-    ));
+      }));
 }
