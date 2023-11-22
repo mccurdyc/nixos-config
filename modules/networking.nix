@@ -2,9 +2,6 @@
   networking = {
     hostName = currentSystemName;
     firewall.enable = false; # Use cloud firewall rules
-
-    # https://man.archlinux.org/man/resolvconf.conf.5
-    resolvconf.extraConfig = "name_servers=8.8.8.8";
   };
 
   # https://fzakaria.com/2020/09/17/tailscale-is-magic-even-more-so-with-nixos.html
