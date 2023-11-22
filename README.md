@@ -57,12 +57,18 @@ nix fmt
 
 ### Testing
 
+#### Automated
+
+```bash
+NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#fgnix'
+```
+
 #### Interactive (debugging tests)
 
 - https://blog.thalheim.io/2023/01/08/how-to-execute-nixos-tests-interactively-for-debugging/
 
-```
-NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#packages.x86_64-linux.default.driver'
+```bash
+NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#packages.x86_64-linux.fgnix.driver'
 ./result/bin/nixos-test-driver --interactive
 (repl) fgnix.start()
 (repl) fgnix.shell_interactive()
