@@ -20,6 +20,9 @@
       };
 
       user = "mccurdyc";
+      additionalModules = [
+            { nixpkgs = { config.allowUnfree = true; }; }
+          ];
     in
     {
       # sudo NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --impure --flake '.#fgnix'
@@ -28,16 +31,16 @@
           name = "fgnix";
           system = "x86_64-linux";
           profile = "fgnix";
-          inherit user;
+          inherit user additionalModules;
         };
 
-        # NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#faamac'
+        # darwin-rebuild switch --flake '.#faamac'
         faamac = mkSystem {
           name = "faamac";
           system = "aarch64-darwin";
           profile = "faamac";
           darwin = true;
-          inherit user;
+          inherit user additionalModules;
         };
 
         # nuc = mkSystem {
@@ -50,7 +53,7 @@
 
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+        pkgs = nixpkgs.legacyPackages.${system};
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       in
       {
@@ -63,7 +66,7 @@
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       in
       {
-        # nix build '.#fgnix'
+        # NIXPKGS_ALLOW_UNFREE=1 nix build --impure '.#fgnix'
         packages.fgnix = pkgs.testers.runNixOSTest
           {
             name = "Test connectivity to SSH";

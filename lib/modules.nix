@@ -2,7 +2,7 @@
 # https://nixos.org/manual/nixos/stable/#sec-modularity
 # https://nixos.org/manual/nixos/stable/#sec-importing-modules
 # https://nixos.wiki/wiki/NixOS_modules
-{ name, system, user, profile, nixpkgs, nixpkgs-unstable, home-manager, darwin ? false }:
+{ name, system, user, profile, nixpkgs, nixpkgs-unstable, home-manager, darwin ? false, additionalModules ? [ ] }:
 
 let
   homeFn =
@@ -50,6 +50,7 @@ in
   ../modules/nix.nix
   ../modules/zsh.nix
 ]
+++ additionalModules
 ++ (
   if darwin
   then [
@@ -58,7 +59,6 @@ in
   ]
   # TODO - move these to include the darwin conditional in each module
   else [
-    { nixpkgs = { config.allowUnfree = true; }; }
     ../modules/networking.nix
     ../modules/misc.nix
     ../modules/fonts.nix

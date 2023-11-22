@@ -3,8 +3,6 @@
     shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs; [
-      _1password # export NIXPKGS_ALLOW_UNFREE=1
-      cmake
       coreutils
       curl
       gcc
@@ -16,8 +14,6 @@
       openssl
       tailscale
       wget
-      wireguard-go
-      wireguard-tools
       zsh
       (writeShellScriptBin "docker-stop-all" ''
         docker stop $(docker ps -q)
