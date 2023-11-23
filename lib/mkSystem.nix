@@ -1,7 +1,7 @@
 # A function that returns a function that returns a darwin/nixos system configuration.
 { nixpkgs, nixpkgs-unstable, nix-darwin, home-manager }:
 
-{ name, system, user, profile, darwin ? false, additionalModules ? []}:
+{ name, system, user, profile, darwin ? false, additionalModules ? [ ] }:
 
 let
   systemFn =
