@@ -129,13 +129,5 @@
     };
   };
 
-  # The user should already exist, but we need to set this up so Nix knows
-  # what our home directory is (https://github.com/LnL7/nix-darwin/issues/423).
-  users.users.mccurdyc = {
-    home = "/Users/mccurdyc";
-    shell = pkgs.zsh;
-  };
-
-  stateVersion = 4;
-};
+  system.stateVersion = 4;
 }

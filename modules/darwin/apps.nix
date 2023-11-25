@@ -4,11 +4,6 @@
   homebrew = {
     enable = true;
 
-    onActivation = {
-      autoUpdate = false;
-      cleanup = "zap";
-    };
-
     # `brew install` equivalent
     brews = [
       "wireguard-tools"

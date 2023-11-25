@@ -9,7 +9,7 @@
     };
     nix-darwin = {
       url = "github:lnl7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -83,8 +83,8 @@
             name = "Test connectivity to SSH";
             nodes.fgnix = {
               imports = [
-                ./hosts/fgnix
                 # TODO fix
+                ./hosts/fgnix
                 ./modules/nixos
                 ./home-modules/nixos
               ];

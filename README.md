@@ -100,6 +100,13 @@ nix fmt
 nix build '.#fgnix'
 ```
 
+### VM
+
+```bash
+sudo nixos-rebuild build-vm --flake '.#fgnix'
+./nix/store/<hash>-nixos-vm/bin/run-fgnix-vm
+```
+
 #### Interactive (debugging tests)
 
 - https://blog.thalheim.io/2023/01/08/how-to-execute-nixos-tests-interactively-for-debugging/
