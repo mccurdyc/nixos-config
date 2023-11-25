@@ -1,18 +1,20 @@
-{ pkgs-unstable, ... }: {
+{ pkgs, user, ... }:
+
+{
   nix = {
-    package = pkgs-unstable.nix;
+    package = pkgs.nix;
 
     gc = {
       automatic = true;
-      options = "--delete-older-than 1d";
+      options = "--delete-older-than 1w";
     };
 
     settings = {
       sandbox = "relaxed";
       auto-optimise-store = true;
 
-      allowed-users = [ "mccurdyc" ];
-      trusted-users = [ "root" "mccurdyc" ];
+      allowed-users = [ user ];
+      trusted-users = [ "root" user ];
 
       substituters = [
         "https://union.cachix.org/"
@@ -26,10 +28,7 @@
         "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       ];
 
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+      experimental-features = [ "nix-command" "flakes" ];
     };
 
     extraOptions = ''

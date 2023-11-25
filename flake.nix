@@ -17,41 +17,45 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
-          mkSystem = import ./lib/mkSystem.nix {
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager;
+          mkSystem = import ./lib/mkSystem.nix;
+
+          fgnixArgs = {
+            nixos-modules = [
+              ./hosts/fgnix
+              ./modules/nixos
+            ];
+            system = "x86_64-linux";
+            home-module = import ./home-modules/nixos;
+            # passed to every module and home-module (via extraSpecialArgs)
+            specialArgs = {
+              user = "mccurdyc";
+              currentSystemName = "fgnix";
+            };
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
 
-          user = "mccurdyc";
-
-          # For nixos-rebuild.
-          additionalModules = [
-            { nixpkgs = { config.allowUnfree = true; }; }
-          ];
-
-          # For nix build / NixOS tests.
-          pkgs = import nixpkgs {
-            config.allowUnfree = true;
+          faamacArgs = {
+            darwin-modules = [
+              ./hosts/faamac
+              ./modules/darwin
+            ];
+            system = "aarch64-darwin";
+            home-module = import ./home-modules/darwin;
+            darwin = true;
+            # passed to every module and home-module (via extraSpecialArgs)
+            specialArgs = {
+              user = "mccurdyc";
+              currentSystemName = "faamac";
+            };
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
         in
         {
           # sudo nixos-rebuild switch --flake '.#fgnix'
-          nixosConfigurations = {
-            fgnix = mkSystem {
-              name = "fgnix";
-              system = "x86_64-linux";
-              profile = "fgnix";
-              inherit user additionalModules;
-            };
+          nixosConfigurations.fgnix = mkSystem (fgnixArgs);
 
-            # darwin-rebuild switch --flake '.#faamac'
-            faamac = mkSystem {
-              name = "faamac";
-              system = "aarch64-darwin";
-              profile = "faamac";
-              darwin = true;
-              inherit user additionalModules;
-            };
-          };
+          # darwin-rebuild switch --flake '.#faamac'
+          darwinConfigurations.faamac = mkSystem (faamacArgs);
         };
 
       systems = [
@@ -60,18 +64,12 @@
       ];
 
       # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
-      imports = [
-        inputs.flake-parts.flakeModules.easyOverlay
-      ];
+      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
 
-      perSystem =
-        { system, pkgs, pkgs-unstable, lib, config, specialArgs, options }:
-
+      perSystem = { system, ... }:
         let
-
           pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
           pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; };
-
         in
         {
           # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
@@ -84,14 +82,12 @@
           packages.fgnix = pkgs.testers.runNixOSTest {
             name = "Test connectivity to SSH";
             nodes.fgnix = {
-              imports = import ./lib/modules.nix {
-                name = "fgnix";
-                system = "x86_64-linux"; # if we do perSystem, I guess change this to system to check.
-                profile = "fgnix";
-                user = "mccurdyc";
-                inherit nixpkgs nixpkgs-unstable home-manager;
-                darwin = false;
-              };
+              imports = [
+                ./hosts/fgnix
+                # TODO fix
+                ./modules/nixos
+                ./home-modules/nixos
+              ];
             };
             testScript = ''
               start_all()

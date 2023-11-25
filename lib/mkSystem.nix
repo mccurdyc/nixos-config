@@ -1,7 +1,4 @@
-# A function that returns a function that returns a darwin/nixos system configuration.
-{ nixpkgs, nixpkgs-unstable, nix-darwin, home-manager }:
-
-{ name, system, user, profile, darwin ? false, additionalModules ? [ ] }:
+{ nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-module, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
 
 let
   systemFn =
@@ -9,10 +6,31 @@ let
     then nix-darwin.lib.darwinSystem
     else nixpkgs.lib.nixosSystem;
 
+  homeFn =
+    if darwin
+    then home-manager.darwinModules.home-manager
+    else home-manager.nixosModules.home-manager;
+
+  pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+  pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+
+  extendedSpecialArgs = specialArgs // { inherit pkgs-unstable; };
 in
+
 systemFn {
   inherit system;
-  modules = import ./modules.nix {
-    inherit nixpkgs nixpkgs-unstable name system user profile home-manager darwin additionalModules;
-  };
+
+  specialArgs = extendedSpecialArgs;
+
+  modules = darwin-modules ++ nixos-modules ++ [
+
+    homeFn
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+
+      home-manager.extraSpecialArgs = extendedSpecialArgs;
+      home-manager.users."${specialArgs.user}" = home-module;
+    }
+  ];
 }

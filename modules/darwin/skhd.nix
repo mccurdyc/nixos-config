@@ -1,4 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+
+{
   services.skhd = {
     enable = true;
     package = pkgs.skhd;
@@ -66,11 +68,5 @@
               # Menu
               #cmd + space : for now its using the default keybinding to open Spotlight Search
     '';
-  };
-
-  system = {
-    keyboard = {
-      enableKeyMapping = true;
-    };
   };
 }
