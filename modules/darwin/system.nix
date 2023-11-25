@@ -44,7 +44,6 @@
 
       # customize trackpad
       trackpad = {
-        # tap - 轻触触摸板, click - 点击触摸板
         Clicking = true; # enable tap to click
         TrackpadRightClick = true; # enable two finger right click
         TrackpadThreeFingerDrag = true; # enable three finger drag
@@ -53,7 +52,7 @@
       # customize macOS
       NSGlobalDomain = {
         # `defaults read NSGlobalDomain "xxx"`
-        "com.apple.swipescrolldirection" = true; # enable natural scrolling(default to true)
+        "com.apple.swipescrolldirection" = false; # enable natural scrolling(default to true)
         "com.apple.sound.beep.feedback" = 0; # disable beep sound when pressing volume up/down key
         AppleInterfaceStyle = "Dark"; # dark mode
         AppleKeyboardUIMode = 3; # Mode 3 enables full keyboard control.

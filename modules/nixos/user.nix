@@ -6,7 +6,7 @@
   users = {
     mutableUsers = false;
     users."${user}" = {
-      group = user; # required
+      group = user; # required; TODO - startup log warning in VM about 'unknown group';
       isNormalUser = true;
       home = "/home/${user}";
       extraGroups = [ "docker" "wheel" ];
