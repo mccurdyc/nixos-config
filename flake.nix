@@ -69,7 +69,7 @@
       perSystem = { system, ... }:
         let
           pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; };
+          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
         in
         {
           # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105

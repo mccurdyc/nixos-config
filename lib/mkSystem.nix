@@ -13,15 +13,12 @@ let
 
   pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
   pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-
-  extendedSpecialArgs = specialArgs // { inherit pkgs-unstable; };
+  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable; };
 in
 
 systemFn {
   inherit system;
-
   specialArgs = extendedSpecialArgs;
-
   modules = darwin-modules ++ nixos-modules ++ [
 
     homeFn
