@@ -29,7 +29,6 @@
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = {
               user = "mccurdyc";
-              currentSystemName = "fgnix";
             };
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
@@ -45,17 +44,16 @@
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = {
               user = "mccurdyc";
-              currentSystemName = "faamac";
             };
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
         in
         {
           # sudo nixos-rebuild switch --flake '.#fgnix'
-          nixosConfigurations.fgnix = mkSystem (fgnixArgs);
+          nixosConfigurations.fgnix = mkSystem fgnixArgs;
 
           # darwin-rebuild switch --flake '.#faamac'
-          darwinConfigurations.faamac = mkSystem (faamacArgs);
+          darwinConfigurations.faamac = mkSystem faamacArgs;
         };
 
       systems = [
@@ -83,10 +81,27 @@
             name = "Test connectivity to SSH";
             nodes.fgnix = {
               imports = [
-                # TODO fix
                 ./hosts/fgnix
                 ./modules/nixos
-                ./home-modules/nixos
+
+                # TODO fix
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    extraSpecialArgs = { user = "mccurdyc"; };
+                    users.mccurdyc = import ./home-modules/nixos;
+                  };
+                }
+
+                # passed to every module as 'specialArgs'.
+                {
+                  config._module.args = {
+                    user = "mccurdyc";
+                    inherit pkgs-unstable;
+                  };
+                }
               ];
             };
             testScript = ''
