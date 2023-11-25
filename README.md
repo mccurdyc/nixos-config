@@ -8,6 +8,9 @@
     - [For Mac](https://github.com/MatthiasBenaets/nixos-config/blob/76eea152f56e1a8f4c908b65028e8aa2f7bafaaa/README.org#nix-darwin-installation-guide)
 - [cors/nixos-config](https://github.com/cor/nixos-config/blob/3156d0ca560a8561187b0f4ab3cb25bbbb4ddc9f/flake.nix#L62)
     - Shared modules
+- [ryan4yin/nix-config](https://github.com/ryan4yin/nix-config/tree/main)
+    - Shared / re-usable modules for testing
+    - https://nixos-and-flakes.thiscute.world/nixos-with-flakes/modularize-the-configuration
 - [mitchellh/nixos-config](https://github.com/mitchellh/nixos-config)
     - Single `lib/mkSystem.nix` shared across nixos and nix-darwin
 - [phamann/nixos-config](https://github.com/phamann/nixos-config)
@@ -18,9 +21,43 @@
 
 ## References
 
-- [nix-darwin options](https://mynixos.com/options)
-    - https://daiderd.com/nix-darwin/manual/index.html
-- [nixos options](https://search.nixos.org/options)
+### NixOS
+
+- https://nixos.org/manual/nixos/stable/
+- https://search.nixos.org/options
+    - Searching configuration options
+- https://nixos.org/manual/nixos/stable/options
+    - Configuration options
+
+### Nixpkgs
+
+- https://nixos.org/manual/nixpkgs/stable/
+- https://search.nixos.org/packages
+
+### Nix-Darwin
+
+- https://daiderd.com/nix-darwin/manual/index.html
+    - Configuration options
+
+### Home-manager
+
+- https://nix-community.github.io/home-manager/
+    - Different section for standalone, nix-darwin and nixos.
+    - Different section for ^^, but with flakes!
+- https://nix-community.github.io/home-manager/options.html
+    - Configuration options
+
+###  Nix
+
+- https://nixos.org/manual/nix/stable/
+
+### Other
+
+- https://nix.dev/
+- https://nixos.wiki/
+- https://zero-to-nix.com/
+- https://lazamar.co.uk/nix-versions/?channel=nixpkgs-unstable&package=terraform
+    - Finding a nixpkgs hash for a binary version
 
 ## Installation Docs
 
@@ -46,7 +83,7 @@ sudo nixos-rebuild switch --flake '.#fgnix'
 ### Update Flake
 
 ```bash
-nix flake update
+nix flake update --commit-lock-file
 ```
 
 ### Formatting
@@ -71,5 +108,5 @@ nix build '.#fgnix'
 nix build '.#packages.x86_64-linux.fgnix.driver'
 ./result/bin/nixos-test-driver --interactive
 (repl) fgnix.start()
-(repl) fgnix.shell_interactive()
+(repl) fgnix.shell_interact()
 ```
