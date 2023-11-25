@@ -25,7 +25,7 @@
               ./modules/nixos
             ];
             system = "x86_64-linux";
-            home-module = import ./home-modules/nixos;
+            home-module = ./home-modules/nixos;
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = {
               user = "mccurdyc";
