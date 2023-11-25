@@ -1,4 +1,6 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+
+{
   boot.growPartition = true;
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
   boot.initrd.kernelModules = [ "virtio_scsi" ];
@@ -10,7 +12,13 @@
     options kvm ignore_msrs=1
   '';
 
-  boot.loader.grub.device = "/dev/sda";
+  # Generate a GRUB menu.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 0;
+
+  # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
   boot.loader.grub.configurationLimit = 0;
 
   fileSystems."/" = {
