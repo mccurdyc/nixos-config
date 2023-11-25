@@ -4,6 +4,7 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.statix
     pkgs.nixpkgs-fmt
+    pkgs.google-cloud-sdk
     pkgs-unstable.nixd
   ];
 }
