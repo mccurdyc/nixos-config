@@ -20,31 +20,27 @@
           mkSystem = import ./lib/mkSystem.nix;
 
           fgnixArgs = {
+            system = "x86_64-linux";
             nixos-modules = [
               ./hosts/fgnix
               ./modules/nixos
             ];
-            system = "x86_64-linux";
             home-module = ./home-modules/nixos;
             # passed to every module and home-module (via extraSpecialArgs)
-            specialArgs = {
-              user = "mccurdyc";
-            };
+            specialArgs = { user = "mccurdyc"; };
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
+            system = "aarch64-darwin";
+            darwin = true;
             darwin-modules = [
               ./hosts/faamac
               ./modules/darwin
             ];
-            system = "aarch64-darwin";
-            home-module = import ./home-modules/darwin;
-            darwin = true;
+            home-module = ./home-modules/darwin;
             # passed to every module and home-module (via extraSpecialArgs)
-            specialArgs = {
-              user = "mccurdyc";
-            };
+            specialArgs = { user = "mccurdyc"; };
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
         in

@@ -27,7 +27,7 @@ systemFn {
       home-manager.useUserPackages = true;
 
       home-manager.extraSpecialArgs = extendedSpecialArgs;
-      home-manager.users."${specialArgs.user}" = home-module;
+      home-manager.users."${specialArgs.user}" = import home-module;
     }
   ];
 }
