@@ -29,10 +29,11 @@
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   # https://nixos.wiki/wiki/Bootloader#Keeping_kernels.2Finitrd_on_the_main_partition
+  # Generate a GRUB menu.
+  # boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.device = "nodev";
   boot.loader.timeout = 0;
 
   # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
