@@ -74,7 +74,7 @@
 
   users.groups.google-sudoers = pkgs.lib.mkIf config.users.mutableUsers { };
 
-  boot.extraModprobeConfig = readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
+  boot.extraModprobeConfig = builtins.readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
 
   environment.etc."sysctl.d/60-gce-network-security.conf".source = "${pkgs.google-guest-configs}/etc/sysctl.d/60-gce-network-security.conf";
 
