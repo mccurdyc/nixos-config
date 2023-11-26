@@ -13,12 +13,6 @@
     autoResize = true;
   };
 
-  # Not copied
-  fileSystems."/boot" = {
-    fsType = "vfat";
-    device = "/dev/disk/by-label/UEFI";
-  };
-
   # This allows an instance to be created with a bigger root filesystem
   # than provided by the machine image.
   boot.growPartition = true;
