@@ -3,7 +3,6 @@
 {
   # Copied - https://github.com/NixOS/nixpkgs/blob/2b6fb7ef660f0cae356322842bca5ea4e5e12efd/nixos/modules/virtualisation/google-compute-config.nix
   imports = [
-    (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
@@ -31,9 +30,9 @@
   # https://nixos.wiki/wiki/Bootloader#Keeping_kernels.2Finitrd_on_the_main_partition
   # Generate a GRUB menu.
   # boot.loader.grub.device = "/dev/sda";
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.timeout = 0;
 
   # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
