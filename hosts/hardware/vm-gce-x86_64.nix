@@ -13,7 +13,7 @@
     autoResize = true;
   };
 
-  fileSystems."/boot/efi" = {
+  fileSystems."/boot" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI"; # done automatically
   };
@@ -28,12 +28,14 @@
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   # Generate a GRUB menu.
-  boot.loader.grub.device = "/dev/sda";
+  # boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 0;
 
   # Don't put old configurations in the GRUB menu.  The user has no
   # way to select them anyway.
-  boot.loader.systemd-boot.configurationLimit = 0;
   boot.loader.grub.configurationLimit = 0;
 
   #  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
