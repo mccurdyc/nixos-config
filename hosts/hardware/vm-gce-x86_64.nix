@@ -68,10 +68,6 @@
     { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
   ];
 
-  security.sudo-rs.extraRules = pkgs.lib.mkIf config.users.mutableUsers [
-    { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
-  ];
-
   users.groups.google-sudoers = pkgs.lib.mkIf config.users.mutableUsers { };
 
   boot.extraModprobeConfig = builtins.readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
