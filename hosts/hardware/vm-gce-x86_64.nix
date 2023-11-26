@@ -83,7 +83,7 @@
     useradd_cmd = useradd -m -s /run/current-system/sw/bin/bash -p * {user}
 
     [Daemons]
-    accounts_daemon = ${boolToString config.users.mutableUsers}
+    accounts_daemon = ${pkgs.lib.boolToString config.users.mutableUsers}
 
     [InstanceSetup]
     # Make sure GCE image does not replace host key that NixOps sets.
