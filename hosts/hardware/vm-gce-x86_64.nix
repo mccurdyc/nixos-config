@@ -1,25 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  boot.growPartition = true;
-  boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
-  boot.initrd.kernelModules = [ "virtio_scsi" ];
-  boot.kernelModules = [ "virtio_pci" "virtio_net" "kvm" ];
-
-  boot.extraModprobeConfig = ''
-    options kvm_intel nested=1
-    options kvm_intel emulate_invalid_guest_state=0
-    options kvm ignore_msrs=1
-  '';
-
-  # Generate a GRUB menu.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 1;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 0;
-
-  # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
-  boot.loader.grub.configurationLimit = 0;
+  # Copied - https://github.com/NixOS/nixpkgs/blob/2b6fb7ef660f0cae356322842bca5ea4e5e12efd/nixos/modules/virtualisation/google-compute-config.nix
+  imports = [
+    (modulesPath + "/profiles/headless.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
   fileSystems."/" = {
     fsType = "ext4";
@@ -27,10 +13,27 @@
     autoResize = true;
   };
 
+  # Not copied
   fileSystems."/boot" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI";
   };
+
+  # This allows an instance to be created with a bigger root filesystem
+  # than provided by the machine image.
+  boot.growPartition = true;
+
+  # Trusting google-compute-config.nix
+  boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
+  boot.initrd.kernelModules = [ "virtio_scsi" ];
+  boot.kernelModules = [ "virtio_pci" "virtio_net" ];
+
+  # Generate a GRUB menu.
+  boot.loader.grub.device = "/dev/sda";
+  boot.loader.timeout = 0;
+
+  # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
+  boot.loader.grub.configurationLimit = 0;
 
   # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
   # instance or project level
@@ -58,23 +61,37 @@
     restartTriggers = [ config.environment.etc."default/instance_configs.cfg".source ];
     path = lib.optional config.users.mutableUsers pkgs.shadow;
   };
-
   systemd.services.google-startup-scripts.wantedBy = [ "multi-user.target" ];
   systemd.services.google-shutdown-scripts.wantedBy = [ "multi-user.target" ];
 
-  users.groups.google-sudoers = lib.mkIf config.users.mutableUsers { };
+  security.sudo.extraRules = mkIf config.users.mutableUsers [
+    { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
+  ];
+
+  security.sudo-rs.extraRules = mkIf config.users.mutableUsers [
+    { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
+  ];
+
+  users.groups.google-sudoers = mkIf config.users.mutableUsers { };
+
+  boot.extraModprobeConfig = readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
 
   environment.etc."sysctl.d/60-gce-network-security.conf".source = "${pkgs.google-guest-configs}/etc/sysctl.d/60-gce-network-security.conf";
+
   environment.etc."default/instance_configs.cfg".text = ''
     [Accounts]
     useradd_cmd = useradd -m -s /run/current-system/sw/bin/bash -p * {user}
+
     [Daemons]
-    accounts_daemon = ${lib.boolToString config.users.mutableUsers}
+    accounts_daemon = ${boolToString config.users.mutableUsers}
+
     [InstanceSetup]
     # Make sure GCE image does not replace host key that NixOps sets.
     set_host_keys = false
+
     [MetadataScripts]
     default_shell = ${pkgs.stdenv.shell}
+
     [NetworkInterfaces]
     dhclient_script = ${pkgs.google-guest-configs}/bin/google-dhclient-script
     # We set up network interfaces declaratively.
