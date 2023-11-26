@@ -14,7 +14,7 @@
   };
 
   # Not copied
-  fileSystems."/boot" = {
+  fileSystems."/boot/efi" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI";
   };
@@ -28,11 +28,11 @@
   boot.initrd.kernelModules = [ "virtio_scsi" ];
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
-  # Generate a GRUB menu.
-  # boot.loader.grub.device = "/dev/sda";
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 1;
+  # https://nixos.wiki/wiki/Bootloader#Keeping_kernels.2Finitrd_on_the_main_partition
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev";
   boot.loader.timeout = 0;
 
   # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
