@@ -1,7 +1,7 @@
 { ... }:
 
 {
-    networking = {
-      firewall.enable = false;
-    }
+  networking = {
+    firewall.enable = false;
+  };
 }
