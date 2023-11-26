@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, pkgs, modulesPath, ... }:
 
 {
   # Copied - https://github.com/NixOS/nixpkgs/blob/2b6fb7ef660f0cae356322842bca5ea4e5e12efd/nixos/modules/virtualisation/google-compute-config.nix
@@ -59,20 +59,20 @@
   systemd.services.google-guest-agent = {
     wantedBy = [ "multi-user.target" ];
     restartTriggers = [ config.environment.etc."default/instance_configs.cfg".source ];
-    path = lib.optional config.users.mutableUsers pkgs.shadow;
+    path = pkgs.lib.optional config.users.mutableUsers pkgs.shadow;
   };
   systemd.services.google-startup-scripts.wantedBy = [ "multi-user.target" ];
   systemd.services.google-shutdown-scripts.wantedBy = [ "multi-user.target" ];
 
-  security.sudo.extraRules = mkIf config.users.mutableUsers [
+  security.sudo.extraRules = pkgs.lib.mkIf config.users.mutableUsers [
     { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
   ];
 
-  security.sudo-rs.extraRules = mkIf config.users.mutableUsers [
+  security.sudo-rs.extraRules = pkgs.lib.mkIf config.users.mutableUsers [
     { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
   ];
 
-  users.groups.google-sudoers = mkIf config.users.mutableUsers { };
+  users.groups.google-sudoers = pkgs.lib.mkIf config.users.mutableUsers { };
 
   boot.extraModprobeConfig = readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
 
