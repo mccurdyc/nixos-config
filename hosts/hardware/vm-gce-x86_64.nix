@@ -3,6 +3,7 @@
 {
   # Copied - https://github.com/NixOS/nixpkgs/blob/2b6fb7ef660f0cae356322842bca5ea4e5e12efd/nixos/modules/virtualisation/google-compute-config.nix
   imports = [
+    (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
@@ -13,7 +14,7 @@
   };
 
   # Not copied
-  fileSystems."/boot/efi" = {
+  fileSystems."/boot" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI";
   };
@@ -27,18 +28,15 @@
   boot.initrd.kernelModules = [ "virtio_scsi" ];
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
-  # https://nixos.wiki/wiki/Bootloader#Keeping_kernels.2Finitrd_on_the_main_partition
   # Generate a GRUB menu.
-  # boot.loader.grub.device = "/dev/sda";
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.device = "/dev/sda";
   boot.loader.timeout = 0;
 
-  # Don't put old configurations in the GRUB menu.  The user has no way to select them anyway.
+  # Don't put old configurations in the GRUB menu.  The user has no
+  # way to select them anyway.
   boot.loader.grub.configurationLimit = 0;
 
-  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
+  #  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
   # instance or project level
   security.googleOsLogin.enable = true;
 
