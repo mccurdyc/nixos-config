@@ -13,6 +13,11 @@
     autoResize = true;
   };
 
+  fileSystems."/boot/efi" = {
+    fsType = "vfat";
+    device = "/dev/disk/by-label/UEFI"; # done automatically
+  };
+
   # This allows an instance to be created with a bigger root filesystem
   # than provided by the machine image.
   boot.growPartition = true;
@@ -28,6 +33,7 @@
 
   # Don't put old configurations in the GRUB menu.  The user has no
   # way to select them anyway.
+  boot.loader.systemd-boot.configurationLimit = 0;
   boot.loader.grub.configurationLimit = 0;
 
   #  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
