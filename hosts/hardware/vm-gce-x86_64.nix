@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 
 {
   # Copied - https://github.com/NixOS/nixpkgs/blob/2b6fb7ef660f0cae356322842bca5ea4e5e12efd/nixos/modules/virtualisation/google-compute-config.nix
