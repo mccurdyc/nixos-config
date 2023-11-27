@@ -23,7 +23,7 @@
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   # Generate a GRUB menu.
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = "nodev";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
