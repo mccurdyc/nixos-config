@@ -23,14 +23,13 @@
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
   # boot.loader.systemd-boot.enable = true;
-  boot.tmp.cleanOnBoot = true;
-
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.timeout = 0;
-
-  boot.loader.grub.configurationLimit = 0;
 
   #  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
   # instance or project level
