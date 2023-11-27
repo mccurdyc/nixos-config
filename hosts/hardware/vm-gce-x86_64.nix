@@ -1,4 +1,4 @@
-{ ... }:
+{ disko, ... }:
 
 {
   imports = [
@@ -14,8 +14,9 @@
     efiSupport = true;
     enable = true;
     fsIdentifier = "uuid";
-    version = 2;
   };
+
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "sd_mod" ];
 

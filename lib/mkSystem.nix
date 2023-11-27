@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-module, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
+{ nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-module, disko, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
 
 let
   systemFn =
@@ -13,7 +13,7 @@ let
 
   pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
   pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable; };
+  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable disko; };
 in
 
 systemFn {
