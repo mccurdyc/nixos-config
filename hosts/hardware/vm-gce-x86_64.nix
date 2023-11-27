@@ -12,26 +12,24 @@
     device = "/dev/disk/by-label/nixos";
   };
 
-  # fileSystems."/boot/efi" = {
-  #   fsType = "vfat";
-  #   device = "/dev/disk/by-label/UEFI"; # done automatically
-  # };
+  fileSystems."/boot/efi" = {
+    fsType = "vfat";
+    device = "/dev/disk/by-label/UEFI"; # done automatically
+  };
 
   # Trusting google-compute-config.nix
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
   boot.initrd.kernelModules = [ "virtio_scsi" ];
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
-  # Generate a GRUB menu.
-  # boot.loader.grub.device = "nodev";
-  # boot.loader.efi.canTouchEfiVariables = false;
-  # boot.loader.grub.efiSupport = true;
+  boot.loader.grub.enable = false;
+  boot.loader.systemd-boot.enable = true;
+  boot.initrd.systemd.enable = true;
+  boot.tmp.cleanOnBoot = true;
+
+  boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.timeout = 0;
-
-  # Don't put old configurations in the GRUB menu.  The user has no
-  # way to select them anyway.
-  boot.loader.grub.configurationLimit = 0;
 
   #  # enable OS Login. This also requires setting enable-oslogin=TRUE metadata on
   # instance or project level
