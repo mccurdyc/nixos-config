@@ -11,9 +11,13 @@
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
@@ -28,7 +32,7 @@
             home-module = ./home-modules/nixos;
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = { user = "mccurdyc"; };
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
@@ -95,7 +99,7 @@
                 {
                   config._module.args = {
                     user = "mccurdyc";
-                    inherit pkgs-unstable;
+                    inherit pkgs-unstable disko;
                   };
                 }
               ];
