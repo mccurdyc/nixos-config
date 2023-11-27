@@ -10,17 +10,12 @@
   fileSystems."/" = {
     fsType = "ext4";
     device = "/dev/disk/by-label/nixos";
-    autoResize = true;
   };
 
   fileSystems."/boot/efi" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI"; # done automatically
   };
-
-  # This allows an instance to be created with a bigger root filesystem
-  # than provided by the machine image.
-  boot.growPartition = true;
 
   # Trusting google-compute-config.nix
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
