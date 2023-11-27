@@ -12,10 +12,10 @@
     device = "/dev/disk/by-label/nixos";
   };
 
-  fileSystems."/boot/efi" = {
-    fsType = "vfat";
-    device = "/dev/disk/by-label/UEFI"; # done automatically
-  };
+  # fileSystems."/boot/efi" = {
+  #   fsType = "vfat";
+  #   device = "/dev/disk/by-label/UEFI"; # done automatically
+  # };
 
   # Trusting google-compute-config.nix
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
@@ -23,9 +23,9 @@
   boot.kernelModules = [ "virtio_pci" "virtio_net" ];
 
   # Generate a GRUB menu.
-  boot.loader.grub.device = "nodev";
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.device = "nodev";
+  # boot.loader.efi.canTouchEfiVariables = false;
+  # boot.loader.grub.efiSupport = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.timeout = 0;
 
