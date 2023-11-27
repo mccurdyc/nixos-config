@@ -18,8 +18,6 @@
 
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  boot.initrd.enable = false;
-
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "sd_mod" ];
 
   networking.useDHCP = true;
