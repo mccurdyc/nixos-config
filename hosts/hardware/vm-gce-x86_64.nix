@@ -13,7 +13,7 @@
     autoResize = true;
   };
 
-  fileSystems."/boot" = {
+  fileSystems."/boot/efi" = {
     fsType = "vfat";
     device = "/dev/disk/by-label/UEFI"; # done automatically
   };
