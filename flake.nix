@@ -45,7 +45,7 @@
             home-module = ./home-modules/darwin;
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = { user = "mccurdyc"; };
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
         in
         {
