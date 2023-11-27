@@ -31,6 +31,7 @@
   # boot.loader.grub.device = "/dev/sda";
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 0;
 
