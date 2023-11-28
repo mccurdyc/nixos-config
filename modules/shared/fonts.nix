@@ -4,9 +4,8 @@
   fonts = {
     fontDir.enable = true;
 
-    fonts = with pkgs; [
+    packages = with pkgs; [
       # icon fonts
-      material-design-icons
       font-awesome
 
       # nerdfonts

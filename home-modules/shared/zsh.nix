@@ -4,7 +4,7 @@
     defaultKeymap = "viins";
     enableCompletion = true;
     enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     shellAliases = {
       tree = "tree --dirsfirst --noreport -ACF";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";

@@ -3,7 +3,6 @@
 {
   i18n.defaultLocale = "en_US.UTF-8";
   security.sudo.wheelNeedsPassword = false;
-  services.xserver.desktopManager.xterm.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
