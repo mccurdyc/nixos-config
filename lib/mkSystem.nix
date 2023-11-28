@@ -13,7 +13,7 @@ let
 
   pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
   pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable disko; };
+  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable home-manager; };
 in
 
 systemFn {
@@ -21,12 +21,13 @@ systemFn {
   specialArgs = extendedSpecialArgs;
   modules = darwin-modules ++ nixos-modules ++ [
 
-    (homeFn {
+    homeFn
+    {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
 
       home-manager.extraSpecialArgs = extendedSpecialArgs;
       home-manager.users."${specialArgs.user}" = import home-module;
-    })
+    }
   ];
 }

@@ -32,7 +32,7 @@
             home-module = ./home-modules/nixos;
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = { user = "mccurdyc"; };
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
@@ -45,7 +45,7 @@
             home-module = ./home-modules/darwin;
             # passed to every module and home-module (via extraSpecialArgs)
             specialArgs = { user = "mccurdyc"; };
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager; # TODO - consider using 'inputs'
           };
         in
         {
@@ -90,7 +90,7 @@
                   home-manager = {
                     useGlobalPkgs = true;
                     useUserPackages = true;
-                    extraSpecialArgs = { user = "mccurdyc"; };
+                    extraSpecialArgs = { user = "mccurdyc"; }; # WRONG needs pkgs, etc.
                     users.mccurdyc = import ./home-modules/nixos;
                   };
                 }
@@ -99,7 +99,7 @@
                 {
                   config._module.args = {
                     user = "mccurdyc";
-                    inherit pkgs-unstable disko;
+                    inherit pkgs-unstable;
                   };
                 }
               ];
