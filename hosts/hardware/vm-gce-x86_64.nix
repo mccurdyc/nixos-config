@@ -48,7 +48,6 @@
   systemd.services.google-startup-scripts.wantedBy = [ "multi-user.target" ];
 
   users.groups.google-sudoers = pkgs.lib.mkIf config.users.mutableUsers { };
-  '';
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "22.11";
 }
