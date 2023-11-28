@@ -21,13 +21,12 @@ systemFn {
   specialArgs = extendedSpecialArgs;
   modules = darwin-modules ++ nixos-modules ++ [
 
-    homeFn
-    {
+    (homeFn {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
 
       home-manager.extraSpecialArgs = extendedSpecialArgs;
       home-manager.users."${specialArgs.user}" = import home-module;
-    }
+    })
   ];
 }
