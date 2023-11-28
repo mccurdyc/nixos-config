@@ -27,7 +27,7 @@ with lib;
   boot.kernelModules = [ "virtio_pci" "virtio_net" "kvm" ];
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = "nodev";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.timeout = 0;
