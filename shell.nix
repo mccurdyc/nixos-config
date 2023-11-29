@@ -5,6 +5,7 @@ pkgs.mkShell {
     pkgs.statix
     pkgs.nixpkgs-fmt
     pkgs.google-cloud-sdk
+    pkgs.lua54Packages.luacheck
     pkgs-unstable.nixd
   ];
 }
