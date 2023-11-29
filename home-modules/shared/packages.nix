@@ -20,5 +20,8 @@
     tree
     unzip
     wdiff
+    zoxide
+    # arguably extras
+    nodePackages_latest.bash-language-server
   ];
 }

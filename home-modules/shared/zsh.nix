@@ -10,7 +10,7 @@
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
-      tn = "(){ tmux new-session -s $1 -c \"$(zshz -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
+      tn = "(){ tmux new-session -s $1 -c \"$(z -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
       whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
@@ -89,13 +89,10 @@
       eval "$(starship init zsh)"
 
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
-      source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
 
       source ${pkgs.fzf}/share/fzf/completion.zsh
       # NOTE: I had issues with zsh-vi-mode overwriting ^R
       source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-
-
 
       if [ -x "$(command -v stern)" ]; then
         source <(stern --completion=zsh)
@@ -112,6 +109,8 @@
       autoload -Uz compinit && compinit
 
       complete -C '/etc/profiles/per-user/mccurdyc/bin/aws_completer' aws
+
+      eval "$(zoxide init zsh)"
     '';
   };
 
