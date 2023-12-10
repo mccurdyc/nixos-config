@@ -15,6 +15,8 @@
     jq
     keychain
     lsof
+    ncurses
+    pinentry
     ripgrep
     tmux
     tree

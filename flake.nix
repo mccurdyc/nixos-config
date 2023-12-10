@@ -35,6 +35,18 @@
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
+          nucArgs = {
+            system = "x86_64-linux";
+            nixos-modules = [
+              ./hosts/nuc
+              ./modules/nixos
+            ];
+            home-module = ./home-modules/nixos;
+            # passed to every module and home-module (via extraSpecialArgs)
+            specialArgs = { user = "mccurdyc"; };
+            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+          };
+
           faamacArgs = {
             system = "aarch64-darwin";
             darwin = true;
@@ -51,6 +63,9 @@
         {
           # sudo nixos-rebuild switch --flake '.#fgnix'
           nixosConfigurations.fgnix = mkSystem (fgnixArgs);
+
+          # sudo nixos-rebuild switch --flake '.#nuc'
+          nixosConfigurations.nuc = mkSystem (nucArgs);
 
           # darwin-rebuild switch --flake '.#faamac'
           darwinConfigurations.faamac = mkSystem (faamacArgs);
