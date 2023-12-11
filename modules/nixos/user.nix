@@ -1,4 +1,4 @@
-{ pkgs, user, ... }:
+{ pkgs, user, hashedPassword, ... }:
 
 {
   programs.zsh.enable = true;
@@ -8,6 +8,7 @@
     users."${user}" = {
       isNormalUser = true;
       home = "/home/${user}";
+      hashedPassword = hashedPassword;
       extraGroups = [ "docker" "wheel" ];
       shell = pkgs.zsh;
       openssh.authorizedKeys.keys = [

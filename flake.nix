@@ -22,6 +22,7 @@
       flake =
         let
           mkSystem = import ./lib/mkSystem.nix;
+          specialArgs = { user = "mccurdyc"; hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5"; };
 
           fgnixArgs = {
             system = "x86_64-linux";
@@ -30,8 +31,7 @@
               ./modules/nixos
             ];
             home-module = ./home-modules/nixos;
-            # passed to every module and home-module (via extraSpecialArgs)
-            specialArgs = { user = "mccurdyc"; };
+            inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
@@ -42,8 +42,7 @@
               ./modules/nixos
             ];
             home-module = ./home-modules/nixos;
-            # passed to every module and home-module (via extraSpecialArgs)
-            specialArgs = { user = "mccurdyc"; };
+            inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
@@ -55,8 +54,7 @@
               ./modules/darwin
             ];
             home-module = ./home-modules/darwin;
-            # passed to every module and home-module (via extraSpecialArgs)
-            specialArgs = { user = "mccurdyc"; };
+            inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
         in
