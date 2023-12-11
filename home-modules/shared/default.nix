@@ -10,7 +10,8 @@
     ./gpg.nix
     ./packages.nix
     ./ssh.nix
-    ./tmux.nix
+    # ./tmux.nix
+    ./zellij.nix
     ./zsh.nix
   ];
 

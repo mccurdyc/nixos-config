@@ -8,9 +8,6 @@
     shellAliases = {
       tree = "tree --dirsfirst --noreport -ACF";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
-      tl = "tmux list-sessions";
-      ta = "tmux attach -t ";
-      tn = "(){ tmux new-session -s $1 -c \"$(z -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
       whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
@@ -22,6 +19,12 @@
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       k = "kubectl";
     };
+
+    envExtra = ''
+      ZELLIJ_AUTO_ATTACH=true
+      ZELLIJ_AUTO_EXIT=true
+    '';
+
     history = {
       size = 2000;
       save = 2000;

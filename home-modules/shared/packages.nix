@@ -18,11 +18,11 @@
     ncurses
     pinentry
     ripgrep
-    tmux
     tree
     unzip
     wdiff
     zoxide
+    zellij
     # arguably extras
     nodePackages_latest.bash-language-server
   ];
