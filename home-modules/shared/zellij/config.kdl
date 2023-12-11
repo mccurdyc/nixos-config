@@ -86,6 +86,7 @@ plugins {
 
 simplified_ui true
 pane_frames false
+default_layout "compact"
 
 themes:
   mccurdyc-base16-eighties:
@@ -105,7 +106,6 @@ themes:
 
 theme "mccurdyc-base16-eighties"
 
-default_layout "compact"
 copy_on_select false
 
 // layout_dir "/home/Users/mccurdyc/.config/zellij/layouts/"

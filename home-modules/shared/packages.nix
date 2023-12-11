@@ -17,12 +17,9 @@
     lsof
     ncurses
     pinentry
-    ripgrep
     tree
     unzip
     wdiff
-    zoxide
-    zellij
     # arguably extras
     nodePackages_latest.bash-language-server
   ];
