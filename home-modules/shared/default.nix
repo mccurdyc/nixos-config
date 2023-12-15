@@ -11,8 +11,8 @@
     ./packages.nix
     ./ripgrep.nix
     ./ssh.nix
-    # ./tmux.nix
-    ./zellij.nix
+    ./tmux.nix
+    # ./zellij.nix
     ./zoxide.nix
     ./zsh.nix
   ];
