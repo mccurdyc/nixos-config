@@ -7,6 +7,9 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       tree = "tree --dirsfirst --noreport -ACF";
+      tl = "tmux list-sessions";
+      ta = "tmux attach -t ";
+      tn = "(){ tmux new-session -s $1 -c \"$(z -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
@@ -20,10 +23,10 @@
       k = "kubectl";
     };
 
-    envExtra = ''
-      ZELLIJ_AUTO_ATTACH=true
-      ZELLIJ_AUTO_EXIT=true
-    '';
+    # envExtra = ''
+    #   ZELLIJ_AUTO_ATTACH=true
+    #   ZELLIJ_AUTO_EXIT=true
+    # '';
 
     history = {
       size = 2000;
