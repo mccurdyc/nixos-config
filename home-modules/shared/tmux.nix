@@ -20,7 +20,7 @@
       # Undercurl
       # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
       # https://github.com/alacritty/alacritty/issues/109#issuecomment-507026155
-      set -ag terminal-overrides ",alacritty:RGB,xterm-256color:RGB"
+      set -ag terminal-overrides "xterm-256color:RGB"
       set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
       set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
@@ -29,7 +29,7 @@
       set -g default-shell "${pkgs.zsh}/bin/zsh"
 
       # set -s default-terminal 'xterm-256color'
-      set-option -ga terminal-overrides ",alacritty:Tc,xterm-256color:Tc"
+      set-option -ga terminal-overrides "xterm-256color:Tc"
 
       # This tmux statusbar config was created by tmuxline.vim
       # on Tue, 24 Dec 2019

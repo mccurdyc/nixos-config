@@ -23,10 +23,11 @@
       k = "kubectl";
     };
 
-    # envExtra = ''
-    #   ZELLIJ_AUTO_ATTACH=true
-    #   ZELLIJ_AUTO_EXIT=true
-    # '';
+    envExtra = ''
+      TERM=xterm-256color
+      #   ZELLIJ_AUTO_ATTACH=true
+      #   ZELLIJ_AUTO_EXIT=true
+    '';
 
     history = {
       size = 2000;
