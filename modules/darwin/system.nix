@@ -20,7 +20,7 @@
 
       # customize dock
       dock = {
-        autohide = true; # automatically hide and show the dock
+        autohide = false; # automatically hide and show the dock
         show-recents = false; # do not show recent apps in dock
         # do not automatically rearrange spaces based on most recent use.
         mru-spaces = false;

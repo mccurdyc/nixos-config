@@ -17,6 +17,7 @@
       "slack"
       "spotify"
       "zoom"
+      "signal"
     ];
   };
 }
