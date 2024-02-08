@@ -617,6 +617,7 @@ require("lazy").setup({
                     end
                 end,
                 sources = {
+                    null_ls.builtins.diagnostics.cue_fmt,
                     null_ls.builtins.diagnostics.hadolint,
                     null_ls.builtins.diagnostics.jsonlint,
                     null_ls.builtins.diagnostics.luacheck,
@@ -633,6 +634,7 @@ require("lazy").setup({
                     }), -- null_ls.builtins.formatting.beautysh,
                     -- null_ls.builtins.formatting.buf,
                     -- null_ls.builtins.formatting.cbfmt,
+                    null_ls.builtins.formatting.cue_fmt,
                     null_ls.builtins.formatting.fixjson,
                     null_ls.builtins.formatting.gofumpt,
                     null_ls.builtins.formatting.goimports,
