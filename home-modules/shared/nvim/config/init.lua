@@ -32,7 +32,6 @@ cmd("filetype plugin indent on")
 
 autocmd("misc_aucmds", {
     [[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
-    [[FileType yaml setl indentkeys-=<:>]]
 }, true)
 
 g.loaded_python_provider = 0
@@ -58,7 +57,7 @@ opt("shiftround", true)
 opt("lazyredraw", true)
 opt("colorcolumn", "80", window)
 opt("hidden", true)
-opt("list", true)
+opt("list", false)
 opt("termguicolors", true)
 opt("syntax", "enable")
 opt("hlsearch", false)
