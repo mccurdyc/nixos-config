@@ -8,6 +8,7 @@
       signByDefault = true;
     };
     extraConfig = {
+      help = { autoCorrect = 5; }; # Run guessed command after 500ms if there is only one reasonable guess
       init = { defaultBranch = "main"; };
       core = {
         excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
