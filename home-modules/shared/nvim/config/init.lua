@@ -147,7 +147,7 @@ require("lazy").setup({
         event = {"CmdlineEnter"},
         ft = {"go", 'gomod'},
         build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-    }, { 
+    }, {
 	"rust-lang/rust.vim", ft = "rs"
     }, {
             "nvim-neo-tree/neo-tree.nvim",
@@ -224,10 +224,10 @@ require("lazy").setup({
                             ["x"] = "open_split", -- split_with_window_picker
                             ["v"] = "open_vsplit", -- vsplit_with_window_picker
                             ["w"] = "open_with_window_picker",
-                            ["bs"] = "close_node", -- close_all_subnodes
+                            ["<bs>"] = "close_node", -- close_all_subnodes
                             ["zM"] = "close_all_nodes",
                             ["O"] = "expand_all_nodes",
-                            ["a"] = { 
+                            ["a"] = {
                                 "add",
                                 -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
                                 -- some commands may take optional config options, see `:h neo-tree-mappings` for details
@@ -240,9 +240,8 @@ require("lazy").setup({
                             ["r"] = "rename",
                             ["y"] = "copy_to_clipboard",
                             ["p"] = "paste_from_clipboard",
-                            ["r"] = "rename",
-                            ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-                            ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+                            ["c"] = "copy",
+                            ["m"] = "move",
                             ["q"] = "close_window",
                             ["R"] = "refresh",
                             ["?"] = "show_help",
