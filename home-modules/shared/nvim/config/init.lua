@@ -246,7 +246,6 @@ require("lazy").setup({
                             ["R"] = "refresh",
                             ["?"] = "show_help",
                             ["<"] = "navigate_up",
-                            [">"] = "navigate_down",
                             ["."] = "set_root",
                             ["H"] = "toggle_hidden",
                             ["/"] = "fuzzy_finder",
