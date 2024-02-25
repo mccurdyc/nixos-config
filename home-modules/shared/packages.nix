@@ -16,6 +16,7 @@
     keychain
     lsof
     ncurses
+    ookla-speedtest
     pinentry
     tree
     unzip
