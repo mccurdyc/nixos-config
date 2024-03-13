@@ -9,7 +9,7 @@
       };
 
       font = {
-        normal.family = "FiraCode Nerd Font";
+        normal.family = "Space Mono";
         bold = { style = "Bold"; };
         size = 22;
       };
