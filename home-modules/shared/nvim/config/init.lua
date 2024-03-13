@@ -221,6 +221,7 @@ require("lazy").setup({
                         mappings = {
                             ["<cr>"] = "toggle_node",
                             ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
+                            ["o"] = {"open",    nowait = false },
                             ["x"] = "open_split", -- split_with_window_picker
                             ["v"] = "open_vsplit", -- vsplit_with_window_picker
                             ["w"] = "open_with_window_picker",
