@@ -601,7 +601,7 @@ require("lazy").setup({
             -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             local servers = {
                 "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint",
-                "nixd"
+                "nil"
             }
             -- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
             local function get_forced_lsp_capabilities()
