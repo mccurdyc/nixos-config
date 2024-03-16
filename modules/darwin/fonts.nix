@@ -2,7 +2,7 @@
 
 {
   fonts = {
-    packages = with pkgs; [
+    fonts = with pkgs; [
       # icon fonts
       font-awesome
 
