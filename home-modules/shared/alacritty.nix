@@ -9,7 +9,7 @@
       };
 
       font = {
-        normal.family = "Space Mono";
+        normal.family = "SpaceMono Nerd Font";
         bold = { style = "Bold"; };
         size = 22;
       };
