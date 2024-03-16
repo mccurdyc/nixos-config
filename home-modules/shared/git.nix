@@ -38,6 +38,8 @@
       };
       difftool."nvimdiff" = {
         cmd = "nvim -d $LOCAL $REMOTE";
+        # Be able to abort all diffs with `:cq` or `:cquit`
+        trustExitCode = true;
       };
     };
     aliases = {
