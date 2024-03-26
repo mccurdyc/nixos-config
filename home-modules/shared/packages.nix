@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     _1password
     bat
+    cloc
     dig
     fd
     fzf
