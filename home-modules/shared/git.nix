@@ -49,7 +49,7 @@
       ls = "log --pretty=format:\"%C(green)%h %C(yellow)[%ad]%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative";
       ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
       d = "difftool";
-      cleanbranches = "git branch | grep -v 'main' | xargs git branch -D";
+      cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
       m = "mergetool";
     };
     delta = {
