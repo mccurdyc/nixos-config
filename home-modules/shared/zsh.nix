@@ -6,7 +6,6 @@
     enableAutosuggestions = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-      tree = "tree --dirsfirst --noreport -ACF";
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
       tn = "(){ tmux new-session -s $1 -c \"$(z -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
