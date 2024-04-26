@@ -12,6 +12,8 @@
     # https://nixcademy.com/2024/03/08/running-nixos-integration-tests-on-macos/
     # Run the linux-builder as a background service
     # Confirm with - 'sudo launchctl list org.nixos.linux-builder'
+    # Confirm with - 'nix -L build github:tfc/nixos-integration-test-example'
+    # Confirm with - 'nix -L build 'nixpkgs#legacyPackages.aarch64-darwin.nixosTests.login''
     # To tune the builder, see - https://nixcademy.com/2024/02/12/macos-linux-builder/
     linux-builder.enable = true;
 
