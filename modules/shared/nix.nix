@@ -24,6 +24,9 @@
       allowed-users = [ user ];
       trusted-users = [ "root" user ];
 
+      # https://nixcademy.com/2024/02/12/macos-linux-builder/
+      extra-trusted-users = [ user ];
+
       substituters = [
         "https://union.cachix.org/"
         "https://nix-community.cachix.org/"

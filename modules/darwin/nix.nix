@@ -13,5 +13,10 @@
     # Confirm with - 'nix show-config system-features'
     # Automatically detected on nix 2.19
     system-features = "nixos-test apple-virt";
+
+    # https://nixcademy.com/2024/02/12/macos-linux-builder/
+    trusted-users = [
+      "@admin" # @admin means all users in the wheel group.
+    ];
   };
 }
