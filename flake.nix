@@ -15,9 +15,12 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lvk = {
+      url = "git+ssh://git@github.com/fastly/2023-hackathon-nixos-lvk";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, lvk, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
@@ -56,6 +59,7 @@
             home-module = ./home-modules/darwin;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            # TODO: add lvk so that my mac can use the devbox for nix build, etc.
           };
         in
         {
