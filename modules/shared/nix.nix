@@ -15,7 +15,21 @@
     # Confirm with - 'nix -L build github:tfc/nixos-integration-test-example'
     # Confirm with - 'nix -L build 'nixpkgs#legacyPackages.aarch64-darwin.nixosTests.login''
     # To tune the builder, see - https://nixcademy.com/2024/02/12/macos-linux-builder/
-    linux-builder.enable = true;
+    linux-builder = {
+      enable = true;
+      ephemeral = true;
+      maxJobs = 4;
+      config = {
+        # defaults are 1 CPU core, 3GB RAM, and 20GB disk
+        virtualisation = {
+          darwin-builder = {
+            diskSize = 40 * 1024;
+            memorySize = 8 * 1024;
+          };
+          cores = 6;
+        };
+      };
+    };
 
     settings = {
       sandbox = "relaxed";
