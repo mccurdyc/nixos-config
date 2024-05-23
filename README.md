@@ -77,7 +77,7 @@ darwin-rebuild switch --flake '.#faamac'
 
 ```bash
 sudo nixos-rebuild switch --flake '.#fgnix'
-# sudo nixos-rebuild switch --flake 'git+https://github.com/mccurdyc/nixos-config.git#fgnix'
+# nixos-rebuild switch --flake 'github:mccurdyc/nixos-config#fgnix'
 ```
 
 ### Update Flake
