@@ -5,11 +5,11 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-darwin = {
       url = "github:lnl7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     disko = {
       url = "github:nix-community/disko";
@@ -17,12 +17,15 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
           mkSystem = import ./lib/mkSystem.nix;
-          specialArgs = { user = "mccurdyc"; hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5"; };
+          specialArgs = {
+            user = "mccurdyc";
+            hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5";
+          };
 
           fgnixArgs = {
             system = "x86_64-linux";
@@ -61,13 +64,13 @@
         in
         {
           # sudo nixos-rebuild switch --flake '.#fgnix'
-          nixosConfigurations.fgnix = mkSystem (fgnixArgs);
+          nixosConfigurations.fgnix = mkSystem fgnixArgs;
 
           # sudo nixos-rebuild switch --flake '.#nuc'
-          nixosConfigurations.nuc = mkSystem (nucArgs);
+          nixosConfigurations.nuc = mkSystem nucArgs;
 
           # darwin-rebuild switch --flake '.#faamac'
-          darwinConfigurations.faamac = mkSystem (faamacArgs);
+          darwinConfigurations.faamac = mkSystem faamacArgs;
         };
 
       systems = [
