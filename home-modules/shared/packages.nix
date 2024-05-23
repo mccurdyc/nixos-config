@@ -12,6 +12,7 @@
     go
     gopls
     gron
+    gitrs
     htop
     jq
     keychain
