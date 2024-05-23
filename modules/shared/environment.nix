@@ -12,11 +12,11 @@
       gnumake
       gnupg
       mosh
-      neovim
       openssl
       ripgrep
       wget
       zsh
+      pkgs-unstable.neovim
       pkgs-unstable.tailscale
     ];
 

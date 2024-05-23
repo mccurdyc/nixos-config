@@ -2,12 +2,14 @@ local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 
 local function opt(o, v, scopes)
-    scopes = scopes or {o_s}
-    for _, s in ipairs(scopes) do s[o] = v end
+	scopes = scopes or { o_s }
+	for _, s in ipairs(scopes) do
+		s[o] = v
+	end
 end
 
-local buffer = {o, bo}
-local window = {o, wo}
+local buffer = { o, bo }
+local window = { o, wo }
 
 cmd("filetype plugin indent on")
 
@@ -49,8 +51,10 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
-    url = "git@github.com:mccurdyc/base16-vim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function() vim.cmd([[colorscheme base16-eighties-minimal]]) end
+	url = "git@github.com:mccurdyc/base16-vim",
+	lazy = false, -- make sure we load this during startup if it is your main colorscheme
+	priority = 1000, -- make sure to load this before all the other start plugins
+	config = function()
+		vim.cmd([[colorscheme base16-eighties-minimal]])
+	end,
 })
