@@ -80,7 +80,7 @@ opt("showmode", false)
 opt("foldminlines", 1)
 opt("foldmethod", "indent")
 opt("foldlevelstart", 20)
-opt("foldenable", "true")
+opt("foldenable", true)
 
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true }
