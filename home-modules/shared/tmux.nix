@@ -7,7 +7,7 @@
     newSession = true;
     keyMode = "vi";
     customPaneNavigationAndResize = true;
-    terminal = "xterm-256color";
+    terminal = "screen-256color";
     shortcut = "a";
     escapeTime = 1;
     extraConfig = ''
