@@ -6,6 +6,7 @@
     settings = {
       PasswordAuthentication = pkgs.lib.mkDefault false;
       PermitRootLogin = "prohibit-password";
+      X11Forwarding = true;
     };
   };
 }
