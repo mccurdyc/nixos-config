@@ -23,7 +23,7 @@
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
-      TERM = "xterm-256color";
+      # TERM = "screen-256color";
 
       BROWSER = "firefox";
       DOCKER_DEFAULT_PLATFORM = "linux/amd64";
