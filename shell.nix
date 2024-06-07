@@ -8,5 +8,6 @@ pkgs.mkShell {
     pkgs.google-cloud-sdk
     pkgs.lua54Packages.luacheck
     pkgs-unstable.nil
+    pkgs.stylua
   ];
 }
