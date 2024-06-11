@@ -1,9 +1,9 @@
-{ pkgs, pkgs-unstable, ... }: {
+{ pkgs, ... }: {
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
     enableCompletion = true;
-    autosuggestion.enable = true;
+    autosuggestion.enable = false; # This breaks FZF_CTRL_T_COMMAND
     syntaxHighlighting.enable = true;
     shellAliases = {
       tl = "tmux list-sessions";
