@@ -48,7 +48,8 @@
       ll = "log --graph --all --decorate --oneline";
       ls = "log --pretty=format:\"%C(green)%h %C(yellow)[%ad]%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative";
       ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
-      d = "difftool";
+      # https://www.perplexity.ai/search/use-parameter-in-pWvp0eDVRCC6ZJi5aUJsCg
+      diff-branch = "!f() { nvim -c \":DiffviewOpen origin/$1...HEAD\"; }; f";
       cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
       m = "mergetool";
     };
