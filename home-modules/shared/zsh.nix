@@ -8,7 +8,7 @@
     shellAliases = {
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
-      tn = "(){ tmux new-session -s $1 -c \"$(z -e $1)\" \\; split-window -v -p 25 \\; select-pane -t 1 ;}";
+      tn = "(){ tmux new-session -s $1 \; split-window -v -l 10 \; send-keys \"__zoxide_z $1\" Enter \; select-pane -t 1; }";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
@@ -114,7 +114,7 @@
       autoload bashcompinit && bashcompinit
       autoload -Uz compinit && compinit
 
-      complete -C '/etc/profiles/per-user/mccurdyc/bin/aws_completer' aws
+      complete -C "${pkgs.awscli2}/bin/aws_completer" aws
 
       eval "$(zoxide init zsh)"
     '';
