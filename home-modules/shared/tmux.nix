@@ -4,7 +4,7 @@
     enable = true;
     baseIndex = 0;
     clock24 = true;
-    newSession = true;
+    newSession = false;
     keyMode = "vi";
     customPaneNavigationAndResize = true;
     shortcut = "a";
