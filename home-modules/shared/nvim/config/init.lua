@@ -102,9 +102,9 @@ map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 -- }}
 
 -- Telescope
-map("n", "<leader>f", ":Telescope live_grep<CR>", opts)
-map("n", "<C-p>", ':lua require("telescope.builtin").find_files()<CR>', opts)
-map("n", "<leader>gs", ":Telescope git_files<CR>", opts)
+map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
+map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
+map("n", "<C-g>", ":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>", opts)
 
 -- LSP
 -- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
@@ -804,7 +804,7 @@ require("lazy").setup({
 					null_ls.builtins.diagnostics.staticcheck,
 					null_ls.builtins.diagnostics.statix,
 					null_ls.builtins.diagnostics.trail_space,
-					null_ls.builtins.diagnostics.todo_comments,
+					-- null_ls.builtins.diagnostics.todo_comments,
 					null_ls.builtins.diagnostics.yamllint.with({
 						extra_args = {
 							"-d",
