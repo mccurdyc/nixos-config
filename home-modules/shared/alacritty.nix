@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   programs.alacritty = {
     enable = true;
     settings = {
@@ -9,13 +9,13 @@
       scrolling = {
         # Maximum number of lines in the scrollback buffer.
         # Specifying '0' will disable scrolling.
-        history = 20000;
+        history = 100000;
       };
 
       font = {
         normal.family = "SpaceMono Nerd Font";
         bold = { style = "Bold"; };
-        size = 22;
+        size = 25;
       };
 
       window.dimensions = {
