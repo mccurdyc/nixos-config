@@ -5,6 +5,7 @@
   services.nix-daemon.enable = true;
   # nix.useDaemon = true;
   nix.gc.user = "root";
+  nix.gc.interval = { Hour = 3; Minute = 15; };
 
   nix.settings = {
     # Why?
