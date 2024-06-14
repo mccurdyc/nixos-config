@@ -104,7 +104,12 @@ map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 -- Telescope
 map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
 map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
-map("n", "<C-g>", ":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>", opts)
+map(
+	"n",
+	"<C-g>",
+	":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
+	opts
+)
 
 -- LSP
 -- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
@@ -137,7 +142,19 @@ require("lazy").setup({
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
 	"tomtom/tcomment_vim",
-	"nvim-lua/plenary.nvim",
+	"dstein64/vim-startuptime", -- nvim -c :StartupTime
+	{
+		-- DEBUGGING
+		"nvim-lua/plenary.nvim",
+		config = function()
+			local async = require("plenary.async")
+			-- https://github.com/nvim-lua/plenary.nvim?tab=readme-ov-file#plenaryprofile
+			-- require'plenary.profile'.start("profile.log", {flame = true})
+			-- code to be profiled
+			-- require'plenary.profile'.stop()
+			-- inferno-flamegraph profile.log > flame.svg
+		end,
+	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -721,9 +738,9 @@ require("lazy").setup({
 				group = true, -- group results by file
 				padding = true, -- add an extra new line on top of the list
 				indent_lines = true, -- add an indent guide below the fold icons
-				auto_open = true, -- automatically open the list when you have diagnostics
-				auto_close = true, -- automatically close the list when you have no diagnostics
-				auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+				auto_open = false, -- automatically open the list when you have diagnostics
+				auto_close = false, -- automatically close the list when you have no diagnostics
+				auto_preview = false, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
 				auto_fold = false, -- automatically fold a file trouble list at creation
 				auto_jump = { "lsp_definitions" }, -- for the given modes, automatically jump if there is only a single result
 				signs = {
