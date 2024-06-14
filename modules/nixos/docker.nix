@@ -5,8 +5,8 @@
     enable = true;
     autoPrune = {
       enable = true;
-      dates = "weekly";
-      flags = [ "--all" ];
+      dates = "daily";
+      flags = [ "--force --volumes --all" ];
     };
   };
 }

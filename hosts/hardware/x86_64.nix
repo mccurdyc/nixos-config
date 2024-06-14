@@ -9,6 +9,7 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.loader.generationsDir.enable = true;
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
@@ -25,6 +26,7 @@
 
   boot.loader.grub.enable = false;
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 2;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
