@@ -2,6 +2,10 @@
   programs.alacritty = {
     enable = true;
     settings = {
+      env = {
+        TERM = "screen-256color";
+      };
+
       scrolling = {
         # Maximum number of lines in the scrollback buffer.
         # Specifying '0' will disable scrolling.
