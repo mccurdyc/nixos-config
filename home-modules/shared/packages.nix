@@ -25,5 +25,6 @@
     tree
     unzip
     wdiff
+    zoekt
   ];
 }
