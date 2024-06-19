@@ -8,7 +8,7 @@ let
   index-dir = "${zoekt-dir}/index";
 in
 {
-  systemd.timers.zoekt-mirror-github = {
+  systemd.user.timers.zoekt-mirror-github = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "*-*-* 07:00:00"; # daily at 7AM
@@ -17,43 +17,36 @@ in
     };
   };
 
-  systemd.services.zoekt-mirror-github = {
-    path = with pkgs; [ bash "/run/wrappers" ];
+  systemd.user.services.zoekt-mirror-github = {
+    path = with pkgs; [ bash "/run/wrappers" git zoekt ];
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
     # https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#Options
     serviceConfig = {
-      Type = "oneshot";
-      User = "mccurdyc";
-      # su -c "nix shell 'nixpkgs#git' -c git clone -c core.sshCommand='ssh -i /home/mccurdyc/.ssh/fastly_rsa.pub' --bare --verbose --progress --config zoekt.archived=0 --config zoekt.github-forks=4 --config zoekt.github-stars=13 --config zoekt.github-watchers=13 --config zoekt.name=github.com/fastly/Heavenly --config zoekt.web-url=https://github.com/fastly/Heavenly --config zoekt.web-url-type=github https://github.com/fastly/Heavenly.git /home/mccurdyc/src/zoekt/repos/github.com/fastly/Heavenly.git" mccurdyc
-      # Cloning into bare repository '/home/mccurdyc/src/zoekt/repos/github.com/fastly/Heavenly.git'...
-      # Load key "/home/mccurdyc/.ssh/fastly_rsa.pub": error in libcrypto
-      # git@ssh.github.com: Permission denied (publickey).
-      # fatal: Could not read from remote repository.
-      #
-      # Please make sure you have the correct access rights
-      # and the repository exists.
-      ExecStart = "${pkgs.zoekt}/bin/zoekt-mirror-github -org fastly -dest ${repo-dir} -token /home/mccurdyc/.github-token";
+      ExecStart = "bash -c 'git clone https://github.com/mccurdyc/crain.git /home/mccurdyc >/home/mccurdyc/log3.log 2>/home/mccurdyc/log4.log'";
+      StandardOutput = "file:/home/mccurdyc/log1.log";
+      StandardError = "file:/home/mccurdyc/log2.log";
+      # ExecStart = "zoekt-mirror-github -org fastly -dest ${repo-dir} -token /home/mccurdyc/.github-token";
       # ExecStopPost = "systemctl restart zoekt-index.service";
     };
   };
 
-  systemd.services.zoekt-index = {
-    path = with pkgs; [ bash "/run/wrappers" ];
+  systemd.user.services.zoekt-index = {
+    path = with pkgs; [ bash "/run/wrappers" zoekt ];
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
     # https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#Options
     serviceConfig = {
-      Type = "oneshot";
-      User = "mccurdyc";
       ExecStart = "${pkgs.zoekt}/bin/zoekt-git-index -index ${index-dir} ${repo-dir}/github.com/fastly/*";
-      ExecStopPost = "systemctl restart zoekt-webserver.service";
+      # ExecStopPost = "systemctl restart zoekt-webserver.service";
     };
   };
 
-  systemd.services.zoekt-webserver = {
-    path = with pkgs; [ bash "/run/wrappers" ];
+  systemd.user.services.zoekt-webserver = {
+    path = with pkgs; [ bash "/run/wrappers" zoekt ];
     # https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#Options
     serviceConfig = {
-      Type = "oneshot";
-      User = "mccurdyc";
-      ExecStart = "${pkgs.zoekt}/bin/zoekt-webserver -index ${index-dir}";
+      ExecStart = "zoekt-webserver -index ${index-dir}";
     };
   };
 }
