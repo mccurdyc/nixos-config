@@ -736,7 +736,7 @@ require("lazy").setup({
 				height = 5, -- height of the trouble list when position is top or bottom
 				width = 50, -- width of the list when position is left or right
 				group = true, -- group results by file
-				padding = true, -- add an extra new line on top of the list
+				padding = false, -- add an extra new line on top of the list
 				indent_lines = true, -- add an indent guide below the fold icons
 				auto_open = false, -- automatically open the list when you have diagnostics
 				auto_close = false, -- automatically close the list when you have no diagnostics
