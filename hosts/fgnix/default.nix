@@ -6,5 +6,6 @@
 
     ./networking.nix
     ./packages.nix
+    ./zoekt.nix
   ];
 }
