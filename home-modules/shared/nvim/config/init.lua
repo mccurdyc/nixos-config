@@ -1,4 +1,5 @@
 -- https://github.com/wbthomason/dotfiles/blob/387ded8ad4c3cb9d5000edbd3b18bc8cb8a186e9/neovim/.config/nvim/lua/config/utils.lua
+
 local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local map_key = vim.api.nvim_set_keymap
@@ -874,38 +875,12 @@ require("lazy").setup({
 		config = function()
 			require("gitsigns").setup({
 				signs = {
-					add = {
-						hl = "GitSignsAdd",
-						text = "│",
-						numhl = "GitSignsAddNr",
-						linehl = "GitSignsAddLn",
-					},
-					change = {
-						hl = "GitSignsChange",
-						text = "│",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
-					delete = {
-						hl = "GitSignsDelete",
-						text = "│",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					topdelete = {
-						hl = "GitSignsDelete",
-						text = "‾",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					changedelete = {
-						hl = "GitSignsChange",
-						text = "~",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
+					add = { text = "│" },
+					change = { text = "│" },
+					delete = { text = "│" },
+					topdelete = { text = "‾" },
+					changedelete = { text = "~" },
 				},
-				yadm = { enable = false },
 				on_attach = function(bufnr)
 					local gs = package.loaded.gitsigns
 
