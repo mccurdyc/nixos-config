@@ -333,6 +333,7 @@ require("lazy").setup({
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-path",
 		},
@@ -371,17 +372,21 @@ require("lazy").setup({
 					end,
 				},
 				sources = cmp.config.sources({
+					{ name = "buffer" },
+					{ name = "buffer-lines" },
+					{ name = "path" },
 					{ name = "nvim_lua" },
 					{ name = "luasnip" },
 					{ name = "nvim_lsp" },
-				}, { { name = "path" }, { name = "buffer", keyword_length = 5 } }),
+				}),
 				formatting = {
 					format = lspkind.cmp_format({
 						mode = "text",
 						maxwidth = 50,
 						ellipsis_char = "...",
 						menu = {
-							buffer = "[buf]",
+							buffer = "[BUF]",
+							["buffer-lines"] = "[LBUF]", -- hyphened-key names need escaped
 							nvim_lsp = "[LSP]",
 							nvim_lua = "[api]",
 							path = "[path]",
@@ -392,9 +397,30 @@ require("lazy").setup({
 				},
 
 				--[[
-		" Disable cmp for a buffer
-		autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
-		--]]
+				" Disable cmp for a buffer
+				autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+				--]]
+			})
+
+			-- https://github.com/hrsh7th/nvim-cmp?tab=readme-ov-file#recommended-configuration
+
+			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+			cmp.setup.cmdline({ "/", "?" }, {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = {
+					{ name = "buffer" },
+				},
+			})
+
+			-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = cmp.config.sources({
+					{ name = "path" },
+				}, {
+					{ name = "cmdline" },
+				}),
+				matching = { disallow_symbol_nonprefix_matching = false },
 			})
 		end,
 	},
