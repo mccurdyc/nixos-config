@@ -2,8 +2,6 @@
 
 {
   fonts = {
-    fontDir.enable = true;
-
     # if darwin
     #   then nix-darwin.lib.darwinSystem
     #   else nixpkgs.lib.nixosSystem;
