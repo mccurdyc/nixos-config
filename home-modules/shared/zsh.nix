@@ -24,6 +24,22 @@
       gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       k = "kubectl";
+      stopwatch = ''
+        start=$(date +%s)
+        if [[ $1 == ?([+-])+([0-9]) ]]; then
+         ((start += $1))
+        elif [[ $1 ]]; then
+         echo "invalid argument '$1': ignoring it"
+        fi
+
+        while true; do
+         now=$(date +%s)
+         days=$(( (now - start) / 86400 ))
+         seconds=$(( (now - start) % 86400 ))
+         printf "\r%d day(s) and %s " $days $(date --utc --date @$seconds +%T)
+         sleep 0.1
+        done
+      '';
     };
 
     envExtra = ''
