@@ -43,6 +43,7 @@
     };
 
     envExtra = ''
+      BROWSER="echo"
       # TERM=screen-256color
       ZELLIJ_AUTO_ATTACH=false
       ZELLIJ_AUTO_EXIT=true
