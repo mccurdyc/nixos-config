@@ -9,5 +9,6 @@ pkgs.mkShell {
     pkgs.lua54Packages.luacheck
     pkgs-unstable.nil
     pkgs.stylua
+    pkgs.lua-language-server
   ];
 }

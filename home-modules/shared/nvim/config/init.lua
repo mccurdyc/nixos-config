@@ -1,5 +1,6 @@
 -- https://github.com/wbthomason/dotfiles/blob/387ded8ad4c3cb9d5000edbd3b18bc8cb8a186e9/neovim/.config/nvim/lua/config/utils.lua
 
+local vim = vim
 local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local map_key = vim.api.nvim_set_keymap
@@ -42,6 +43,10 @@ g.t_Co = 256
 g.base16colorspace = 256
 
 cmd("filetype plugin indent on")
+
+autocmd("OnSave", {
+	[[BufWritePost * lua require("trouble").open("diagnostics")]],
+}, true)
 
 autocmd("misc_aucmds", {
 	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
@@ -706,6 +711,7 @@ require("lazy").setup({
 				"bashls",
 				"dockerls",
 				"terraformls",
+				"lua_ls", -- lua-language-server
 				"tflint",
 				"nil_ls",
 			}
@@ -760,11 +766,6 @@ require("lazy").setup({
 	},
 	{
 		"folke/trouble.nvim",
-		opts = {
-			modes = {
-				diagnostics = { auto_open = true },
-			},
-		},
 		cmd = "Trouble",
 		keys = {
 			{
@@ -800,7 +801,7 @@ require("lazy").setup({
 		},
 		config = function()
 			require("trouble").setup({
-				auto_close = true, -- auto close when there are no items
+				auto_close = false, -- auto close when there are no items
 				auto_open = false, -- auto open when there are items
 				auto_preview = true, -- automatically open preview when on an item
 				auto_refresh = true, -- auto refresh when open
@@ -813,7 +814,13 @@ require("lazy").setup({
 				multiline = true, -- render multi-line messages
 				pinned = false, -- When pinned, the opened trouble window will be bound to the current buffer
 				warn_no_results = true, -- show a warning when there are no results
-				open_no_results = false, -- open the trouble window when there are no results
+				open_no_results = true, -- open the trouble window when there are no results
+				win = {
+					-- https://github.com/folke/trouble.nvim/blob/42dcb58e95723f833135d5cf406c38bd54304389/lua/trouble/view/window.lua#L7
+					size = {
+						height = 5,
+					},
+				},
 				keys = {
 					["?"] = "help",
 					r = "refresh",
