@@ -671,14 +671,14 @@ require("lazy").setup({
 			  sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
 			]])
 
-			-- disable in-line diagnostics
+			-- Necessary for disabling in-line lsp diagnostic virtual_text
 			vim.lsp.handlers["textDocument/publishDiagnostics"] =
 				vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
 					virtual_text = false,
 				})
 
 			vim.diagnostic.config({
-				virtual_text = false,
+				virtual_text = false, -- this doesn't seem to actually do anything
 				signs = true,
 				underline = true,
 				update_in_insert = false,
@@ -730,6 +730,7 @@ require("lazy").setup({
 
 			util.default_config = vim.tbl_extend("force", util.default_config, {
 				autostart = true,
+				-- Also necessary for disabling in-line lsp diagnostic virtual_text
 				on_attach = my_lsp_on_attach,
 				capabilities = get_forced_lsp_capabilities(),
 			})
@@ -737,7 +738,7 @@ require("lazy").setup({
 			-- NOTE: Call setup last
 			-- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
 			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup({ on_attach = on_attach })
+				lspconfig[lsp].setup({ on_attach = my_lsp_on_attach })
 				-- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
 				-- lspconfig[lsp].setup {capabilities = capabilities}
 			end
