@@ -204,12 +204,6 @@ require("lazy").setup({
 			"MunifTanjim/nui.nvim",
 		},
 		config = function()
-			-- If you want icons for diagnostic errors, you'll need to define them somewhere:
-			vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-			vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-			vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-			vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
-
 			require("neo-tree").setup({
 				close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
 				popup_border_style = "rounded",
@@ -764,7 +758,7 @@ require("lazy").setup({
 
 			vim.diagnostic.config({
 				virtual_text = false, -- this doesn't seem to actually do anything
-				signs = true,
+				signs = false,
 				underline = true,
 				update_in_insert = false,
 				severity_sort = false,
@@ -884,11 +878,12 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "TroubleBasename", { fg = "#ffa500" })
 			vim.api.nvim_set_hl(0, "TroubleFilename", { fg = "#ffa500" })
 			vim.api.nvim_set_hl(0, "TroubleDirectory", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "TroubleIconDirectory", { fg = "#ffa500" })
 			vim.api.nvim_set_hl(0, "TroubleCount", { fg = "#5fd787" })
 			vim.api.nvim_set_hl(0, "TroubleCode", { fg = "#ff5f5f" })
 			vim.api.nvim_set_hl(0, "TroubleText", { fg = "#4e4e4e" })
 			vim.api.nvim_set_hl(0, "TroubleNormal", { fg = "#4e4e4e", bg = "#1c1c1c" })
-			vim.api.nvim_set_hl(0, "TroubleNormalNC", { bg = "#1c1c1c" })
+			vim.api.nvim_set_hl(0, "TroubleNormalNC", { fg = "#4e4e4e", bg = "#1c1c1c" }) -- not focused window
 
 			require("trouble").setup({
 				auto_close = false, -- auto close when there are no items
@@ -1131,6 +1126,7 @@ require("lazy").setup({
 			local configs = require("nvim-treesitter.configs")
 
 			configs.setup({
+				auto_install = true,
 				ensure_installed = {
 					"go",
 					"nix",
@@ -1146,8 +1142,11 @@ require("lazy").setup({
 					"markdown",
 					"terraform",
 					"yaml",
+					"query",
+					"vim",
+					"vimdoc",
 				},
-				sync_install = false,
+				sync_install = true,
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
@@ -1168,7 +1167,6 @@ require("lazy").setup({
 
 			-- Link Treesitter highlight groups to Base16 colors
 			-- :Telescope highlights
-			vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = "#4e4e4e" })
 			vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#4e4e4e" })
 			vim.api.nvim_set_hl(0, "@punctuation.special", { fg = "#ff5f5f" })
 			vim.api.nvim_set_hl(0, "@keyword", { fg = "#eeeeee" })
@@ -1210,9 +1208,8 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "@diff.delta", { fg = "#ffa500" })
 			vim.api.nvim_set_hl(0, "@module", { fg = "#5fd787" })
 			vim.api.nvim_set_hl(0, "@module.builtin", { fg = "#5fd787" })
-			vim.api.nvim_set_hl(0, "@markup", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@markup.builtin", { fg = "#eeeeee" })
 			vim.api.nvim_set_hl(0, "@comment.note", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@comment.error", { fg = "#ff5f5f" })
 			vim.api.nvim_set_hl(0, "@tag.builtin", { fg = "#eeeeee" })
 			vim.api.nvim_set_hl(0, "@constant.builtin", { fg = "#eeeeee" })
 			vim.api.nvim_set_hl(0, "@variable.builtin", { fg = "#eeeeee" })
