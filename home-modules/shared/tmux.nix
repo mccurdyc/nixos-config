@@ -1,7 +1,7 @@
 { pkgs, ... }: {
 
   programs.tmux = {
-    enable = true;
+    enable = false;
     baseIndex = 0;
     clock24 = true;
     newSession = false;

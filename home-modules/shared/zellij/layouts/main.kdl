@@ -1,0 +1,13 @@
+layout {
+  tab name="default" split_direction="horizontal" {
+    pane {
+      size "70%"
+      focus true
+      name "top"
+    }
+    pane {
+      size "30%"
+      name "bottom"
+    }
+  }
+}

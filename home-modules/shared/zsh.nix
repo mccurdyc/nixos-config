@@ -10,6 +10,7 @@
       ta = "tmux attach -t ";
       # https://www.perplexity.ai/search/tmux-newsession-but-gv__phO6TVuT6dxY.15Nrw#1
       tn = "(){ tmux new-session -s $1 \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -v -l 12 \\; send-keys \"__zoxide_z $1\" Enter \\; select-pane -t 0; }";
+      zn = "(){ zellij --session $1 options --default-cwd $(zoxide query $1) --default-layout ~/.config/zellij/layouts/main.kdl; }";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
@@ -25,8 +26,8 @@
 
     envExtra = ''
       # TERM=screen-256color
-      #   ZELLIJ_AUTO_ATTACH=true
-      #   ZELLIJ_AUTO_EXIT=true
+      ZELLIJ_AUTO_ATTACH=false
+      ZELLIJ_AUTO_EXIT=true
     '';
 
     history = {

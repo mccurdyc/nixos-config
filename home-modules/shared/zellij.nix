@@ -1,9 +1,12 @@
 { pkgs-unstable, ... }:
 
 {
-  programs.zellij.enable = true;
-  programs.zellij.package = pkgs-unstable.zellij;
-  programs.zellij.enableZshIntegration = true;
+  programs.zellij = {
+    enable = true;
+    package = pkgs-unstable.zellij;
+    enableZshIntegration = false; # disable auto startup in every zsh shell
+  };
 
   home.file.".config/zellij/config.kdl".source = ./zellij/config.kdl;
+  home.file.".config/zellij/layouts/main.kdl".source = ./zellij/layouts/main.kdl;
 }

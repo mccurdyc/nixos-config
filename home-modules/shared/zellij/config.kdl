@@ -84,29 +84,29 @@ plugins {
 //
 // on_force_close "quit"
 
-simplified_ui true
-pane_frames false
-default_layout "compact"
-
-themes:
-  mccurdyc-base16-eighties:
-  themes:
-  default:
-    fg: "#cccccc"
-    bg: "#2d2d2d"
-    black: "#282828"
-    red: "#ab4642"
-    green: "#a1b56c"
-    yellow: "#f7ca88"
-    blue: "#7cafc2"
-    magenta: "#ba8baf"
-    cyan: "#86c1b9"
-    white: "#e8e8e8"
-    orange: "#f99157"
-
-theme "mccurdyc-base16-eighties"
-
 copy_on_select false
 
-// layout_dir "/home/Users/mccurdyc/.config/zellij/layouts/"
-// theme_dir "/path/to/my/theme_dir"
+simplified_ui true
+pane_frames true
+
+themes {
+  default {
+    fg "#eeeeee"
+    bg "#262626"
+    black "#1c1c1c"
+    red "#ff5757"
+    green "#5fd787"
+    yellow "#ffcc66"
+    blue "#2950c5"
+    magenta "#ba8baf"
+    cyan "#86c1b9"
+    white "#eeeeee"
+    orange "#ffa500"
+  }
+}
+
+theme "default"
+
+// I'd rather explicitly call this when I start zellij
+// layout_dir "/home/mccurdyc/.config/zellij/layouts"
+// default_layout "main.kdl"

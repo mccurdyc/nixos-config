@@ -12,7 +12,7 @@
     ./ripgrep.nix
     ./ssh.nix
     ./tmux.nix
-    # ./zellij.nix
+    ./zellij.nix
     ./zoxide.nix
     ./zsh.nix
   ];
