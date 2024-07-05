@@ -32,7 +32,7 @@ local function map(modes, lhs, rhs, opts)
 	opts = opts or {}
 	opts.noremap = opts.noremap == nil and true or opts.noremap
 	if type(modes) == "string" then
-		modes = { modes }
+		modes = { { { { modes } } } }
 	end
 	for _, mode in ipairs(modes) do
 		map_key(mode, lhs, rhs, opts)
@@ -142,7 +142,7 @@ require("lazy").setup({
 		lazy = false, -- make sure we load this during startup if it is your main colorscheme
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
-			vim.cmd([[colorscheme base16-eighties-minimal]])
+			vim.cmd([[colorscheme base16-mccurdyc-minimal]])
 		end,
 	},
 	"tpope/vim-fugitive",
@@ -596,6 +596,18 @@ require("lazy").setup({
 		config = function()
 			require("telescope").setup({
 				defaults = {
+					mappings = {
+						i = {
+							-- Insert mode mappings
+							["<C-d>"] = require("telescope.actions").results_scrolling_down,
+							["<C-u>"] = require("telescope.actions").results_scrolling_up,
+						},
+						n = {
+							-- Normal mode mappings
+							["<C-d>"] = require("telescope.actions").results_scrolling_down,
+							["<C-u>"] = require("telescope.actions").results_scrolling_up,
+						},
+					},
 					vimgrep_arguments = {
 						"rg",
 						"--hidden",
@@ -617,7 +629,7 @@ require("lazy").setup({
 					file_sorter = require("telescope.sorters").get_fuzzy_file,
 					file_ignore_patterns = {},
 					generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-					path_display = absolute,
+					path_display = "absolute",
 					winblend = 0,
 					border = {},
 					borderchars = {
@@ -1128,22 +1140,107 @@ require("lazy").setup({
 					"yaml",
 				},
 				sync_install = false,
-				highlight = { enable = true },
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
 				indent = { enable = true },
+			})
+
+			-- mccurdyc-minimal-theme
+			-- black (Grey11) (background) #1c1c1c ctermfg=234 gui00
+			-- really dark gray (Grey15) (comment) ->#262626 ctermfg=235 gui01
+			-- dark grey (Grey30) (comment) -> #4e4e4e ctermfg=29 gui02
+			-- light grey (Grey89) (foreground) -> #e4e4e4 ctermfg=254 gui06
+			-- white (Grey93) (foreground) -> #eeeeee ctermfg=255 gui07
+			-- red (IndianRed1) (error) -> #ff5f5f ctermfg=203 gui08
+			-- green (SeaGreen3) (good) -> #5fd787 ctermfg=78 gui0B
+			-- orange (Orange1) (warning) -> #ffa500 ctermfg=214 gui09
+			-- blue (alt) ->#2950c5 no direct ctermfg, use ctermfg=33 gui0C
+
+			-- Link Treesitter highlight groups to Base16 colors
+			-- :Telescope highlights
+			vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@punctuation.special", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@keyword", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@constant", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@variable", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@function", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "@function.call", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "@method", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "@method.call", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "@parameter", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@field", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@property", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@constructor", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@conditional", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@repeat", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@label", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@character.special", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@attribute.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@function.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@string", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@string.escape", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@string.regexp", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@string.special", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@text", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@text.literal", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@text.uri", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@number", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@boolean", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@tag", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@type", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@type.builtin", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@namespace", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@include", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@comment", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "@operator", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@exception", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@diff.plus", { fg = "#5fd787" })
+			vim.api.nvim_set_hl(0, "@diff.minus", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "@diff.delta", { fg = "#ffa500" })
+		end,
+	},
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup({
+				vim = { mode = "background" },
+				lua = { mode = "background" },
+				html = { mode = "background" },
+				scss = { mode = "background" },
+				css = { mode = "background" },
 			})
 		end,
 	},
 	{
-		"p00f/nvim-ts-rainbow",
+		"hiphish/rainbow-delimiters.nvim",
 		config = function()
-			require("nvim-treesitter.configs").setup({
-				rainbow = {
-					enable = true,
-					extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-					max_file_lines = nil, -- Do not enable for files with more than n lines, int
-					-- colors = {}, -- table of hex strings
-					-- termcolors = {} -- table of colour name strings
+			local rainbow = require("rainbow-delimiters")
+			require("rainbow-delimiters.setup").setup({
+				strategy = {
+					-- global - highlight the entire buffer
+					-- local - highlight subtree with cursor
+					--
+					-- Pick the strategy based on the buffer size
+					[""] = function(bufnr)
+						-- Disabled for very large files, global strategy for large files,
+						-- local strategy otherwise
+						local line_count = vim.api.nvim_buf_line_count(bufnr)
+						if line_count > 10000 then
+							return nil
+						end
+						return rainbow.strategy["local"]
+					end,
 				},
+				highlight = {
+					"RainbowDelimiterNormal",
+					"RainbowDelimiterRed",
+					"RainbowDelimiterNormal",
+					"RainbowDelimiterOrange",
+				},
+				blacklist = {},
 			})
 		end,
 	},
@@ -1165,9 +1262,9 @@ require("lazy").setup({
 						{
 							"diff",
 							colored = true,
-							color_added = "#66cccc",
-							color_modified = "#ffcc66",
-							color_removed = "#f2777a",
+							color_added = "#5fd787",
+							color_modified = "#ffa500",
+							color_removed = "#ff5f5f",
 							symbols = {
 								added = "+",
 								modified = "~",
