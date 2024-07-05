@@ -32,7 +32,7 @@ local function map(modes, lhs, rhs, opts)
 	opts = opts or {}
 	opts.noremap = opts.noremap == nil and true or opts.noremap
 	if type(modes) == "string" then
-		modes = { { { { modes } } } }
+		modes = { modes }
 	end
 	for _, mode in ipairs(modes) do
 		map_key(mode, lhs, rhs, opts)
@@ -745,10 +745,10 @@ require("lazy").setup({
 			-- Highlight line number instead of having icons in sign column
 			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#highlight-line-number-instead-of-having-icons-in-sign-column
 			vim.cmd([[
-			  highlight! DiagnosticLineNrError guibg=#f2777a guifg=#515151 gui=bold
-			  highlight! DiagnosticLineNrWarn guibg=#ffcc66 guifg=#515151 gui=bold
-			  highlight! DiagnosticLineNrInfo guibg=#d3d0c8 guifg=#515151 gui=bold
-			  highlight! DiagnosticLineNrHint guibg=#d3d0c8 guifg=#515151 gui=bold
+			  highlight! DiagnosticLineNrError guibg=#ff5f5f guifg=#262626 gui=bold
+			  highlight! DiagnosticLineNrWarn guibg=#ffa500 guifg=#262626 gui=bold
+			  highlight! DiagnosticLineNrInfo guibg=#e4e4e4 guifg=#262626 gui=bold
+			  highlight! DiagnosticLineNrHint guibg=#e4e4e4 guifg=#262626 gui=bold
 
 			  sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
 			  sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
@@ -880,8 +880,16 @@ require("lazy").setup({
 			},
 		},
 		config = function()
-			vim.api.nvim_set_hl(0, "TroubleNormal", { bg = "#202020" })
-			vim.api.nvim_set_hl(0, "TroubleNormalNC", { bg = "#202020" })
+			-- https://github.com/folke/trouble.nvim/blob/34be821abfd5ee0aba337a1869d2161c36c45b1d/doc/trouble.nvim.txt#L691-L739
+			vim.api.nvim_set_hl(0, "TroubleBasename", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "TroubleFilename", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "TroubleDirectory", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "TroubleCount", { fg = "#5fd787" })
+			vim.api.nvim_set_hl(0, "TroubleCode", { fg = "#ff5f5f" })
+			vim.api.nvim_set_hl(0, "TroubleText", { fg = "#4e4e4e" })
+			vim.api.nvim_set_hl(0, "TroubleNormal", { fg = "#4e4e4e", bg = "#1c1c1c" })
+			vim.api.nvim_set_hl(0, "TroubleNormalNC", { bg = "#1c1c1c" })
+
 			require("trouble").setup({
 				auto_close = false, -- auto close when there are no items
 				auto_open = false, -- auto open when there are items
@@ -894,7 +902,7 @@ require("lazy").setup({
 				indent_guides = true, -- show indent guides
 				max_items = 10, -- limit number of items that can be displayed per section
 				multiline = true, -- render multi-line messages
-				pinned = false, -- When pinned, the opened trouble window will be bound to the current buffer
+				pinned = true, -- When pinned, the opened trouble window will be bound to the current buffer
 				warn_no_results = false, -- show a warning when there are no results
 				open_no_results = false, -- open the trouble window when there are no results
 				-- fix color of quickfix/Trouble
@@ -1200,6 +1208,15 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "@diff.plus", { fg = "#5fd787" })
 			vim.api.nvim_set_hl(0, "@diff.minus", { fg = "#ff5f5f" })
 			vim.api.nvim_set_hl(0, "@diff.delta", { fg = "#ffa500" })
+			vim.api.nvim_set_hl(0, "@module", { fg = "#5fd787" })
+			vim.api.nvim_set_hl(0, "@module.builtin", { fg = "#5fd787" })
+			vim.api.nvim_set_hl(0, "@markup", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@markup.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@comment.note", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@tag.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@constant.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@variable.builtin", { fg = "#eeeeee" })
+			vim.api.nvim_set_hl(0, "@variable.parameter.builtin", { fg = "#eeeeee" })
 		end,
 	},
 	{
