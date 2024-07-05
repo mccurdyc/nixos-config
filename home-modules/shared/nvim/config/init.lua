@@ -353,6 +353,8 @@ require("lazy").setup({
 
 			vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
+			vim.opt.pumheight = 5 -- Set the maximum height of the completion popup menu to 10 lines
+
 			cmp.setup({
 				mapping = {
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -378,28 +380,53 @@ require("lazy").setup({
 					end,
 				},
 				sources = cmp.config.sources({
-					{ name = "buffer" },
-					{ name = "buffer-lines" },
-					{ name = "path" },
-					{ name = "nvim_lua" },
-					{ name = "luasnip" },
 					{ name = "nvim_lsp" },
+					{ name = "buffer", max_item_count = 1, keyword_length = 4 },
+					{ name = "buffer-lines", max_item_count = 1, keyword_length = 4 },
+					{ name = "path" },
+					{ name = "luasnip" },
+					{ name = "nvim_lua" },
+					cmp,
 				}),
-				formatting = {
-					format = lspkind.cmp_format({
-						mode = "text",
-						maxwidth = 50,
-						ellipsis_char = "...",
-						menu = {
-							buffer = "[BUF]",
-							["buffer-lines"] = "[LBUF]", -- hyphened-key names need escaped
-							nvim_lsp = "[LSP]",
-							nvim_lua = "[api]",
-							path = "[path]",
-							luasnip = "[snip]",
-						},
+
+				-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
+				window = {
+					height = 5,
+					completion = {
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+						col_offset = -3,
+						side_padding = 0,
+					},
+					documentation = cmp.config.window.bordered({
+						position = "bottom",
+						max_height = 15,
+						border = "rounded",
+						winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
 					}),
-					experimental = { native_menu = false, ghost_text = true },
+				},
+				experimental = {
+					ghost_text = true,
+				},
+				formatting = {
+					fields = { "kind", "abbr", "menu" },
+					format = function(entry, vim_item)
+						local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 10 })(entry, vim_item)
+						local strings = vim.split(kind.kind, "%s", { trimempty = true })
+						kind.kind = " " .. (strings[1] or "") .. " "
+						kind.menu = "    ("
+							.. (strings[2] or "")
+							.. ")"
+							.. "  "
+							.. (
+								({
+									buffer = "[BUF]",
+									nvim_lsp = "[LSP]",
+									luasnip = "[SNIP]",
+								})[entry.source.name] or ""
+							)
+
+						return kind
+					end,
 				},
 
 				--[[
@@ -642,6 +669,47 @@ require("lazy").setup({
 			local map = vim.api.nvim_set_keymap
 			local option = vim.api.nvim_set_option
 
+			vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
+
+			vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
+			vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
+			vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
+			vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
+			vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
+			vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C3E88D", bg = "#9FBD73" })
+			vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#C3E88D", bg = "#9FBD73" })
+			vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#C3E88D", bg = "#9FBD73" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE082", bg = "#D4BB6C" })
+			vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE082", bg = "#D4BB6C" })
+			vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE082", bg = "#D4BB6C" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
+			vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
+			vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
+			vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
+			vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
+			vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
+			vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
+			vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
+			vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
+			vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
+
+			vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
+			vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
+			vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
+
 			-- Enable completion triggered by <c-x><c-o>
 			option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -800,6 +868,8 @@ require("lazy").setup({
 			},
 		},
 		config = function()
+			vim.api.nvim_set_hl(0, "TroubleNormal", { bg = "#202020" })
+			vim.api.nvim_set_hl(0, "TroubleNormalNC", { bg = "#202020" })
 			require("trouble").setup({
 				auto_close = false, -- auto close when there are no items
 				auto_open = false, -- auto open when there are items
@@ -813,8 +883,9 @@ require("lazy").setup({
 				max_items = 10, -- limit number of items that can be displayed per section
 				multiline = true, -- render multi-line messages
 				pinned = false, -- When pinned, the opened trouble window will be bound to the current buffer
-				warn_no_results = true, -- show a warning when there are no results
-				open_no_results = true, -- open the trouble window when there are no results
+				warn_no_results = false, -- show a warning when there are no results
+				open_no_results = false, -- open the trouble window when there are no results
+				-- fix color of quickfix/Trouble
 				win = {
 					-- https://github.com/folke/trouble.nvim/blob/42dcb58e95723f833135d5cf406c38bd54304389/lua/trouble/view/window.lua#L7
 					size = {
