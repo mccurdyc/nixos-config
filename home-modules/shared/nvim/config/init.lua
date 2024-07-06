@@ -83,10 +83,10 @@ opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
 opt("showmode", false)
-opt("foldminlines", 1)
+opt("foldminlines", 0)
 opt("foldmethod", "indent")
-opt("foldlevel", 2)
-opt("foldlevelstart", 3)
+opt("foldlevel", 1)
+opt("foldlevelstart", 0)
 opt("foldenable", true)
 
 local opts = { noremap = true }
