@@ -88,7 +88,6 @@ opt("foldmethod", "indent")
 opt("foldlevelstart", 20)
 opt("foldenable", true)
 
-local map = vim.api.nvim_set_keymap
 local opts = { noremap = true }
 
 -- {{ General
@@ -153,7 +152,7 @@ require("lazy").setup({
 		-- DEBUGGING
 		"nvim-lua/plenary.nvim",
 		config = function()
-			local async = require("plenary.async")
+			-- local async = require("plenary.async")
 			-- https://github.com/nvim-lua/plenary.nvim?tab=readme-ov-file#plenaryprofile
 			-- require'plenary.profile'.start("profile.log", {flame = true})
 			-- code to be profiled
@@ -185,15 +184,14 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
-			require("go").setup()
+			require("go").setup({
+				diagnostic = {
+					underline = true,
+					update_in_insert = false,
+				},
+			})
 		end,
-		event = { "CmdlineEnter" },
 		ft = { "go", "gomod" },
-		build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
-	},
-	{
-		"rust-lang/rust.vim",
-		ft = "rs",
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -209,7 +207,7 @@ require("lazy").setup({
 				popup_border_style = "rounded",
 				enable_git_status = true,
 				source_selector = { winbar = false, statusline = false },
-				enable_diagnostics = true,
+				enable_diagnostics = false,
 				icon = {
 					folder_closed = "",
 					folder_open = "",
@@ -325,133 +323,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"hrsh7th/nvim-cmp",
-		-- load cmp on InsertEnter
-		event = "InsertEnter",
-		-- these dependencies will only be loaded when cmp loads
-		-- dependencies are always lazy-loaded unless specified otherwise
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/cmp-nvim-lua",
-			"hrsh7th/cmp-path",
-		},
-		config = function()
-			-- https://www.youtube.com/watch?v=_DnmphIwnjo
-			-- :h ins-completion
-			-- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/completion.lua
-			local cmp = require("cmp")
-			local lspkind = require("lspkind")
-			local luasnip = require("luasnip")
-
-			vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-			vim.opt.pumheight = 5 -- Set the maximum height of the completion popup menu to 10 lines
-
-			cmp.setup({
-				mapping = {
-					["<C-d>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-e>"] = cmp.mapping.close(),
-					["<C-n>"] = cmp.mapping.select_next_item({
-						behavior = cmp.SelectBehavior.Insert,
-					}),
-					["<C-p>"] = cmp.mapping.select_prev_item({
-						behavior = cmp.SelectBehavior.Insert,
-					}),
-					["<C-y>"] = cmp.mapping(
-						cmp.mapping.confirm({
-							behavior = cmp.ConfirmBehavior.Insert,
-							select = true,
-						}),
-						{ "i", "c" }
-					),
-				},
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "buffer", max_item_count = 1, keyword_length = 4 },
-					{ name = "buffer-lines", max_item_count = 1, keyword_length = 4 },
-					{ name = "path" },
-					{ name = "luasnip" },
-					{ name = "nvim_lua" },
-					cmp,
-				}),
-
-				-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
-				window = {
-					height = 5,
-					completion = {
-						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-						col_offset = -3,
-						side_padding = 0,
-					},
-					documentation = cmp.config.window.bordered({
-						position = "bottom",
-						max_height = 15,
-						border = "rounded",
-						winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-					}),
-				},
-				experimental = {
-					ghost_text = true,
-				},
-				formatting = {
-					fields = { "kind", "abbr", "menu" },
-					format = function(entry, vim_item)
-						local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 10 })(entry, vim_item)
-						local strings = vim.split(kind.kind, "%s", { trimempty = true })
-						kind.kind = " " .. (strings[1] or "") .. " "
-						kind.menu = "    ("
-							.. (strings[2] or "")
-							.. ")"
-							.. "  "
-							.. (
-								({
-									buffer = "[BUF]",
-									nvim_lsp = "[LSP]",
-									luasnip = "[SNIP]",
-								})[entry.source.name] or ""
-							)
-
-						return kind
-					end,
-				},
-
-				--[[
-				" Disable cmp for a buffer
-				autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
-				--]]
-			})
-
-			-- https://github.com/hrsh7th/nvim-cmp?tab=readme-ov-file#recommended-configuration
-
-			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-			cmp.setup.cmdline({ "/", "?" }, {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = {
-					{ name = "buffer" },
-				},
-			})
-
-			-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-			cmp.setup.cmdline(":", {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = cmp.config.sources({
-					{ name = "path" },
-				}, {
-					{ name = "cmdline" },
-				}),
-				matching = { disallow_symbol_nonprefix_matching = false },
-			})
-		end,
-	},
-	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "honza/vim-snippets" },
 		config = function()
@@ -478,8 +349,6 @@ require("lazy").setup({
 			end, { silent = true })
 		end,
 	},
-	"saadparwaiz1/cmp_luasnip",
-	"onsails/lspkind.nvim",
 	{
 		"kevinhwang91/nvim-bqf",
 		config = function()
@@ -664,194 +533,6 @@ require("lazy").setup({
 
 			-- load extensions after calling setup function
 			-- require("telescope").load_extension("fzf")
-		end,
-	},
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = { "hrsh7th/nvim-cmp" },
-		config = function()
-			local lspconfig = require("lspconfig")
-			local util = require("lspconfig.util")
-			local map = vim.api.nvim_set_keymap
-			local option = vim.api.nvim_set_option
-
-			vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
-
-			vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
-			vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
-			vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
-			vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
-			vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
-			vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C3E88D", bg = "#9FBD73" })
-			vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#C3E88D", bg = "#9FBD73" })
-			vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#C3E88D", bg = "#9FBD73" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE082", bg = "#D4BB6C" })
-			vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE082", bg = "#D4BB6C" })
-			vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE082", bg = "#D4BB6C" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
-			vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
-			vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
-			vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
-			vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
-			vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
-			vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
-			vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
-			vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
-			vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
-			vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
-			vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
-
-			-- Enable completion triggered by <c-x><c-o>
-			option("omnifunc", "v:lua.vim.lsp.omnifunc")
-
-			-- Mappings.
-			local opts = { noremap = true, silent = true }
-
-			-- See `:help vim.lsp.*` for documentation on any of the below functions
-			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-			map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-			map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-			map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-			map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-			map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-			map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-			map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-			map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-
-			local g = vim.g
-
-			-- Highlight line number instead of having icons in sign column
-			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#highlight-line-number-instead-of-having-icons-in-sign-column
-			vim.cmd([[
-			  highlight! DiagnosticLineNrError guibg=#ff5f5f guifg=#262626 gui=bold
-			  highlight! DiagnosticLineNrWarn guibg=#ffa500 guifg=#262626 gui=bold
-			  highlight! DiagnosticLineNrInfo guibg=#e4e4e4 guifg=#262626 gui=bold
-			  highlight! DiagnosticLineNrHint guibg=#e4e4e4 guifg=#262626 gui=bold
-
-			  sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-			  sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
-			  sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
-			  sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
-			]])
-
-			-- Necessary for disabling in-line lsp diagnostic virtual_text
-			vim.lsp.handlers["textDocument/publishDiagnostics"] =
-				vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-					virtual_text = false,
-				})
-
-			vim.diagnostic.config({
-				virtual_text = false, -- this doesn't seem to actually do anything
-				signs = false,
-				underline = true,
-				update_in_insert = false,
-				severity_sort = false,
-			})
-
-			-- https://github.com/ms-jpq/coq_nvim#autostart-coq
-			-- g.coq_settings = {
-			--     -- https://github.com/NixOS/nixpkgs/issues/168928#issuecomment-1109581739
-			--     -- https://github.com/ms-jpq/coq_nvim/blob/coq/docs/CONF.md#specifics
-			--     ["xdg"] = true,
-			--     ["auto_start"] = "shut-up",
-			--     ["display.icons.mode"] = "none",
-			--     ["display.ghost_text.context"] = {"[", "]"},
-			--     ["display.pum.source_context"] = {"[", "]"},
-			--     ["match.exact_matches"] = 5,
-			--     ["weights.prefix_matches"] = 3.0
-			-- }
-			--
-			-- require("coq")
-
-			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-			local servers = {
-				"rust_analyzer",
-				"bashls",
-				"dockerls",
-				"terraformls",
-				"lua_ls", -- lua-language-server
-				"tflint",
-				"nil_ls",
-			}
-			-- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
-			local function get_forced_lsp_capabilities()
-				local capabilities = vim.lsp.protocol.make_client_capabilities()
-				capabilities.textDocument.completion.completionItem.snippetSupport = true
-				capabilities.textDocument.completion.completionItem.resolveSupport = {
-					properties = {
-						"documentation",
-						"detail",
-						"additionalTextEdits",
-					},
-				}
-				return capabilities
-			end
-
-			local function my_lsp_on_attach(client, bufnr)
-				local capabilities =
-					require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-			end
-
-			util.default_config = vim.tbl_extend("force", util.default_config, {
-				autostart = true,
-				-- Also necessary for disabling in-line lsp diagnostic virtual_text
-				on_attach = my_lsp_on_attach,
-				capabilities = get_forced_lsp_capabilities(),
-			})
-
-			-- NOTE: Call setup last
-			-- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
-			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup({ on_attach = my_lsp_on_attach })
-				-- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
-				-- lspconfig[lsp].setup {capabilities = capabilities}
-			end
-
-			-- Use lsp formatting for Rust instead of none-ls
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				pattern = "*.rs",
-				callback = function()
-					vim.lsp.buf.format()
-				end,
-			})
-
-			lspconfig["gopls"].setup({
-				cmd = { "gopls" },
-				on_attach = on_attach,
-				capabilities = capabilities,
-				settings = {
-					gopls = {
-						experimentalPostfixCompletions = true,
-						analyses = { unusedparams = true, shadow = true },
-						staticcheck = true,
-					},
-				},
-				init_options = { usePlaceholders = true },
-			})
-
-			lspconfig["rust_analyzer"].setup({
-				settings = {
-					["rust-analyzer"] = {
-						rustfmt = {},
-					},
-				},
-			})
 		end,
 	},
 	{
@@ -1122,13 +803,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"hashivim/vim-terraform",
-		config = function()
-			local g = vim.g
-			g.terraform_fmt_on_save = 1
-		end,
-	},
-	{
 		"cuducos/yaml.nvim",
 		ft = { "yaml" }, -- optional
 		dependencies = {
@@ -1321,4 +995,225 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = { "hrsh7th/nvim-cmp" },
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		-- load cmp on InsertEnter
+		event = "InsertEnter",
+		-- these dependencies will only be loaded when cmp loads
+		-- dependencies are always lazy-loaded unless specified otherwise
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-nvim-lsp-document-symbol",
+			"hrsh7th/cmp-nvim-lsp-signature-help",
+			"zjp-CN/nvim-cmp-lsp-rs", -- Apparently, there is some weird behavior specific to rust-analyzer - https://github.com/zjp-CN/nvim-cmp-lsp-rs/issues/1
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/cmp-nvim-lua",
+			"hrsh7th/cmp-path",
+			"saadparwaiz1/cmp_luasnip",
+			"L3MON4D3/LuaSnip",
+			"onsails/lspkind.nvim", -- vscode symbols
+		},
+		config = function()
+			-- https://www.youtube.com/watch?v=_DnmphIwnjo
+			-- :h ins-completion
+			-- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/completion.lua
+			local cmp = require("cmp")
+			local lspkind = require("lspkind")
+			local luasnip = require("luasnip")
+
+			vim.opt.completeopt = { "menu", "menuone", "noselect" }
+			vim.opt.pumheight = 5 -- Set the maximum height of the completion popup menu to 10 lines
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+				mapping = {
+					["<C-d>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<C-n>"] = cmp.mapping.select_next_item({
+						behavior = cmp.SelectBehavior.Insert,
+					}),
+					["<C-p>"] = cmp.mapping.select_prev_item({
+						behavior = cmp.SelectBehavior.Insert,
+					}),
+					["<C-y>"] = cmp.mapping(
+						cmp.mapping.confirm({
+							behavior = cmp.ConfirmBehavior.Insert,
+							select = true,
+						}),
+						{ "i", "c" }
+					),
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+					{ name = "buffer", max_item_count = 1, keyword_length = 4 },
+				}),
+
+				-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
+				window = {
+					height = 5,
+					completion = {
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+						col_offset = -3,
+						side_padding = 0,
+					},
+					documentation = cmp.config.window.bordered({
+						position = "bottom",
+						max_height = 15,
+						border = "rounded",
+						winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+					}),
+				},
+				experimental = {
+					ghost_text = false,
+				},
+				formatting = {
+					fields = { "kind", "abbr", "menu" },
+					format = function(entry, vim_item)
+						local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 10 })(entry, vim_item)
+						local strings = vim.split(kind.kind, "%s", { trimempty = true })
+						kind.kind = " " .. (strings[1] or "") .. " "
+						kind.menu = "    ("
+							.. (strings[2] or "")
+							.. ")"
+							.. "  "
+							.. (
+								({
+									buffer = "[BUF]",
+									nvim_lsp = "[LSP]",
+									luasnip = "[SNIP]",
+								})[entry.source.name] or ""
+							)
+
+						return kind
+					end,
+				},
+
+				--[[
+				" Disable cmp for a buffer
+				autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+				--]]
+			})
+
+			-- https://github.com/hrsh7th/nvim-cmp?tab=readme-ov-file#recommended-configuration
+			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+			cmp.setup.cmdline({ "/", "?" }, {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = {
+					{ name = "buffer" },
+				},
+			})
+
+			-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = cmp.config.sources({
+					{ name = "path" },
+				}, {
+					{ name = "cmdline" },
+				}),
+				matching = { disallow_symbol_nonprefix_matching = false },
+			})
+
+			-- Setup lspconfig AFTER cmp as in the suggested nvim-cmp config
+			local lspconfig = require("lspconfig")
+			local option = vim.api.nvim_set_option
+
+			-- Enable completion triggered by <c-x><c-o>
+			option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
+			-- Mappings.
+			local opts = { noremap = true, silent = true }
+
+			-- See `:help vim.lsp.*` for documentation on any of the below functions
+			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+			map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+			map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+			map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+			map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+			map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+			map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+			map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
+			map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+
+			local g = vim.g
+
+			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+			local servers = {
+				"rust_analyzer",
+				"bashls",
+				"dockerls",
+				"terraformls",
+				"lua_ls", -- lua-language-server
+				"tflint",
+				"nil_ls",
+			}
+
+			-- Use lsp formatting for Rust instead of none-ls
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = "*.rs",
+				callback = function()
+					vim.lsp.buf.format()
+				end,
+			})
+
+			local my_lsp_on_attach = function(client, bufnr)
+				vim.diagnostic.config({}, bufnr)
+			end
+
+			-- NOTE: Call this base setup BEFORE per-language - https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
+			for _, lsp in ipairs(servers) do
+				lspconfig[lsp].setup({
+					on_attach = my_lsp_on_attach,
+				})
+			end
+
+			lspconfig["gopls"].setup({
+				cmd = { "gopls" },
+				on_attach = my_lsp_on_attach,
+				settings = {
+					gopls = {
+						experimentalPostfixCompletions = true,
+						analyses = { unusedparams = true, shadow = true },
+						staticcheck = true,
+					},
+				},
+				init_options = { usePlaceholders = true },
+			})
+
+			lspconfig["rust_analyzer"].setup({
+				on_attach = my_lsp_on_attach,
+				settings = {
+					["rust-analyzer"] = {
+						rustfmt = {},
+					},
+				},
+			})
+
+			-- Highlight line number instead of having icons in sign column
+			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#highlight-line-number-instead-of-having-icons-in-sign-column
+			vim.cmd([[
+    sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
+    sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
+    sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
+    sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
+    ]])
+		end,
+	},
+})
+
+-- LEAVE LAST!
+vim.diagnostic.config({
+	virtual_text = false,
 })
