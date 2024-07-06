@@ -823,6 +823,14 @@ require("lazy").setup({
 				-- lspconfig[lsp].setup {capabilities = capabilities}
 			end
 
+			-- Use lsp formatting for Rust instead of none-ls
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = "*.rs",
+				callback = function()
+					vim.lsp.buf.format()
+				end,
+			})
+
 			lspconfig["gopls"].setup({
 				cmd = { "gopls" },
 				on_attach = on_attach,
@@ -835,6 +843,14 @@ require("lazy").setup({
 					},
 				},
 				init_options = { usePlaceholders = true },
+			})
+
+			lspconfig["rust_analyzer"].setup({
+				settings = {
+					["rust-analyzer"] = {
+						rustfmt = {},
+					},
+				},
 			})
 		end,
 	},
@@ -1008,6 +1024,7 @@ require("lazy").setup({
 						},
 					}), -- null_ls.builtins.formatting.beautysh,
 					null_ls.builtins.formatting.cue_fmt,
+					null_ls.builtins.formatting.just,
 					null_ls.builtins.formatting.gofumpt,
 					null_ls.builtins.formatting.goimports,
 					null_ls.builtins.formatting.goimports_reviser,
