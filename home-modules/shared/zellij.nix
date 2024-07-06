@@ -2,7 +2,7 @@
 
 {
   programs.zellij = {
-    enable = true;
+    enable = false;
     package = pkgs-unstable.zellij;
     enableZshIntegration = false; # disable auto startup in every zsh shell
   };

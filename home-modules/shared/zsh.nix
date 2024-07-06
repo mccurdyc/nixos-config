@@ -10,7 +10,7 @@
       ta = "tmux attach -t ";
       # https://www.perplexity.ai/search/tmux-newsession-but-gv__phO6TVuT6dxY.15Nrw#1
       tn = "(){ tmux new-session -s $1 \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -v -l 12 \\; send-keys \"__zoxide_z $1\" Enter \\; select-pane -t 0; }";
-      zn = "(){ zellij --session $1 options --default-cwd $(zoxide query $1) --default-layout ~/.config/zellij/layouts/main.kdl; }";
+      zn = "(){ (zellij delete-session $1 || true) && zellij --session $1 options --default-cwd $(zoxide query $1) --default-layout ~/.config/zellij/layouts/main.kdl; }";
       zl = "(){ zellij list-sessions; }";
       za = "() {zellij attach $1; }";
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
