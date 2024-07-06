@@ -85,7 +85,8 @@ opt("splitright", true)
 opt("showmode", false)
 opt("foldminlines", 1)
 opt("foldmethod", "indent")
-opt("foldlevelstart", 2)
+opt("foldlevel", 2)
+opt("foldlevelstart", 3)
 opt("foldenable", true)
 
 local opts = { noremap = true }
