@@ -114,8 +114,8 @@ map("n", "<c-Left>", "<cmd>tabpre<cr>", opts)
 map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 
 -- }}
---
-function replace_word_under_cursor_with_word_from_pastebuffer(global_confirmation)
+
+function ReplaceWordUnderCursorWithWordFromPastebuffer(global_confirmation)
 	local replace_context = global_confirmation and "gc" or "g"
 
 	local word = vim.fn.expand("<cword>")
@@ -123,14 +123,20 @@ function replace_word_under_cursor_with_word_from_pastebuffer(global_confirmatio
 	vim.cmd(cmd)
 end
 
+function ReplaceWordUnderCursorGlobally(global_confirmation)
+	local replace_context = global_confirmation and "gc" or "g"
+	local user_input = vim.fn.input("Enter replacement: ")
+
+	local word = vim.fn.expand("<cword>")
+	local cmd = ":%s/\\<" .. word .. "\\>/" .. user_input .. "/" .. replace_context
+	vim.cmd(cmd)
+end
+
 -- Map the function to a key combination
-map(
-	"n",
-	"<Leader>rc",
-	":lua replace_word_under_cursor_with_word_from_pastebuffer({global_confirmation=true})<CR>",
-	opts
-)
-map("n", "<Leader>rw", ":lua replace_word_under_cursor_with_word_from_pastebuffer()<CR>", opts)
+map("n", "<Leader>rpc", ":lua ReplaceWordUnderCursorWithWordFromPastebuffer({global_confirmation=true})<CR>", opts)
+map("n", "<Leader>rp", ":lua ReplaceWordUnderCursorWithWordFromPastebuffer()<CR>", opts)
+map("n", "<Leader>rw", ":lua ReplaceWordUnderCursorGlobally()<CR>", opts)
+map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmation=true})<CR>", opts)
 
 -- Telescope
 map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
