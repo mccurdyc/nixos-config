@@ -114,8 +114,25 @@ map("n", "<c-Left>", "<cmd>tabpre<cr>", opts)
 map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 
 -- }}
-map("n", "<leader>rw", "<cmd>%s/<C-r><C-w>/\\=@0/gc<CR>", opts)
-map("n", "<leader>rp", "<cmd>%s/<C-r><C-w>/\\=@0/gc<CR>", opts)
+--
+function replace_word_under_cursor_with_word_from_pastebuffer(global_confirmation)
+	local replace_context = global_confirmation and "gc" or "g"
+	print(replace_context)
+
+	local word = vim.fn.expand("<cword>")
+	local cmd = ":%s/\\<" .. word .. "\\>/\\=@0/" .. replace_context
+	print(cmd)
+	vim.cmd(cmd)
+end
+
+-- Map the function to a key combination
+map(
+	"n",
+	"<Leader>rc",
+	":lua replace_word_under_cursor_with_word_from_pastebuffer({global_confirmation=true})<CR>",
+	opts
+)
+map("n", "<Leader>rw", ":lua replace_word_under_cursor_with_word_from_pastebuffer()<CR>", opts)
 
 -- Telescope
 map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
