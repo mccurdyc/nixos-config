@@ -571,6 +571,11 @@ require("lazy").setup({
 				desc = "Diagnostics (Trouble)",
 			},
 			{
+				"<leader>df",
+				"<cmd>lua vim.diagnostic.open_float()<CR>",
+				desc = "Diagnostics in Floating window",
+			},
+			{
 				"<leader>xX",
 				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
 				desc = "Buffer Diagnostics (Trouble)",
