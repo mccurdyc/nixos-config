@@ -117,11 +117,9 @@ map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 --
 function replace_word_under_cursor_with_word_from_pastebuffer(global_confirmation)
 	local replace_context = global_confirmation and "gc" or "g"
-	print(replace_context)
 
 	local word = vim.fn.expand("<cword>")
 	local cmd = ":%s/\\<" .. word .. "\\>/\\=@0/" .. replace_context
-	print(cmd)
 	vim.cmd(cmd)
 end
 
