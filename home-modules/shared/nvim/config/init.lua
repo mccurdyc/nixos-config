@@ -83,10 +83,10 @@ opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
 opt("showmode", false)
-opt("foldminlines", 0)
+opt("foldminlines", 1) -- Minimum number of screen lines for a fold to be displayed closed.
 opt("foldmethod", "indent")
 opt("foldlevel", 1)
-opt("foldlevelstart", 0)
+opt("foldlevelstart", 1)
 opt("foldenable", true)
 opt("cursorline", true)
 
@@ -914,6 +914,7 @@ require("lazy").setup({
 		config = function()
 			require("colorizer").setup({
 				vim = { mode = "background" },
+				nix = { mode = "background" },
 				lua = { mode = "background" },
 				html = { mode = "background" },
 				scss = { mode = "background" },
@@ -1082,7 +1083,7 @@ require("lazy").setup({
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = function(entry, vim_item)
-						local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 10 })(entry, vim_item)
+						local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 20 })(entry, vim_item)
 						local strings = vim.split(kind.kind, "%s", { trimempty = true })
 						kind.kind = " " .. (strings[1] or "") .. " "
 						kind.menu = "    ("

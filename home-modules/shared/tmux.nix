@@ -1,5 +1,23 @@
 { pkgs, ... }: {
 
+  # 00 - #ff5f5f red (IndianRed1) (error) ctermfg=203
+  # 01 - #ffa500 orange (Orange1) (warning) ctermfg=214
+  # 02 - #5fd787 green (SeaGreen3) (good) ctermfg=78
+  # 03 - #2950c5 blue (alt) no direct ctermfg, use ctermfg=33
+  # 04 - empty (alt) ->
+  # 05 - empty (alt) ->
+  # 06 - empty (alt) ->
+  # --- Black and White
+  # 07 - #000000 pure black (Black) ctermfg=00
+  # 08 - #1c1c1c "black" (Grey11) (background) ctermfg=234
+  # 09 - #262626 really dark gray (Grey15) (comment) ctermfg=235
+  # 0A - #4e4e4e dark grey (Grey30) (more important than comment) ctermfg=29
+  # 0B - #9e9e9e (247_Grey62) ctermfg=247
+  # 0C - #d3d0c8 (252_Grey82) ctermfg=252
+  # 0D - #e4e4e4 light grey (Grey89) (foreground) ctermfg=254
+  # 0E - #eeeeee "white" (Grey93) (foreground) ctermfg=255
+  # 0F - #ffffff pure white (White) ctermfg=16
+
   programs.tmux = {
     enable = true;
     baseIndex = 0;
@@ -61,33 +79,33 @@
       # Template author: Tinted Theming: (https://github.com/tinted-theming)
 
       # default statusbar colors
-      set-option -g status-style "fg=#a09f93,bg=#393939"
+      set-option -g status-style "fg=#ffa500,bg=#1c1c1c"
 
       # default window title colors
-      set-window-option -g window-status-style "fg=#a09f93,bg=default"
+      set-window-option -g window-status-style "fg=#ffa500,bg=1c1c1c"
 
       # active window title colors
-      set-window-option -g window-status-current-style "fg=#ffcc66,bg=default"
+      set-window-option -g window-status-current-style "fg=#ffa500,bg=default"
 
       # pane border
-      set-option -g pane-border-style "fg=#393939"
-      set-option -g pane-active-border-style "fg=#515151"
+      set-option -g pane-border-style "fg=#1c1c1c"
+      set-option -g pane-active-border-style "fg=#ffa500"
 
       # message text
-      set-option -g message-style "fg=#d3d0c8,bg=#393939"
+      set-option -g message-style "fg=#ffa500,bg=#1c1c1c"
 
       # pane number display
-      set-option -g display-panes-active-colour "#99cc99"
-      set-option -g display-panes-colour "#ffcc66"
+      set-option -g display-panes-active-colour "#ffa500"
+      set-option -g display-panes-colour "#ffa500"
 
       # clock
-      set-window-option -g clock-mode-colour "#99cc99"
+      set-window-option -g clock-mode-colour "#ffa500"
 
       # copy mode highligh
-      set-window-option -g mode-style "fg=#a09f93,bg=#515151"
+      set-window-option -g mode-style "fg=#ffa500,bg=#515151"
 
       # bell
-      set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
+      set-window-option -g window-status-bell-style "fg=#1c1c1c,bg=#ffa500"
     '';
   };
 }
