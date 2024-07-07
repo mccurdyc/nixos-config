@@ -88,6 +88,7 @@ opt("foldmethod", "indent")
 opt("foldlevel", 1)
 opt("foldlevelstart", 0)
 opt("foldenable", true)
+opt("cursorline", true)
 
 local opts = { noremap = true }
 
