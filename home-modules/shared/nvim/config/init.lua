@@ -52,6 +52,14 @@ autocmd("misc_aucmds", {
 	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
 }, true)
 
+autocmd("dont_fold_telescope_results", {
+	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
+}, true)
+
+autocmd("nix_foldlevel_1", {
+	[[FileType nix setlocal foldlevel=1]],
+}, true)
+
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
 g.python3_host_prog = "/usr/bin/python"
@@ -83,10 +91,9 @@ opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
 opt("showmode", false)
-opt("foldminlines", 1) -- Minimum number of screen lines for a fold to be displayed closed.
+opt("foldminlines", 0) -- Minimum number of screen lines for a fold to be displayed closed.
 opt("foldmethod", "indent")
-opt("foldlevel", 1)
-opt("foldlevelstart", 1)
+opt("foldlevel", 0) -- Show top-level folds
 opt("foldenable", true)
 opt("cursorline", true)
 
@@ -107,6 +114,8 @@ map("n", "<c-Left>", "<cmd>tabpre<cr>", opts)
 map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
 
 -- }}
+map("n", "<leader>rw", "<cmd>%s/<C-r><C-w>/\\=@0/gc<CR>", opts)
+map("n", "<leader>rp", "<cmd>%s/<C-r><C-w>/\\=@0/gc<CR>", opts)
 
 -- Telescope
 map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
