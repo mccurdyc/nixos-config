@@ -993,7 +993,51 @@ require("lazy").setup({
 			require("lualine").setup({
 				options = {
 					icons_enabled = false,
-					theme = "horizon",
+					theme = function()
+						local colors = {
+							black = "#1c1c1c",
+							white = "#eeeeee",
+							red = "#ff5f5f",
+							green = "#5fd787",
+							blue = "#2950c5",
+							orange = "#ffa500",
+							darkgray = "#262626",
+							lightgray = "#e4e4e4",
+						}
+
+						return {
+							normal = {
+								a = { bg = colors.orange, fg = colors.black, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+							insert = {
+								a = { bg = colors.green, fg = colors.black, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+							visual = {
+								a = { bg = colors.blue, fg = colors.white, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+							replace = {
+								a = { bg = colors.red, fg = colors.black, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+							command = {
+								a = { bg = colors.green, fg = colors.black, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+							inactive = {
+								a = { bg = colors.darkgray, fg = colors.white, gui = "bold" },
+								b = { bg = colors.black, fg = colors.lightgray },
+								c = { bg = colors.black, fg = colors.lightgray },
+							},
+						}
+					end,
 					component_separators = "",
 					section_separators = "",
 					disabled_filetypes = {},
