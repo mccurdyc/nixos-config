@@ -167,7 +167,7 @@
     settings = {
       add_newline = true;
       package.disabled = true;
-      format = "\\\[$username[@](bold #5fd787)$hostname\\\] \\\[$directory\\\] (\\\[($git_state )($git_status)($git_branch)($git_commit)\\\])$line_break( \\\[($aws)($gcloud)\\\])( \\\[($nix_shell)($memory_usage)($env_var)($custom)($sudo)\\\])( \\\[($kubernetes)($docker_context)($package)($golang)($helm)($lua)($nodejs)($ruby)($rust)($terraform)($buf)\\\])( \\\[$cmd_duration\\\])( \\\[$jobs\\\])( \\\[$status\\\])( \\\[$shell\\\])$line_break$time $character";
+      format = "\\\[$username[@](bold #5fd787)$hostname\\\] \\\[$directory\\\] (\\\[($git_state )($git_status)($git_branch)($git_commit)\\\])($sudo)($golang)($helm)($lua)($nodejs)($ruby)($rust)($terraform)( \\\[$jobs\\\])( \\\[$status\\\])( \\\[$shell\\\])$line_break$time $character";
 
       character = {
         success_symbol = "[%%](bold #5fd787)";
