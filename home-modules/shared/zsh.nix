@@ -167,12 +167,12 @@
     settings = {
       add_newline = true;
       package.disabled = true;
-      format = "\\\[$username[@](bold #00ffa5)$hostname\\\] \\\[$directory\\\] (\\\[($git_state )($git_status)($git_branch)($git_commit)\\\])( \\\[($aws)($gcloud)\\\])( \\\[($nix_shell)($memory_usage)($env_var)($custom)($sudo)\\\])( \\\[($kubernetes)($docker_context)($package)($golang)($helm)($lua)($nodejs)($ruby)($rust)($terraform)($buf)\\\])( \\\[$cmd_duration\\\])( \\\[$jobs\\\])( \\\[$status\\\])( \\\[$shell\\\])$line_break$time $character";
+      format = "\\\[$username[@](bold #5fd787)$hostname\\\] \\\[$directory\\\] (\\\[($git_state )($git_status)($git_branch)($git_commit)\\\])( \\\[($aws)($gcloud)\\\])( \\\[($nix_shell)($memory_usage)($env_var)($custom)($sudo)\\\])( \\\[($kubernetes)($docker_context)($package)($golang)($helm)($lua)($nodejs)($ruby)($rust)($terraform)($buf)\\\])( \\\[$cmd_duration\\\])( \\\[$jobs\\\])( \\\[$status\\\])( \\\[$shell\\\])$line_break$time $character";
 
       character = {
-        success_symbol = "[%%](bold #00ffa5)";
-        error_symbol = "[%%](bold #ff005a)";
-        vicmd_symbol = "[V](bold #00ffa5)";
+        success_symbol = "[%%](bold #5fd787)";
+        error_symbol = "[%%](bold #ff5f5f)";
+        vicmd_symbol = "[V](bold #5fd787)";
       };
 
       time = {
@@ -186,7 +186,7 @@
         show_always = true;
         format = "[$user]($style)";
         style_user = "bold #ffa500";
-        style_root = "bold #ff005a";
+        style_root = "bold #ff5f5f";
       };
 
       hostname = {
@@ -198,7 +198,7 @@
 
       directory = {
         read_only = ":ro";
-        format = "[$path](bold #ffa500)[$read_only](bold #ff005a)";
+        format = "[$path](bold #ffa500)[$read_only](bold #ff5f5f)";
       };
 
       git_status = {
@@ -212,7 +212,7 @@
       git_branch = {
         symbol = "";
         format = "[$symbol$branch(:$remote_branch)]($style)";
-        style = "bold #00ffa5";
+        style = "bold #5fd787";
       };
 
       git_commit = {
@@ -234,7 +234,7 @@
       gcloud = {
         symbol = "gcp:";
         format = "[(\\\($project\\\))]($style)";
-        style = "bold #005aff";
+        style = "bold #2950c5";
       };
       golang = {
         symbol = "go:";
