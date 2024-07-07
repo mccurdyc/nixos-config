@@ -45,11 +45,17 @@
       # necessary to reload shell config changes
       set -g default-shell "${pkgs.zsh}/bin/zsh"
 
-      # This tmux statusbar config was created by tmuxline.vim
-      # on Tue, 24 Dec 2019
-
       set -g status-justify "left"
       set -g status "on"
+
+      set-option -g status-left-length 8
+      set-option -g status-right-length 20
+
+      set -g window-status-format " • #[fg=#ffa500,bg=#1c1c1c]#W"
+      set -g window-status-current-format " • #[fg=#ffa500,bg=#1c1c1c]#W"
+
+      set-option -g status-left "#[fg=#1c1c1c,bg=#ffa500,bold]#S"
+      set-option -g status-right "#[fg=#1c1c1c,bg=#ffa500,bold]#(date -u "+%%H:%%M") • #[fg=#1c1c1c,bg=#ffa500,bold]#(uptime | cut -d ' ' -f 2)"
 
       # copy-paste Mac -> kitty -> ssh -> tmux -> vim
       # Cmd+c (copy), Cmd+v (paste)
@@ -74,18 +80,15 @@
       # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
       # set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
 
-      # Base16 Eighties
-      # Scheme author: Chris Kempson (http://chriskempson.com)
-      # Template author: Tinted Theming: (https://github.com/tinted-theming)
-
       # default statusbar colors
+      set-option -g status-interval 1
       set-option -g status-style "fg=#ffa500,bg=#1c1c1c"
 
       # default window title colors
-      set-window-option -g window-status-style "fg=#ffa500,bg=1c1c1c"
+      set-window-option -g window-status-style "fg=#ffa500,bg=#1c1c1c"
 
       # active window title colors
-      set-window-option -g window-status-current-style "fg=#ffa500,bg=default"
+      set-window-option -g window-status-current-style "fg=#ffa500,bg=#1c1c1c"
 
       # pane border
       set-option -g pane-border-style "fg=#1c1c1c"
@@ -101,8 +104,8 @@
       # clock
       set-window-option -g clock-mode-colour "#ffa500"
 
-      # copy mode highligh
-      set-window-option -g mode-style "fg=#ffa500,bg=#515151"
+      # copy mode highlight
+      set-window-option -g mode-style "bg=#4e4e4e"
 
       # bell
       set-window-option -g window-status-bell-style "fg=#1c1c1c,bg=#ffa500"
