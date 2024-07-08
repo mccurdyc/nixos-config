@@ -42,24 +42,6 @@ end
 g.t_Co = 256
 g.base16colorspace = 256
 
-cmd("filetype plugin indent on")
-
-autocmd("OnSave", {
-	[[BufWritePost * lua require("trouble").open("diagnostics")]],
-}, true)
-
-autocmd("misc_aucmds", {
-	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
-}, true)
-
-autocmd("dont_fold_telescope_results", {
-	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
-}, true)
-
-autocmd("nix_foldlevel_1", {
-	[[FileType nix setlocal foldlevel=1]],
-}, true)
-
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
 g.python3_host_prog = "/usr/bin/python"
@@ -96,6 +78,25 @@ opt("foldmethod", "indent")
 opt("foldlevel", 0) -- Show top-level folds
 opt("foldenable", true)
 opt("cursorline", true)
+opt("conceallevel", 1)
+
+cmd("filetype plugin indent on")
+
+autocmd("OnSave", {
+	[[BufWritePost * lua require("trouble").open("diagnostics")]],
+}, true)
+
+autocmd("misc_aucmds", {
+	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
+}, true)
+
+autocmd("dont_fold_telescope_results", {
+	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
+}, true)
+
+autocmd("nix_foldlevel_1", {
+	[[FileType nix setlocal foldlevel=1]],
+}, true)
 
 local opts = { noremap = true }
 
@@ -191,6 +192,34 @@ require("lazy").setup({
 			-- require'plenary.profile'.stop()
 			-- inferno-flamegraph profile.log > flame.svg
 		end,
+	},
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+		--   "BufReadPre path/to/my-vault/**.md",
+		--   "BufNewFile path/to/my-vault/**.md",
+		-- },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "personal",
+					path = "~/src/github.com/mccurdyc/obsidian.md/Personal",
+				},
+				{
+					name = "work",
+					path = "~/src/github.com/mccurdyc/obsidian.md/Fastly",
+				},
+			},
+		},
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
@@ -349,6 +378,16 @@ require("lazy").setup({
 						never_show_by_pattern = { -- uses glob style patterns
 							--".null-ls_*",
 						},
+					},
+				},
+				-- Unfortunately, setting this in autocmd like others wasnt working
+				event_handlers = {
+					{
+						event = "neo_tree_buffer_enter",
+						handler = function()
+							vim.opt_local.foldmethod = "manual"
+							vim.opt_local.foldenable = false
+						end,
 					},
 				},
 			})
