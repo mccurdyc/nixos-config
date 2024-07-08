@@ -14,6 +14,7 @@
     ./tmux.nix
     ./zellij.nix
     ./zoxide.nix
+    ./zoekt.nix
     ./zsh.nix
   ];
 

@@ -43,6 +43,7 @@
       gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       k = "kubectl";
+      zoekt = "zoekt -index_dir $HOME/zoekt-serving/index -r";
       stopwatch = ''
         start=$(date +%s)
         if [[ $1 == ?([+-])+([0-9]) ]]; then
@@ -66,6 +67,7 @@
       # TERM=screen-256color
       ZELLIJ_AUTO_ATTACH=false
       ZELLIJ_AUTO_EXIT=true
+      CTAGS_COMMAND=ctags # zoekt - https://github.com/sourcegraph/zoekt/blob/5ac92b1a7d4ab7b0dbeeaa9df77abb13d555e16b/doc/ctags.md?plain=1#L18-L21
     '';
 
     history = {
