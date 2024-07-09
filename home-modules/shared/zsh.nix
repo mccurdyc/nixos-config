@@ -43,7 +43,8 @@
       gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       k = "kubectl";
-      zoekt = "zoekt -index_dir $HOME/zoekt-serving/index -r";
+      zkt = "zoekt -index_dir $HOME/zoekt-serving/index -r";
+      zobs = "zoekt -index_dir $HOME/zoekt-serving/index \"r:obsidian.md $@\"";
       stopwatch = ''
         start=$(date +%s)
         if [[ $1 == ?([+-])+([0-9]) ]]; then
