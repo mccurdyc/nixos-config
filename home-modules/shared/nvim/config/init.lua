@@ -44,18 +44,6 @@ g.base16colorspace = 256
 
 cmd("filetype plugin indent on")
 
-autocmd("misc_aucmds", {
-	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
-}, true)
-
-autocmd("dont_fold_telescope_results", {
-	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
-}, true)
-
-autocmd("nix_foldlevel_1", {
-	[[FileType nix setlocal foldlevel=1]],
-}, true)
-
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
 g.python3_host_prog = "/usr/bin/python"
@@ -95,10 +83,6 @@ opt("cursorline", true)
 opt("conceallevel", 1)
 
 cmd("filetype plugin indent on")
-
-autocmd("OnSave", {
-	[[BufWritePost * lua require("trouble").open("diagnostics")]],
-}, true)
 
 autocmd("misc_aucmds", {
 	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
