@@ -26,13 +26,24 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       assm = ''() {
-        aws ec2 describe-instances \
+      aws sts get-caller-identity --profile $1; \
+      if [ $? -eq 0 ]; then \
+          echo "SSO session is valid"; \
+      else \
+          echo "refreshing SSO session"; \
+          aws --no-browser sso login --profile $1; \
+      fi; \
+      aws ssm start-session \
         --profile $1 \
         --region $2 \
-        --output text \
-        --query 'Reservations[].Instances[?State.Name==`running`].[InstanceId,Tags[?Key==`Name`].Value | [0]]' |\
-        fzf |\
-        awk '{print $1}';
+        --target "$(aws ec2 describe-instances \
+          --profile $1 \
+          --region $2 \
+          --output text \
+          --query 'Reservations[].Instances[?State.Name==`running`].[InstanceId,Tags[?Key==`Name`].Value | [0]]' |\
+          fzf --query $3 |\
+          awk '{print $1}' \
+        )";
       }'';
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
