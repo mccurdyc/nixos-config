@@ -25,6 +25,15 @@
     autosuggestion.enable = false; # This breaks FZF_CTRL_T_COMMAND
     syntaxHighlighting.enable = true;
     shellAliases = {
+      assm = ''() {
+        aws ec2 describe-instances \
+        --profile $1 \
+        --region $2 \
+        --output text \
+        --query 'Reservations[].Instances[?State.Name==`running`].[InstanceId,Tags[?Key==`Name`].Value | [0]]' |\
+        fzf |\
+        awk '{print $1}';
+      }'';
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
       # https://www.perplexity.ai/search/tmux-newsession-but-gv__phO6TVuT6dxY.15Nrw#1
