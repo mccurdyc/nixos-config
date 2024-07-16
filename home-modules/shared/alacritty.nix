@@ -6,6 +6,10 @@ _: {
         TERM = "xterm-256color";
       };
 
+      selection = {
+        save_to_clipboard = true;
+      };
+
       scrolling = {
         # Maximum number of lines in the scrollback buffer.
         # Specifying '0' will disable scrolling.
