@@ -18,9 +18,16 @@
       zsh
       pkgs-unstable.neovim
       pkgs-unstable.tailscale
+      ruby_3_2
     ];
 
     variables = {
+      # https://daiderd.com/nix-darwin/manual/index.html#opt-environment.variables
+      # If you screw the path up, export PATH=/run/current-system/sw/bin:$PATH
+      PATH = [
+        "$PATH"
+        "\${HOME}/.local/share/gem/ruby/3.2.0/bin"
+      ];
       EDITOR = "nvim";
       VISUAL = "nvim";
       # TERM = "screen-256color";
