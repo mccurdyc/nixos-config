@@ -3,7 +3,7 @@ _: {
     enable = true;
     settings = {
       env = {
-        TERM = "screen-256color";
+        TERM = "xterm-256color";
       };
 
       scrolling = {

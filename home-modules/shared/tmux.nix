@@ -25,7 +25,7 @@
     newSession = false;
     keyMode = "vi";
     customPaneNavigationAndResize = true;
-    terminal = "screen-256color";
+    terminal = "xterm-256color";
     shortcut = "a";
     escapeTime = 1;
     extraConfig = ''
@@ -67,7 +67,8 @@
       # https://github.com/mobile-shell/mosh/pull/1054
 
       # https://github.com/tmux/tmux/wiki/Clipboard/
-      set -g set-clipboard on
+      set -g set-clipboard external
+      set -g allow-passthrough on
       set -g mouse on
 
       # https://github.com/tmux/tmux/wiki/Clipboard#terminal-support---kitty
@@ -75,10 +76,10 @@
       # https://gist.github.com/yudai/95b20e3da66df1b066531997f982b57b
       # This must match the value of default-termainal and TERM.
       # for tmux version (tmux -V) >3.2
-      set -ag terminal-features ',screen-256color:clipboard'
+      set -ag terminal-features ',xterm-256color:clipboard'
       # for tmux version (tmux -V) <3.2
       # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
-      # set-option -ag terminal-overrides ",screen-256color:Ms=\\E]52;c;%p2%s\\7"
+      set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
 
       # default statusbar colors
       set-option -g status-interval 1
@@ -109,6 +110,11 @@
 
       # bell
       set-window-option -g window-status-bell-style "fg=#1c1c1c,bg=#ffa500"
+
+      set -g @plugin 'tmux-plugins/tpm'
+      set -g @plugin 'tmux-plugins/tmux-yank'
+
+      run '~/.tmux/plugins/tpm/tpm'
     '';
   };
 }
