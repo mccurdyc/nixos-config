@@ -525,6 +525,9 @@ require("lazy").setup({
 		config = function()
 			require("telescope").setup({
 				defaults = {
+					file_ignore_patterns = {
+						"vendor/",
+					},
 					mappings = {
 						i = {
 							-- Insert mode mappings
