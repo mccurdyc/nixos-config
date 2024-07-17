@@ -196,13 +196,10 @@ require("lazy").setup({
 		version = "*", -- recommended, use latest release instead of latest commit
 		lazy = true,
 		ft = "markdown",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-		--   "BufReadPre path/to/my-vault/**.md",
-		--   "BufNewFile path/to/my-vault/**.md",
-		-- },
+		event = {
+			"BufReadPre " .. vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/**.md",
+			"BufNewFile " .. vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/**.md",
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
@@ -210,11 +207,11 @@ require("lazy").setup({
 			workspaces = {
 				{
 					name = "personal",
-					path = "~/src/github.com/mccurdyc/obsidian.md/Personal",
+					path = vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/",
 				},
 				{
 					name = "work",
-					path = "~/src/github.com/mccurdyc/obsidian.md/Fastly",
+					path = vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Fastly/",
 				},
 			},
 		},
@@ -1335,4 +1332,8 @@ require("lazy").setup({
 -- LEAVE LAST!
 vim.diagnostic.config({
 	virtual_text = false,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
 })
