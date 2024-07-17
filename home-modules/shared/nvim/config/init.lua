@@ -736,6 +736,14 @@ require("lazy").setup({
 			null_ls.setup({
 				-- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
 				on_attach = function(client, bufnr)
+					vim.diagnostic.config({
+						virtual_text = false,
+						signs = true,
+						underline = true,
+						update_in_insert = false,
+						severity_sort = true,
+					})
+
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_clear_autocmds({
 							group = augroup,
@@ -1287,20 +1295,13 @@ require("lazy").setup({
 				end,
 			})
 
-			local my_lsp_on_attach = function(client, bufnr)
-				vim.diagnostic.config({}, bufnr)
-			end
-
 			-- NOTE: Call this base setup BEFORE per-language - https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
 			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup({
-					on_attach = my_lsp_on_attach,
-				})
+				lspconfig[lsp].setup({})
 			end
 
 			lspconfig["gopls"].setup({
 				cmd = { "gopls" },
-				on_attach = my_lsp_on_attach,
 				settings = {
 					gopls = {
 						experimentalPostfixCompletions = true,
@@ -1312,7 +1313,6 @@ require("lazy").setup({
 			})
 
 			lspconfig["rust_analyzer"].setup({
-				on_attach = my_lsp_on_attach,
 				settings = {
 					["rust-analyzer"] = {
 						rustfmt = {},
