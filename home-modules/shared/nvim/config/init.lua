@@ -96,6 +96,10 @@ autocmd("nix_foldlevel_1", {
 	[[FileType nix setlocal foldlevel=1]],
 }, true)
 
+autocmd("json_conceallevel_0_to_avoid_red_quotes", {
+	[[FileType json setlocal conceallevel=0]],
+}, true)
+
 local opts = { noremap = true }
 
 -- {{ General
@@ -924,6 +928,7 @@ require("lazy").setup({
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
+					disable = { "json" },
 				},
 				indent = { enable = true },
 			})
