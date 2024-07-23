@@ -14,6 +14,7 @@
     gitrs
     go
     gopls
+    python312Packages.grip
     gron
     htop
     inferno # flamegraphs

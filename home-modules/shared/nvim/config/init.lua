@@ -96,8 +96,8 @@ autocmd("nix_foldlevel_1", {
 	[[FileType nix setlocal foldlevel=1]],
 }, true)
 
-autocmd("json_conceallevel_0_to_avoid_red_quotes", {
-	[[FileType json setlocal conceallevel=0]],
+autocmd("conceallevel_0_to_avoid_red_quotes", {
+	[[FileType json,md setlocal conceallevel=0]],
 }, true)
 
 local opts = { noremap = true }
@@ -493,6 +493,21 @@ require("lazy").setup({
 					max_type_length = nil, -- Can be integer or nil.
 				},
 			})
+
+			vim.keymap.set("n", "<leader>bp", require("dap").toggle_breakpoint)
+			vim.keymap.set("n", "<leader>dc", require("dap").continue)
+			vim.keymap.set("n", "<leader>dt", require("dapui").toggle)
+
+			-- Set up the DAP UI to open automatically when debugging starts:
+			local dap, dapui = require("dap"), require("dapui")
+			dapui.setup()
+
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
 		end,
 	},
 	{ "mfussenegger/nvim-dap" },
@@ -635,7 +650,7 @@ require("lazy").setup({
 			},
 			{
 				"<leader>cl",
-				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				"<cmd>Trouble lsp toggle focus=false win.position=bottom<cr>",
 				desc = "LSP Definitions / references / ... (Trouble)",
 			},
 			{
@@ -928,7 +943,7 @@ require("lazy").setup({
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
-					disable = { "json" },
+					disable = { "json", "markdown" },
 				},
 				indent = { enable = true },
 			})

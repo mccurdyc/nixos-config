@@ -11,6 +11,11 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  boot.kernel.sysctl = {
+    "kernel.yama.ptrace_scope" = 0; # To support delve debugger
+  };
+
+
   fileSystems."/" =
     {
       device = "/dev/disk/by-label/NIXROOT";
