@@ -25,7 +25,9 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  boot.loader.grub.enable = false;
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
