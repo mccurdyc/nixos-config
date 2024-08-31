@@ -299,11 +299,11 @@ require("lazy").setup({
 							deleted = "-", -- this can only be used in the git_status source
 							renamed = "~", -- this can only be used in the git_status source
 							-- Status type
-							untracked = "/",
+							untracked = "",
 							ignored = "",
-							unstaged = "~",
-							staged = "*",
-							conflict = "~",
+							unstaged = "",
+							staged = "",
+							conflict = "",
 						},
 					},
 				},
@@ -1234,22 +1234,19 @@ require("lazy").setup({
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = function(entry, vim_item)
-						local kind = lspkind.cmp_format({ mode = "text", maxwidth = 20 })(entry, vim_item)
-						local strings = vim.split(kind.kind, "%s", { trimempty = true })
-						kind.kind = " " .. (strings[1] or "") .. " "
-						kind.menu = "    ("
-							.. (strings[2] or "")
-							.. ")"
-							.. "  "
-							.. (
-								({
-									buffer = "[BUF]",
-									nvim_lsp = "[LSP]",
-									luasnip = "[SNIP]",
-								})[entry.source.name] or ""
-
-							)
-
+						local kind = lspkind.cmp_format({
+							mode = "text",
+							maxwidth = 20,
+							ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+							show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+						})(entry, vim_item)
+						kind.menu = (
+							({
+								buffer = "[BUF]",
+								nvim_lsp = "[LSP]",
+								luasnip = "[SNIP]",
+							})[entry.source.name] or "[OTHER]"
+						)
 						return kind
 					end,
 				},
