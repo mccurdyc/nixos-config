@@ -5,7 +5,6 @@
     shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs; [
-      cntr
       coreutils
       curl
       gcc

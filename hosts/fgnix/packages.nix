@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     awscli2
+    cntr
     infra
     kubectl
     kubernetes-helm
