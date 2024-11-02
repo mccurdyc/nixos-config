@@ -51,10 +51,35 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
-	url = "git@github.com:mccurdyc/base16-vim",
-	lazy = false, -- make sure we load this during startup if it is your main colorscheme
-	priority = 1000, -- make sure to load this before all the other start plugins
-	config = function()
-		vim.cmd([[colorscheme base16-eighties-minimal]])
-	end,
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("telescope").setup()
+		end,
+	},
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  -- This handler will fire when the buffer's 'filetype' is "python"
+  pattern = 'lua',
+  callback = function(args)
+    vim.lsp.start({
+      name = 'lua_ls',
+      cmd = {'lua-language-server'},
+      root_dir = vim.fs.root(args.buf, {'.git'}),
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  -- This handler will fire when the buffer's 'filetype' is "python"
+  pattern = 'go',
+  callback = function(args)
+    vim.lsp.start({
+      name = 'gopls',
+      cmd = {'gopls'},
+      root_dir = vim.fs.root(args.buf, {'go.mod'}),
+    })
+  end,
 })
