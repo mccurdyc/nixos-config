@@ -47,7 +47,9 @@ cmd("filetype plugin indent on")
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
 g.python3_host_prog = "/usr/bin/python"
-g.netrw_browsex_viewer = "xdg-open"
+-- just have :GBrowse echo the link
+-- https://github.com/tpope/vim-fugitive/issues/1135#issuecomment-520175596
+g.netrw_browsex_viewer = "dillo" -- GARBAGE hack; go look at git.nix
 
 local buffer = { o, bo }
 local window = { o, wo }
@@ -821,7 +823,7 @@ require("lazy").setup({
 					null_ls.builtins.formatting.nixpkgs_fmt,
 					null_ls.builtins.formatting.rego,
 					null_ls.builtins.formatting.just,
-					null_ls.builtins.formatting.shfmt.with({ extra_args = { "-i", "4", "-ci" } }),
+					null_ls.builtins.formatting.shfmt.with({ extra_args = { "-i", "2", "-ci" } }),
 					null_ls.builtins.formatting.terraform_fmt,
 					-- null_ls.builtins.formatting.yamlfmt
 				},
@@ -1330,6 +1332,7 @@ require("lazy").setup({
 				settings = {
 					gopls = {
 						experimentalPostfixCompletions = true,
+						-- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
 						analyses = { unusedparams = true, shadow = true },
 						staticcheck = true,
 					},
