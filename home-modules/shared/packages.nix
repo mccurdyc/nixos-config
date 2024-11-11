@@ -19,6 +19,7 @@
     htop
     inferno # flamegraphs
     jq
+    just
     keychain
     lsof
     ncurses

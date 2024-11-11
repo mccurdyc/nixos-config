@@ -85,7 +85,7 @@
     };
 
     envExtra = ''
-      BROWSER="echo"
+      BROWSER="/usr/bin/env echo"
       # TERM=screen-256color
       ZELLIJ_AUTO_ATTACH=false
       ZELLIJ_AUTO_EXIT=true
@@ -157,6 +157,7 @@
       setopt globdots
 
       eval "$(starship init zsh)"
+      eval "$(just --completions zsh)"
 
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
 
