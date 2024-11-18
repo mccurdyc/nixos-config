@@ -145,6 +145,7 @@ map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmatio
 
 -- Telescope
 map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
+map("n", "<leader>b", ":lua require('telescope.builtin').buffers()<CR>", opts)
 map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
 map(
 	"n",
