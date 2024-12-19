@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    _1password
+    _1password-cli
     # arguably extras
     bat
     cloc

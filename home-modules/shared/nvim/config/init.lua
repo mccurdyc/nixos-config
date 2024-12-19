@@ -816,6 +816,7 @@ require("lazy").setup({
 						},
 					}), -- null_ls.builtins.formatting.beautysh,
 					null_ls.builtins.formatting.cue_fmt,
+					null_ls.builtins.formatting.cueimports,
 					null_ls.builtins.formatting.just,
 					null_ls.builtins.formatting.gofumpt,
 					null_ls.builtins.formatting.goimports,

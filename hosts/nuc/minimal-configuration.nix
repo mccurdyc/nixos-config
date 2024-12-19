@@ -20,7 +20,7 @@
     extraGroups = [ "wheel" ];
     home = "/home/mccurdyc";
     packages = with pkgs; [
-      _1password
+      _1password-cli
     ];
   };
 
