@@ -10,6 +10,8 @@
     dig
     fd
     fzf
+    zsh-fzf-tab
+    zsh-fzf-history-search
     gh
     gitrs
     go
