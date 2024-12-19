@@ -12,7 +12,7 @@
 gpg --allow-secret-key-import --import /tmp/gpgpriv.asc && \
 rm /tmp/gpgpriv.asc
 : 0000000000:0;op document get fastly_ssh_rsa --output /home/mccurdyc/.ssh/fastly_rsa && \
-ssh-agent zsh && \
+eval $(ssh-agent) && \
 ssh-add /home/mccurdyc/.ssh/fastly_rsa
 : 0000000000:0;op document get fastly_ssh_config --output $HOME/.ssh/fastly_config
 : 0000000000:0;ssh -F ~/.ssh/fastly_config bastion
