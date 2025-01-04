@@ -27,6 +27,7 @@
     ncurses
     nodePackages_latest.bash-language-server
     ookla-speedtest
+    qmk
     tree
     unzip
     wdiff

@@ -3,6 +3,7 @@
 {
   nix = {
     package = pkgs.nix;
+    optimise.automatic = true;
 
     gc = {
       automatic = true;
@@ -11,7 +12,6 @@
 
     settings = {
       sandbox = "relaxed";
-      auto-optimise-store = true;
 
       allowed-users = [ user ];
       trusted-users = [ "root" user ];
