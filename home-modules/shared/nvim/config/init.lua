@@ -190,7 +190,7 @@ require("lazy").setup({
 		-- DEBUGGING
 		"nvim-lua/plenary.nvim",
 		config = function()
-			-- local async = require("plenary.async")
+			local async = require("plenary.async")
 			-- https://github.com/nvim-lua/plenary.nvim?tab=readme-ov-file#plenaryprofile
 			-- require'plenary.profile'.start("profile.log", {flame = true})
 			-- code to be profiled
@@ -952,6 +952,7 @@ require("lazy").setup({
 				sync_install = true,
 				highlight = {
 					enable = true,
+					async = true,
 					additional_vim_regex_highlighting = false,
 					disable = { "json", "markdown" },
 				},
