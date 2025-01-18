@@ -20,6 +20,7 @@
     gron
     htop
     inferno # flamegraphs
+    iotop # sudo iotop -aoP
     jq
     just
     keychain
@@ -28,6 +29,7 @@
     nodePackages_latest.bash-language-server
     ookla-speedtest
     qmk
+    sysstat # iostat -x 1 OR pidstat -d 1
     tree
     unzip
     wdiff
