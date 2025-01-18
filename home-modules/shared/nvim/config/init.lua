@@ -44,6 +44,10 @@ g.base16colorspace = 256
 
 cmd("filetype plugin indent on")
 
+-- nvim-tree recommendation
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+
 g.loaded_python_provider = 0
 g.python_host_prog = "/usr/bin/python2"
 g.python3_host_prog = "/usr/bin/python"
@@ -257,145 +261,279 @@ require("lazy").setup({
 		ft = { "go", "gomod" },
 	},
 	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-		},
+
+		"nvim-tree/nvim-tree.lua",
 		config = function()
-			require("neo-tree").setup({
-				close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
-				popup_border_style = "rounded",
-				enable_git_status = true,
-				source_selector = { winbar = false, statusline = false },
-				enable_diagnostics = false,
-				modified = {
-					symbol = "[+]",
-					highlight = "NeoTreeModified",
+			require("nvim-tree").setup({
+				on_attach = "default",
+				hijack_cursor = false,
+				auto_reload_on_write = true,
+				disable_netrw = false,
+				hijack_netrw = true,
+				hijack_unnamed_buffer_when_opening = false,
+				root_dirs = {},
+				prefer_startup_root = false,
+				sync_root_with_cwd = false,
+				reload_on_bufenter = false,
+				respect_buf_cwd = false,
+				select_prompts = false,
+				sort = {
+					sorter = "name",
+					folders_first = true,
+					files_first = false,
 				},
-				name = {
-					trailing_slash = true,
-					use_git_status_colors = true,
-					highlight = "NeoTreeFileName",
-				},
-				default_component_configs = {
-					indent = {
-						indent_size = 2,
-						padding = 0,
-						indent_marker = " ",
-						last_indent_marker = " ",
-						highlight = "NeoTreeIndentMarker",
-					},
-					icon = {
-						folder_closed = "",
-						folder_open = "",
-						folder_empty = "",
-						highlight = "NeoTreeFileIcon",
-						default = "",
-					},
-					git_status = {
-						symbols = {
-							-- Change type
-							added = "+", -- or "✚", but this is redundant info if you use git_status_colors on the name
-							modified = "~", -- or "", but this is redundant info if you use git_status_colors on the name
-							deleted = "-", -- this can only be used in the git_status source
-							renamed = "~", -- this can only be used in the git_status source
-							-- Status type
-							untracked = "",
-							ignored = "",
-							unstaged = "",
-							staged = "",
-							conflict = "",
+				view = {
+					centralize_selection = false,
+					cursorline = true,
+					debounce_delay = 15,
+					side = "left",
+					preserve_window_proportions = false,
+					number = false,
+					relativenumber = false,
+					signcolumn = "no",
+					width = 20,
+					float = {
+						enable = false,
+						quit_on_focus_loss = true,
+						open_win_config = {
+							relative = "editor",
+							border = "rounded",
+							width = 30,
+							height = 30,
+							row = 1,
+							col = 1,
 						},
 					},
 				},
-				-- A list of functions, each representing a global custom command
-				-- that will be available in all sources (if not overridden in `opts[source_name].commands`)
-				-- see `:h neo-tree-custom-commands-global`
-				commands = {},
-				window = {
-					position = "left",
-					width = 20,
-					mapping_options = {
-						noremap = true,
-						nowait = true,
+				renderer = {
+					add_trailing = false,
+					group_empty = false,
+					full_name = false,
+					root_folder_label = ":~:s?$?/..?",
+					indent_width = 2,
+					special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
+					hidden_display = "none",
+					symlink_destination = true,
+					decorators = { "Git", "Open", "Hidden", "Modified", "Bookmark", "Diagnostics", "Copied", "Cut" },
+					highlight_git = "none",
+					highlight_diagnostics = "none",
+					highlight_opened_files = "none",
+					highlight_modified = "none",
+					highlight_hidden = "none",
+					highlight_bookmarks = "none",
+					highlight_clipboard = "name",
+					indent_markers = {
+						enable = false,
+						inline_arrows = true,
+						icons = {
+							corner = "└",
+							edge = "│",
+							item = "│",
+							bottom = "─",
+							none = " ",
+						},
 					},
-					mappings = {
-						["<cr>"] = "toggle_node",
-						["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
-						["o"] = { "open", nowait = false },
-						["x"] = "open_split", -- split_with_window_picker
-						["v"] = "open_vsplit", -- vsplit_with_window_picker
-						["w"] = "open_with_window_picker",
-						["<bs>"] = "close_node", -- close_all_subnodes
-						["zM"] = "close_all_nodes",
-						["O"] = "expand_all_nodes",
-						["a"] = {
-							"add",
-							-- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
-							-- some commands may take optional config options, see `:h neo-tree-mappings` for details
-							config = {
-								show_path = "none", -- "none", "relative", "absolute"
+					icons = {
+						web_devicons = {
+							file = {
+								enable = true,
+								color = true,
+							},
+							folder = {
+								enable = false,
+								color = true,
 							},
 						},
-						["A"] = "add_directory",
-						["d"] = "delete",
-						["r"] = "rename",
-						["y"] = "copy_to_clipboard",
-						["p"] = "paste_from_clipboard",
-						["c"] = "copy",
-						["m"] = "move",
-						["q"] = "close_window",
-						["R"] = "refresh",
-						["?"] = "show_help",
-						["<"] = "navigate_up",
-						["."] = "set_root",
-						["H"] = "toggle_hidden",
-						["/"] = "fuzzy_finder",
-						["#"] = "fuzzy_sorter",
-						["og"] = { "order_by_git_status", nowait = false },
-						["on"] = { "order_by_name", nowait = false },
-						["i"] = "show_file_details",
-					},
-					fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
-						["<C-n>"] = "move_cursor_down",
-						["<C-p>"] = "move_cursor_up",
-					},
-				},
-				filesystem = {
-					filtered_items = {
-						visible = false, -- when true, they will just be displayed differently than normal items
-						hide_dotfiles = true,
-						hide_gitignored = true,
-						hide_hidden = true, -- only works on Windows for hidden files/directories
-						hide_by_name = {
-							--"node_modules"
+						git_placement = "before",
+						modified_placement = "after",
+						hidden_placement = "after",
+						diagnostics_placement = "signcolumn",
+						bookmarks_placement = "signcolumn",
+						padding = " ",
+						symlink_arrow = "l",
+						show = {
+							file = true,
+							folder = true,
+							folder_arrow = true,
+							git = true,
+							modified = true,
+							hidden = false,
+							diagnostics = true,
+							bookmarks = true,
 						},
-						hide_by_pattern = { -- uses glob style patterns
-							--"*.meta",
-							--"*/src/*/tsconfig.json",
-						},
-						always_show = { -- remains visible even if other settings would normally hide it
-							--".gitignored",
-						},
-						never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-							--".DS_Store",
-							--"thumbs.db"
-						},
-						never_show_by_pattern = { -- uses glob style patterns
-							--".null-ls_*",
+						glyphs = {
+							default = "",
+							symlink = "",
+							bookmark = "",
+							modified = "",
+							hidden = "h",
+							folder = {
+								arrow_closed = "<",
+								arrow_open = ">",
+								default = "",
+								open = "",
+								empty = "",
+								empty_open = "",
+								symlink = "",
+								symlink_open = "",
+							},
+							git = {
+								unstaged = "✗",
+								staged = "✓",
+								unmerged = "<-",
+								renamed = "r",
+								untracked = "*",
+								deleted = "d",
+								ignored = "i",
+							},
 						},
 					},
 				},
-				-- Unfortunately, setting this in autocmd like others wasnt working
-				event_handlers = {
-					{
-						event = "neo_tree_buffer_enter",
-						handler = function()
-							vim.opt_local.foldmethod = "manual"
-							vim.opt_local.foldenable = false
-						end,
+				hijack_directories = {
+					enable = true,
+					auto_open = true,
+				},
+				update_focused_file = {
+					enable = false,
+					update_root = {
+						enable = false,
+						ignore_list = {},
+					},
+					exclude = false,
+				},
+				system_open = {
+					cmd = "",
+					args = {},
+				},
+				git = {
+					enable = true,
+					show_on_dirs = true,
+					show_on_open_dirs = true,
+					disable_for_dirs = {},
+					timeout = 400,
+					cygwin_support = false,
+				},
+				diagnostics = {
+					enable = false,
+					show_on_dirs = false,
+					show_on_open_dirs = true,
+					debounce_delay = 500,
+					severity = {
+						min = vim.diagnostic.severity.HINT,
+						max = vim.diagnostic.severity.ERROR,
+					},
+					icons = {
+						hint = "",
+						info = "",
+						warning = "",
+						error = "",
+					},
+				},
+				modified = {
+					enable = false,
+					show_on_dirs = true,
+					show_on_open_dirs = true,
+				},
+				filters = {
+					enable = true,
+					git_ignored = true,
+					dotfiles = false,
+					git_clean = false,
+					no_buffer = false,
+					no_bookmark = false,
+					custom = {},
+					exclude = {},
+				},
+				live_filter = {
+					prefix = "[FILTER]: ",
+					always_show_folders = true,
+				},
+				filesystem_watchers = {
+					enable = true,
+					debounce_delay = 50,
+					ignore_dirs = {
+						"/.ccls-cache",
+						"/build",
+						"/node_modules",
+						"/target",
+					},
+				},
+				actions = {
+					use_system_clipboard = true,
+					change_dir = {
+						enable = true,
+						global = false,
+						restrict_above_cwd = false,
+					},
+					expand_all = {
+						max_folder_discovery = 300,
+						exclude = {},
+					},
+					file_popup = {
+						open_win_config = {
+							col = 1,
+							row = 1,
+							relative = "cursor",
+							border = "shadow",
+							style = "minimal",
+						},
+					},
+					open_file = {
+						quit_on_open = false,
+						eject = true,
+						resize_window = true,
+						relative_path = true,
+						window_picker = {
+							enable = true,
+							picker = "default",
+							chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+							exclude = {
+								filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+								buftype = { "nofile", "terminal", "help" },
+							},
+						},
+					},
+					remove_file = {
+						close_window = true,
+					},
+				},
+				trash = {
+					cmd = "gio trash",
+				},
+				tab = {
+					sync = {
+						open = false,
+						close = false,
+						ignore = {},
+					},
+				},
+				notify = {
+					threshold = vim.log.levels.INFO,
+					absolute_path = true,
+				},
+				help = {
+					sort_by = "key",
+				},
+				ui = {
+					confirm = {
+						remove = true,
+						trash = true,
+						default_yes = false,
+					},
+				},
+				experimental = {},
+				log = {
+					enable = false,
+					truncate = false,
+					types = {
+						all = false,
+						config = false,
+						copy_paste = false,
+						dev = false,
+						diagnostics = false,
+						git = false,
+						profile = false,
+						watcher = false,
 					},
 				},
 			})
@@ -606,9 +744,9 @@ require("lazy").setup({
 					color_devicons = false,
 					use_less = true,
 					set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-					file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-					grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-					qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+					-- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+					-- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+					-- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 				},
 				pickers = {
 					buffers = { sort_lastused = true },
