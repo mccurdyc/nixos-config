@@ -16,7 +16,7 @@
       ripgrep
       wget
       zsh
-      pkgs-unstable.neovim
+      pkgs.neovim
       pkgs-unstable.tailscale
       ruby_3_2
     ];

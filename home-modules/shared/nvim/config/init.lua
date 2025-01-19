@@ -187,46 +187,9 @@ require("lazy").setup({
 		end,
 	},
 	"tpope/vim-fugitive",
-	"tpope/vim-rhubarb",
+	"tpope/vim-rhubarb", -- :GBrowse
 	"tomtom/tcomment_vim",
-	"dstein64/vim-startuptime", -- nvim -c :StartupTime
-	{
-		-- DEBUGGING
-		"nvim-lua/plenary.nvim",
-		config = function()
-			local async = require("plenary.async")
-			-- https://github.com/nvim-lua/plenary.nvim?tab=readme-ov-file#plenaryprofile
-			-- require'plenary.profile'.start("profile.log", {flame = true})
-			-- code to be profiled
-			-- require'plenary.profile'.stop()
-			-- inferno-flamegraph profile.log > flame.svg
-		end,
-	},
-	{
-		"epwalsh/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
-		lazy = true,
-		ft = "markdown",
-		event = {
-			"BufReadPre " .. vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/**.md",
-			"BufNewFile " .. vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/**.md",
-		},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		opts = {
-			workspaces = {
-				{
-					name = "personal",
-					path = vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Personal/",
-				},
-				{
-					name = "work",
-					path = vim.fn.expand("~") .. "/src/github.com/mccurdyc/obsidian.md/Fastly/",
-				},
-			},
-		},
-	},
+	"nvim-lua/plenary.nvim",
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -265,31 +228,7 @@ require("lazy").setup({
 		"nvim-tree/nvim-tree.lua",
 		config = function()
 			require("nvim-tree").setup({
-				on_attach = "default",
-				hijack_cursor = false,
-				auto_reload_on_write = true,
-				disable_netrw = false,
-				hijack_netrw = true,
-				hijack_unnamed_buffer_when_opening = false,
-				root_dirs = {},
-				prefer_startup_root = false,
-				sync_root_with_cwd = false,
-				reload_on_bufenter = false,
-				respect_buf_cwd = false,
-				select_prompts = false,
-				sort = {
-					sorter = "name",
-					folders_first = true,
-					files_first = false,
-				},
 				view = {
-					centralize_selection = false,
-					cursorline = true,
-					debounce_delay = 15,
-					side = "left",
-					preserve_window_proportions = false,
-					number = false,
-					relativenumber = false,
 					signcolumn = "no",
 					width = 20,
 					float = {
@@ -306,33 +245,6 @@ require("lazy").setup({
 					},
 				},
 				renderer = {
-					add_trailing = false,
-					group_empty = false,
-					full_name = false,
-					root_folder_label = ":~:s?$?/..?",
-					indent_width = 2,
-					special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
-					hidden_display = "none",
-					symlink_destination = true,
-					decorators = { "Git", "Open", "Hidden", "Modified", "Bookmark", "Diagnostics", "Copied", "Cut" },
-					highlight_git = "none",
-					highlight_diagnostics = "none",
-					highlight_opened_files = "none",
-					highlight_modified = "none",
-					highlight_hidden = "none",
-					highlight_bookmarks = "none",
-					highlight_clipboard = "name",
-					indent_markers = {
-						enable = false,
-						inline_arrows = true,
-						icons = {
-							corner = "└",
-							edge = "│",
-							item = "│",
-							bottom = "─",
-							none = " ",
-						},
-					},
 					icons = {
 						web_devicons = {
 							file = {
@@ -344,43 +256,30 @@ require("lazy").setup({
 								color = true,
 							},
 						},
-						git_placement = "before",
-						modified_placement = "after",
-						hidden_placement = "after",
-						diagnostics_placement = "signcolumn",
-						bookmarks_placement = "signcolumn",
-						padding = " ",
-						symlink_arrow = "l",
+						symlink_arrow = "l>>",
 						show = {
-							file = true,
-							folder = true,
-							folder_arrow = true,
-							git = true,
-							modified = true,
-							hidden = false,
-							diagnostics = true,
-							bookmarks = true,
+							hidden = true,
 						},
 						glyphs = {
 							default = "",
-							symlink = "",
+							symlink = "l>",
 							bookmark = "",
 							modified = "",
-							hidden = "h",
+							hidden = "h>",
 							folder = {
 								arrow_closed = "<",
 								arrow_open = ">",
 								default = "",
 								open = "",
-								empty = "",
+								empty = "e>",
 								empty_open = "",
 								symlink = "",
 								symlink_open = "",
 							},
 							git = {
-								unstaged = "✗",
-								staged = "✓",
-								unmerged = "<-",
+								unstaged = "?",
+								staged = "s>",
+								unmerged = "um>",
 								renamed = "r",
 								untracked = "*",
 								deleted = "d",
@@ -388,22 +287,6 @@ require("lazy").setup({
 							},
 						},
 					},
-				},
-				hijack_directories = {
-					enable = true,
-					auto_open = true,
-				},
-				update_focused_file = {
-					enable = false,
-					update_root = {
-						enable = false,
-						ignore_list = {},
-					},
-					exclude = false,
-				},
-				system_open = {
-					cmd = "",
-					args = {},
 				},
 				git = {
 					enable = true,
@@ -414,127 +297,17 @@ require("lazy").setup({
 					cygwin_support = false,
 				},
 				diagnostics = {
-					enable = false,
-					show_on_dirs = false,
-					show_on_open_dirs = true,
-					debounce_delay = 500,
-					severity = {
-						min = vim.diagnostic.severity.HINT,
-						max = vim.diagnostic.severity.ERROR,
-					},
 					icons = {
-						hint = "",
-						info = "",
-						warning = "",
-						error = "",
+						hint = "h",
+						info = "i",
+						warning = "w",
+						error = "e",
 					},
-				},
-				modified = {
-					enable = false,
-					show_on_dirs = true,
-					show_on_open_dirs = true,
 				},
 				filters = {
 					enable = true,
-					git_ignored = true,
+					git_ignored = false,
 					dotfiles = false,
-					git_clean = false,
-					no_buffer = false,
-					no_bookmark = false,
-					custom = {},
-					exclude = {},
-				},
-				live_filter = {
-					prefix = "[FILTER]: ",
-					always_show_folders = true,
-				},
-				filesystem_watchers = {
-					enable = true,
-					debounce_delay = 50,
-					ignore_dirs = {
-						"/.ccls-cache",
-						"/build",
-						"/node_modules",
-						"/target",
-					},
-				},
-				actions = {
-					use_system_clipboard = true,
-					change_dir = {
-						enable = true,
-						global = false,
-						restrict_above_cwd = false,
-					},
-					expand_all = {
-						max_folder_discovery = 300,
-						exclude = {},
-					},
-					file_popup = {
-						open_win_config = {
-							col = 1,
-							row = 1,
-							relative = "cursor",
-							border = "shadow",
-							style = "minimal",
-						},
-					},
-					open_file = {
-						quit_on_open = false,
-						eject = true,
-						resize_window = true,
-						relative_path = true,
-						window_picker = {
-							enable = true,
-							picker = "default",
-							chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-							exclude = {
-								filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
-								buftype = { "nofile", "terminal", "help" },
-							},
-						},
-					},
-					remove_file = {
-						close_window = true,
-					},
-				},
-				trash = {
-					cmd = "gio trash",
-				},
-				tab = {
-					sync = {
-						open = false,
-						close = false,
-						ignore = {},
-					},
-				},
-				notify = {
-					threshold = vim.log.levels.INFO,
-					absolute_path = true,
-				},
-				help = {
-					sort_by = "key",
-				},
-				ui = {
-					confirm = {
-						remove = true,
-						trash = true,
-						default_yes = false,
-					},
-				},
-				experimental = {},
-				log = {
-					enable = false,
-					truncate = false,
-					types = {
-						all = false,
-						config = false,
-						copy_paste = false,
-						dev = false,
-						diagnostics = false,
-						git = false,
-						profile = false,
-						watcher = false,
-					},
 				},
 			})
 		end,
@@ -744,9 +517,9 @@ require("lazy").setup({
 					color_devicons = false,
 					use_less = true,
 					set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-					-- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-					-- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-					-- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+					file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+					grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+					qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 				},
 				pickers = {
 					buffers = { sort_lastused = true },
