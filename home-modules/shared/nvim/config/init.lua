@@ -147,6 +147,18 @@ map("n", "<Leader>rp", ":lua ReplaceWordUnderCursorWithWordFromPastebuffer()<CR>
 map("n", "<Leader>rw", ":lua ReplaceWordUnderCursorGlobally()<CR>", opts)
 map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmation=true})<CR>", opts)
 
+map("n", "<leader>f", ":lua require('fzf-lua').live_grep({ cmd = 'rg --line-number' })<CR>", opts)
+map("n", "<leader>b", ":lua require('fzf-lua').buffers()<CR>", opts)
+map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
+map(
+	"n",
+	"<C-g>",
+	":lua require('fzf-lua').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
+	opts
+)
+
+-- FzfLua when Telescope is slow
+
 -- Telescope
 -- map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
 -- map("n", "<leader>b", ":lua require('telescope.builtin').buffers()<CR>", opts)
@@ -812,6 +824,38 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"ibhagwan/fzf-lua",
+		config = function()
+			require("fzf-lua").setup({
+				files = {
+					previewer = false,
+				},
+				winopts = {
+					split = "belowright new", -- Opens in a horizontal split below
+					height = 0.2, -- Adjust height as needed
+					width = 1, -- Adjust width as needed
+				},
+				fzf_colors = {
+					true, -- inherit fzf colors that aren't specified below from
+					-- the auto-generated theme similar to `fzf_colors=true`
+					["fg"] = { "fg", "CursorLine" },
+					["bg"] = { "bg", "Normal" },
+					["hl"] = { "fg", "Comment" },
+					["fg+"] = { "fg", "Special", "bold" },
+					["bg+"] = { "bg", { "CursorLine", "Normal" } },
+					["hl+"] = { "fg", "Statement" },
+					["info"] = { "fg", "PreProc" },
+					["prompt"] = { "fg", "Conditional" },
+					["pointer"] = { "fg", "Exception" },
+					["marker"] = { "fg", "Keyword" },
+					["spinner"] = { "fg", "Label" },
+					["header"] = { "fg", "Comment" },
+					["gutter"] = "-1",
+				},
+			})
+		end,
+	},
+	{
 		"NeogitOrg/neogit",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
@@ -992,33 +1036,33 @@ require("lazy").setup({
 						return {
 							normal = {
 								a = { bg = colors.orange, fg = colors.black, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 							insert = {
 								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 							visual = {
 								a = { bg = colors.blue, fg = colors.white, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 							replace = {
 								a = { bg = colors.red, fg = colors.black, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 							command = {
 								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 							inactive = {
 								a = { bg = colors.darkgray, fg = colors.white, gui = "bold" },
-								b = { bg = colors.black, fg = colors.lightgray },
-								c = { bg = colors.black, fg = colors.lightgray },
+								b = { bg = colors.lightgray, fg = colors.black },
+								c = { bg = colors.lightgray, fg = colors.black },
 							},
 						}
 					end,
