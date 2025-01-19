@@ -55,6 +55,22 @@ g.python3_host_prog = "/usr/bin/python"
 -- https://github.com/tpope/vim-fugitive/issues/1135#issuecomment-520175596
 g.netrw_browsex_viewer = "dillo" -- GARBAGE hack; go look at git.nix
 
+g.fzf_colors = {
+	["fg"] = { "fg", "CursorLine" },
+	["bg"] = { "bg", "Normal" },
+	["hl"] = { "fg", "Comment" },
+	["fg+"] = { "fg", "Special", "bold" },
+	["bg+"] = { "bg", { "CursorLine", "Normal" } },
+	["hl+"] = { "fg", "Statement" },
+	["info"] = { "fg", "PreProc" },
+	["prompt"] = { "fg", "Conditional" },
+	["pointer"] = { "fg", "Exception" },
+	["marker"] = { "fg", "Keyword" },
+	["spinner"] = { "fg", "Label" },
+	["header"] = { "fg", "Comment" },
+	["gutter"] = "-1",
+}
+
 local buffer = { o, bo }
 local window = { o, wo }
 
@@ -827,30 +843,14 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		config = function()
 			require("fzf-lua").setup({
+				-- fzf-tmux resulted in a brief, but annoying, flicker after closing
+				-- fzf_bin = "fzf-tmux",
+				-- fzf_tmux_opts = { ["-d"] = "40%" },
+				winopts = {
+					split = "belowright new", -- open in a split instead?
+				},
 				files = {
 					previewer = false,
-				},
-				winopts = {
-					split = "belowright new", -- Opens in a horizontal split below
-					height = 0.2, -- Adjust height as needed
-					width = 1, -- Adjust width as needed
-				},
-				fzf_colors = {
-					true, -- inherit fzf colors that aren't specified below from
-					-- the auto-generated theme similar to `fzf_colors=true`
-					["fg"] = { "fg", "CursorLine" },
-					["bg"] = { "bg", "Normal" },
-					["hl"] = { "fg", "Comment" },
-					["fg+"] = { "fg", "Special", "bold" },
-					["bg+"] = { "bg", { "CursorLine", "Normal" } },
-					["hl+"] = { "fg", "Statement" },
-					["info"] = { "fg", "PreProc" },
-					["prompt"] = { "fg", "Conditional" },
-					["pointer"] = { "fg", "Exception" },
-					["marker"] = { "fg", "Keyword" },
-					["spinner"] = { "fg", "Label" },
-					["header"] = { "fg", "Comment" },
-					["gutter"] = "-1",
 				},
 			})
 		end,
@@ -1030,39 +1030,40 @@ require("lazy").setup({
 							blue = "#2950c5",
 							orange = "#ffa500",
 							darkgray = "#262626",
+							middlegray = "#4e4e4e",
 							lightgray = "#e4e4e4",
 						}
 
 						return {
 							normal = {
 								a = { bg = colors.orange, fg = colors.black, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 							insert = {
 								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 							visual = {
 								a = { bg = colors.blue, fg = colors.white, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 							replace = {
 								a = { bg = colors.red, fg = colors.black, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 							command = {
 								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 							inactive = {
-								a = { bg = colors.darkgray, fg = colors.white, gui = "bold" },
-								b = { bg = colors.lightgray, fg = colors.black },
-								c = { bg = colors.lightgray, fg = colors.black },
+								a = { bg = colors.middlegray, fg = colors.white, gui = "bold" },
+								b = { bg = colors.middlegray, fg = colors.black },
+								c = { bg = colors.middlegray, fg = colors.black },
 							},
 						}
 					end,
