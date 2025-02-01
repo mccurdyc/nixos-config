@@ -4,7 +4,13 @@
   networking.hostName = "fgnix";
 
   programs.mosh.enable = true;
-  services.openssh.enable = true;
+  services.sshd.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings.PermitRootLogin = "prohibit-password";
+  };
+
   services.tailscale.enable = true;
 
   networking.firewall = {
@@ -14,5 +20,10 @@
     allowedUDPPorts = [ config.services.tailscale.port ];
     allowedUDPPortRanges = [{ from = 60000; to = 61000; }];
     checkReversePath = "loose";
+  };
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
   };
 }
