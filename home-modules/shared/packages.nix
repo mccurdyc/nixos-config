@@ -5,6 +5,7 @@
     _1password-cli
     # arguably extras
     bat
+    bc
     cloc
     universal-ctags # for zoekt-indexserver (running zoekt-git-index) - https://github.com/sourcegraph/zoekt/blob/5ac92b1a7d4ab7b0dbeeaa9df77abb13d555e16b/doc/ctags.md?plain=1#L18-L21
     dig
