@@ -184,7 +184,7 @@
         source <(dagger completion zsh)
       fi
 
-      eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
+      eval $(keychain --eval --quiet ~/.ssh/config.d/work/fastly_rsa)
 
       # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
       autoload bashcompinit && bashcompinit
