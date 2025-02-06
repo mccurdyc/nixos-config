@@ -33,6 +33,8 @@
     tree
     unzip
     wdiff
+    yamlfmt
+    yamllint
     zoekt
   ];
 }
