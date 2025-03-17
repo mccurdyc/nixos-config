@@ -85,8 +85,6 @@
     };
 
     envExtra = ''
-      export BROWSER="/usr/bin/env echo"
-      # export TERM=screen-256color
       export ZELLIJ_AUTO_ATTACH=false
       export ZELLIJ_AUTO_EXIT=true
       export CTAGS_COMMAND=ctags # zoekt - https://github.com/sourcegraph/zoekt/blob/5ac92b1a7d4ab7b0dbeeaa9df77abb13d555e16b/doc/ctags.md?plain=1#L18-L21
@@ -150,6 +148,11 @@
       zstyle ':completion:*' menu select
     '';
     initExtra = ''
+      # https://vninja.net/2024/12/28/ghostty-workaround-for-missing-or-unsuitable-terminal-xterm-ghostty/
+      if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+        export TERM=xterm-256color
+      fi
+
       setopt clobber
       setopt extendedglob
       setopt interactive_comments

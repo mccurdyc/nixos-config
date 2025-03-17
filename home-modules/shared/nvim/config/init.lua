@@ -103,6 +103,7 @@ opt("foldlevel", 0) -- Show top-level folds
 opt("foldenable", true)
 opt("cursorline", true)
 opt("conceallevel", 1)
+opt("modifiable", true)
 
 cmd("filetype plugin indent on")
 

@@ -5,6 +5,7 @@
     ./nvim
 
     ./alacritty.nix
+    ./ghostty.nix
     ./direnv.nix
     ./git.nix
     ./gpg.nix

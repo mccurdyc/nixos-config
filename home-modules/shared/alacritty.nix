@@ -19,7 +19,7 @@ _: {
       font = {
         normal.family = "SpaceMono Nerd Font";
         bold = { style = "Bold"; };
-        size = 30;
+        size = 20;
       };
 
       window.dimensions = {
