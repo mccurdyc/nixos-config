@@ -14,7 +14,7 @@ _: {
 
     shell-integration-features = no-cursor
 
-    cursor-style = "block_hollow"
+    cursor-style = "block"
     link-url = true
     cursor-style-blink = true
     cursor-color = "#d3d0c8"
