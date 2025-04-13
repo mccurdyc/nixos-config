@@ -31,7 +31,6 @@
       ];
       EDITOR = "nvim";
       VISUAL = "nvim";
-      # TERM = "screen-256color";
 
       BROWSER = "firefox";
       DOCKER_DEFAULT_PLATFORM = "linux/amd64";
