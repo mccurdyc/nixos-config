@@ -24,12 +24,14 @@
     jq
     just
     keychain
+    k3d
     lsof
     ncurses
     nodePackages_latest.bash-language-server
     ookla-speedtest
     prometheus.cli # promtool
     qmk
+    subnetcalc
     tree
     unzip
     wdiff

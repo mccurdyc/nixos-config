@@ -187,6 +187,10 @@
         source <(dagger completion zsh)
       fi
 
+      if [ -x "$(command -v k3d)" ]; then
+        source <(k3d completion zsh)
+      fi
+
       eval $(keychain --eval --quiet ~/.ssh/config.d/work/fastly_rsa)
 
       # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
