@@ -28,7 +28,6 @@
     ncurses
     nodePackages_latest.bash-language-server
     ookla-speedtest
-    prometheus.cli # promtool
     qmk
     tree
     unzip
