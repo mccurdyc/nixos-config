@@ -1,20 +1,11 @@
 { pkgs, ... }:
 
 {
-  fonts = {
-    packages = with pkgs; [
-      # icon fonts
-      font-awesome
+  fonts.packages = [
+    # icon fonts
+    pkgs.font-awesome
 
-      # nerdfonts
-      (nerdfonts.override {
-        # https://github.com/ryanoasis/nerd-fonts/
-        fonts = [
-          "FiraCode"
-          "Iosevka"
-          "SpaceMono"
-        ];
-      })
-    ];
-  };
+    # nerdfonts
+    pkgs.nerd-fonts.space-mono
+  ];
 }

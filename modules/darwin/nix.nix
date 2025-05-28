@@ -1,10 +1,7 @@
 { ... }:
 
 {
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # nix.useDaemon = true;
-  nix.gc.user = "root";
+  nix.enable = true;
   nix.gc.interval = { Hour = 3; Minute = 15; };
 
   nix.settings = {

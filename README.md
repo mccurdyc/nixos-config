@@ -70,7 +70,7 @@
 ### faamac Rebuild
 
 ```bash
-darwin-rebuild switch --flake '.#faamac'
+sudo darwin-rebuild switch --flake '.#faamac'
 ```
 
 ### fgnix Rebuild

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
 
   # 00 - #ff5f5f red (IndianRed1) (error) ctermfg=203
   # 01 - #ffa500 orange (Orange1) (warning) ctermfg=214
@@ -142,12 +142,9 @@
       # Remember that fzf-tab doesn't follow FZF_DEFAULT_OPTS by default. If you want it to use your default fzf options, you can set:
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
     '';
-    initExtraFirst = ''
-    '';
-    initExtraBeforeCompInit = ''
+    initContent = lib.mkOrder 550 ''
       zstyle ':completion:*' menu select
-    '';
-    initExtra = ''
+
       # https://vninja.net/2024/12/28/ghostty-workaround-for-missing-or-unsuitable-terminal-xterm-ghostty/
       if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
         export TERM=xterm-256color
