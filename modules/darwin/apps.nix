@@ -5,7 +5,6 @@
     enable = true;
     caskArgs.appdir = "/Applications";
     onActivation = {
-      cleanup = "uninstall";
       autoUpdate = true;
       upgrade = true;
     };
