@@ -3,7 +3,6 @@
     ../shared
 
     ./docker.nix
-    ./fonts.nix
     ./nix.nix
     ./no-docs.nix
     ./openssh.nix
