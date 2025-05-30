@@ -58,7 +58,7 @@
       set-option -g status-left "#[fg=#1c1c1c,bg=#ffa500,bold]#S"
       set-option -g status-right "#[fg=#1c1c1c,bg=#ffa500,bold]#(date -u "+%%H:%%M") • #[fg=#1c1c1c,bg=#ffa500,bold]#(uptime | cut -d ' ' -f 2)"
 
-      # copy-paste Mac -> kitty -> ssh -> tmux -> vim
+      # copy-paste Mac -> Terminal Emulator -> ssh -> tmux -> neovim
       # Cmd+c (copy), Cmd+v (paste)
       #
       # NOTE: if you make changes here, you should kill tmux (tmux kill-server)
@@ -80,7 +80,7 @@
       set -ag terminal-features ',xterm-256color:clipboard'
       # for tmux version (tmux -V) <3.2
       # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
-      set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
+      set -as terminal-features ',xterm-256color:clipboard'
 
       # default statusbar colors
       set-option -g status-interval 1
