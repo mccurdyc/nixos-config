@@ -7,7 +7,7 @@
     package = pkgs.skhd;
     skhdConfig = ''
       # Open Terminal
-      alt - return : ghostty
+      alt - return : open -na Ghostty
 
       # Toggle Window
       alt - t : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
