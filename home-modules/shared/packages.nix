@@ -4,6 +4,8 @@
   home.packages = with pkgs; [
     _1password-cli
     # arguably extras
+    aider-chat-full
+    google-cloud-sdk
     bat
     bc
     cloc

@@ -164,6 +164,7 @@ map("n", "<Leader>rp", ":lua ReplaceWordUnderCursorWithWordFromPastebuffer()<CR>
 map("n", "<Leader>rw", ":lua ReplaceWordUnderCursorGlobally()<CR>", opts)
 map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmation=true})<CR>", opts)
 
+-- "search term" ctrl-g "file extension"
 map("n", "<leader>f", ":lua require('fzf-lua').live_grep({ cmd = 'rg --line-number' })<CR>", opts)
 map("n", "<leader>b", ":lua require('fzf-lua').buffers()<CR>", opts)
 map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
