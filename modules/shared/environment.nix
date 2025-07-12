@@ -7,6 +7,7 @@
     systemPackages = with pkgs; [
       coreutils
       curl
+      cntr
       gcc
       git
       gnumake
