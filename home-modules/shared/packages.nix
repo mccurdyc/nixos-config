@@ -5,6 +5,8 @@
     _1password-cli
     # arguably extras
     aider-chat-full
+    awscli2
+    ssm-session-manager-plugin
     google-cloud-sdk
     bat
     bc
@@ -36,6 +38,7 @@
     tree
     unzip
     wdiff
+    wireguard-tools
     yamlfmt
     yamllint
     zoekt
