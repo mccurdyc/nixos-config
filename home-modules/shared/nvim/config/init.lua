@@ -740,7 +740,12 @@ require("lazy").setup({
 					null_ls.builtins.diagnostics.deadnix,
 					null_ls.builtins.diagnostics.opacheck,
 					null_ls.builtins.diagnostics.regal,
-					null_ls.builtins.diagnostics.cue_fmt,
+					null_ls.builtins.diagnostics.cue_fmt.with({
+						-- `cue vet` does not work on _tool.cue files
+						runtime_condition = function(params)
+							return not params.bufname:match("_tool%.cue$")
+						end,
+					}),
 					null_ls.builtins.diagnostics.hadolint,
 					-- null_ls.builtins.diagnostics.markdownlint,
 					-- null_ls.builtins.diagnostics.shellcheck,
