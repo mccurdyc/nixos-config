@@ -78,6 +78,7 @@
       ".devenv"
       ".direnv"
       "build_"
+      ".aider*"
     ];
   };
 
