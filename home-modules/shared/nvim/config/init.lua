@@ -1178,6 +1178,7 @@ require("lazy").setup({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "buffer", max_item_count = 1, keyword_length = 4 },
+					{ name = "path" },
 				}),
 
 				-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
@@ -1212,6 +1213,7 @@ require("lazy").setup({
 								buffer = "[BUF]",
 								nvim_lsp = "[LSP]",
 								luasnip = "[SNIP]",
+								path = "[Path]",
 							})[entry.source.name] or "[OTHER]"
 						)
 						return kind
@@ -1270,7 +1272,6 @@ require("lazy").setup({
 
 			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 			local servers = {
-				"rust_analyzer",
 				"bashls",
 				"dockerls",
 				"terraformls",
@@ -1280,16 +1281,21 @@ require("lazy").setup({
 			}
 
 			-- Use lsp formatting for Rust instead of none-ls
+			local rust_group = vim.api.nvim_create_augroup("RustConfig", { clear = true })
 			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = rust_group,
 				pattern = "*.rs",
 				callback = function()
-					vim.lsp.buf.format()
+					vim.lsp.buf.format({ async = false })
 				end,
 			})
 
 			-- NOTE: Call this base setup BEFORE per-language - https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
 			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup({})
+				local capabilities = require("cmp_nvim_lsp").default_capabilities()
+				lspconfig[lsp].setup({
+					capabilities = capabilities,
+				})
 			end
 
 			lspconfig["gopls"].setup({
@@ -1308,7 +1314,66 @@ require("lazy").setup({
 			lspconfig["rust_analyzer"].setup({
 				settings = {
 					["rust-analyzer"] = {
-						rustfmt = {},
+						-- Enable all features
+						cargo = {
+							allFeatures = true,
+							loadOutDirsFromCheck = true,
+							runBuildScripts = true,
+						},
+						-- Add clippy lints for extra help
+						check = {
+							allFeatures = true,
+							command = "clippy",
+							extraArgs = { "--no-deps" },
+						},
+						-- Enhanced completion
+						completion = {
+							postfix = {
+								enable = false,
+							},
+						},
+						-- Inlay hints
+						inlayHints = {
+							bindingModeHints = {
+								enable = false,
+							},
+							chainingHints = {
+								enable = true,
+							},
+							closingBraceHints = {
+								enable = true,
+								minLines = 25,
+							},
+							closureReturnTypeHints = {
+								enable = "never",
+							},
+							lifetimeElisionHints = {
+								enable = "never",
+								useParameterNames = false,
+							},
+							maxLength = 25,
+							parameterHints = {
+								enable = true,
+							},
+							reborrowHints = {
+								enable = "never",
+							},
+							renderColons = true,
+							typeHints = {
+								enable = true,
+								hideClosureInitialization = false,
+								hideNamedConstructor = false,
+							},
+						},
+						-- Proc macro support
+						procMacro = {
+							enable = true,
+							ignored = {
+								["async-trait"] = { "async_trait" },
+								["napi-derive"] = { "napi" },
+								["async-recursion"] = { "async_recursion" },
+							},
+						},
 					},
 				},
 			})
