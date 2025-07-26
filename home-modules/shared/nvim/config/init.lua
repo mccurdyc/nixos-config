@@ -1,6 +1,15 @@
--- https://github.com/wbthomason/dotfiles/blob/387ded8ad4c3cb9d5000edbd3b18bc8cb8a186e9/neovim/.config/nvim/lua/config/utils.lua
+-- Override deprecate to filter sign_define warnings
+-- Temporarily disable deprecate for sign definitions because vim.diagnostic.config doesn't
+-- yet support this. It claims to and there are approaches, but it doesn't properly
+-- highlight the linenumber instead of the sign column like I want.
+vim.deprecate = function(name, alternative, version, plugin, backtrace)
+	-- Ignore any deprecation warnings related to signs
+	if name and (name:match("sign_define") or name:match("sign_")) then
+		return
+	end
+end
 
-local vim = vim
+-- https://github.com/wbthomason/dotfiles/blob/387ded8ad4c3cb9d5000edbd3b18bc8cb8a186e9/neovim/.config/nvim/lua/config/utils.lua
 local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local map_key = vim.api.nvim_set_keymap
@@ -38,9 +47,6 @@ local function map(modes, lhs, rhs, opts)
 		map_key(mode, lhs, rhs, opts)
 	end
 end
-
-g.t_Co = 256
-g.base16colorspace = 256
 
 cmd("filetype plugin indent on")
 
@@ -90,7 +96,6 @@ opt("lazyredraw", true)
 opt("colorcolumn", "80", window)
 opt("hidden", true)
 opt("list", false)
-opt("termguicolors", true)
 opt("syntax", "enable")
 opt("hlsearch", false)
 opt("splitbelow", true)
@@ -193,6 +198,9 @@ map(
 -- https://neovim.discourse.group/t/jump-to-definition-in-vertical-horizontal-split/2605/14
 -- map("n", "<leader>gd", ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>', opts)
 
+-- Source the colors configuration
+local mccurdyc_colors = require("colors")
+
 -- $HOME/.local/share/nvim/lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -208,18 +216,49 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	{
-		url = "git@github.com:mccurdyc/base16-vim",
-		lazy = false, -- make sure we load this during startup if it is your main colorscheme
-		priority = 1000, -- make sure to load this before all the other start plugins
-		config = function()
-			vim.cmd([[colorscheme base16-mccurdyc-minimal]])
-		end,
-	},
 	"tpope/vim-fugitive",
+
 	"tpope/vim-rhubarb", -- :GBrowse
 	"tomtom/tcomment_vim",
 	"nvim-lua/plenary.nvim",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		config = function()
+			local configs = require("nvim-treesitter.configs")
+
+			configs.setup({
+				auto_install = true,
+				ensure_installed = {
+					"go",
+					"nix",
+					"lua",
+					"rust",
+					"bash",
+					"cue",
+					"diff",
+					"dockerfile",
+					"gomod",
+					"json",
+					"make",
+					"markdown",
+					"terraform",
+					"yaml",
+					"query",
+					"vim",
+					"vimdoc",
+				},
+				sync_install = true,
+				highlight = {
+					enable = true,
+					async = true,
+					additional_vim_regex_highlighting = false,
+					disable = { "json", "markdown" },
+				},
+				indent = { enable = true },
+			})
+		end,
+	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -254,7 +293,6 @@ require("lazy").setup({
 		ft = { "go", "gomod" },
 	},
 	{
-
 		"nvim-tree/nvim-tree.lua",
 		config = function()
 			require("nvim-tree").setup({
@@ -613,17 +651,6 @@ require("lazy").setup({
 			},
 		},
 		config = function()
-			-- https://github.com/folke/trouble.nvim/blob/34be821abfd5ee0aba337a1869d2161c36c45b1d/doc/trouble.nvim.txt#L691-L739
-			vim.api.nvim_set_hl(0, "TroubleBasename", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "TroubleFilename", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "TroubleDirectory", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "TroubleIconDirectory", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "TroubleCount", { fg = "#5fd787" })
-			vim.api.nvim_set_hl(0, "TroubleCode", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "TroubleText", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "TroubleNormal", { fg = "#4e4e4e", bg = "#1c1c1c" })
-			vim.api.nvim_set_hl(0, "TroubleNormalNC", { fg = "#4e4e4e", bg = "#1c1c1c" }) -- not focused window
-
 			require("trouble").setup({
 				auto_close = false, -- auto close when there are no items
 				auto_open = false, -- auto open when there are items
@@ -706,7 +733,7 @@ require("lazy").setup({
 				on_attach = function(client, bufnr)
 					vim.diagnostic.config({
 						virtual_text = false,
-						signs = true,
+						signs = true, -- this is what makes colors diagnostic line numbers work
 						underline = true,
 						update_in_insert = false,
 						severity_sort = true,
@@ -884,105 +911,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-		config = function()
-			local configs = require("nvim-treesitter.configs")
-
-			configs.setup({
-				auto_install = true,
-				ensure_installed = {
-					"go",
-					"nix",
-					"lua",
-					"rust",
-					"bash",
-					"cue",
-					"diff",
-					"dockerfile",
-					"gomod",
-					"json",
-					"make",
-					"markdown",
-					"terraform",
-					"yaml",
-					"query",
-					"vim",
-					"vimdoc",
-				},
-				sync_install = true,
-				highlight = {
-					enable = true,
-					async = true,
-					additional_vim_regex_highlighting = false,
-					disable = { "json", "markdown" },
-				},
-				indent = { enable = true },
-			})
-
-			-- mccurdyc-minimal-theme
-			-- black (Grey11) (background) #1c1c1c ctermfg=234 gui00
-			-- really dark gray (Grey15) (comment) ->#262626 ctermfg=235 gui01
-			-- dark grey (Grey30) (comment) -> #4e4e4e ctermfg=29 gui02
-			-- light grey (Grey89) (foreground) -> #e4e4e4 ctermfg=254 gui06
-			-- white (Grey93) (foreground) -> #eeeeee ctermfg=255 gui07
-			-- red (IndianRed1) (error) -> #ff5f5f ctermfg=203 gui08
-			-- green (SeaGreen3) (good) -> #5fd787 ctermfg=78 gui0B
-			-- orange (Orange1) (warning) -> #ffa500 ctermfg=214 gui09
-			-- blue (alt) ->#2950c5 no direct ctermfg, use ctermfg=33 gui0C
-
-			-- Link Treesitter highlight groups to Base16 colors
-			-- :Telescope highlights
-			vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@punctuation.special", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@keyword", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@constant", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@variable", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@function", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "@function.call", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "@method", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "@method.call", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "@parameter", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@field", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@property", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@constructor", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@conditional", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@repeat", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@label", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@character.special", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@attribute.builtin", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@function.builtin", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@string", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@string.escape", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@string.regexp", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@string.special", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@text", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@text.literal", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@text.uri", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@number", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@boolean", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@tag", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@type", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@type.builtin", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@namespace", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@include", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@comment", { fg = "#4e4e4e" })
-			vim.api.nvim_set_hl(0, "@operator", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@exception", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@diff.plus", { fg = "#5fd787" })
-			vim.api.nvim_set_hl(0, "@diff.minus", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@diff.delta", { fg = "#ffa500" })
-			vim.api.nvim_set_hl(0, "@module", { fg = "#5fd787" })
-			vim.api.nvim_set_hl(0, "@module.builtin", { fg = "#5fd787" })
-			vim.api.nvim_set_hl(0, "@comment.note", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@comment.error", { fg = "#ff5f5f" })
-			vim.api.nvim_set_hl(0, "@tag.builtin", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@constant.builtin", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@variable.builtin", { fg = "#eeeeee" })
-			vim.api.nvim_set_hl(0, "@variable.parameter.builtin", { fg = "#eeeeee" })
-		end,
-	},
-	{
 		"norcalli/nvim-colorizer.lua",
 		config = function()
 			require("colorizer").setup({
@@ -996,89 +924,48 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"hiphish/rainbow-delimiters.nvim",
-		config = function()
-			local rainbow = require("rainbow-delimiters")
-			require("rainbow-delimiters.setup").setup({
-				strategy = {
-					-- global - highlight the entire buffer
-					-- local - highlight subtree with cursor
-					--
-					-- Pick the strategy based on the buffer size
-					[""] = function(bufnr)
-						-- Disabled for very large files, global strategy for large files,
-						-- local strategy otherwise
-						local line_count = vim.api.nvim_buf_line_count(bufnr)
-						if line_count > 10000 then
-							return nil
-						end
-						return rainbow.strategy["local"]
-					end,
-				},
-				highlight = {
-					"RainbowDelimiterNormal",
-					"RainbowDelimiterRed",
-					"RainbowDelimiterNormal",
-					"RainbowDelimiterOrange",
-				},
-				blacklist = {},
-			})
-		end,
-	},
-	{
 		"nvim-lualine/lualine.nvim",
 		config = function()
 			require("lualine").setup({
 				options = {
 					icons_enabled = false,
 					theme = function()
-						local colors = {
-							black = "#1c1c1c",
-							white = "#eeeeee",
-							red = "#ff5f5f",
-							green = "#5fd787",
-							blue = "#2950c5",
-							orange = "#ffa500",
-							darkgray = "#262626",
-							middlegray = "#4e4e4e",
-							lightgray = "#e4e4e4",
-						}
-
+						local mccurdyc_colors = require("colors")
 						return {
 							normal = {
-								a = { bg = colors.orange, fg = colors.black, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.yellow, fg = mccurdyc_colors.background, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 							insert = {
-								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.green, fg = mccurdyc_colors.background, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 							visual = {
-								a = { bg = colors.blue, fg = colors.white, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.blue, fg = mccurdyc_colors.foreground, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 							replace = {
-								a = { bg = colors.red, fg = colors.black, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.red, fg = mccurdyc_colors.background, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 							command = {
-								a = { bg = colors.green, fg = colors.black, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.green, fg = mccurdyc_colors.background, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 							inactive = {
-								a = { bg = colors.middlegray, fg = colors.white, gui = "bold" },
-								b = { bg = colors.middlegray, fg = colors.black },
-								c = { bg = colors.middlegray, fg = colors.black },
+								a = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.background, gui = "bold" },
+								b = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+								c = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
 							},
 						}
 					end,
-					component_separators = "",
-					section_separators = "",
+					component_separators = " ",
+					section_separators = " ",
 					disabled_filetypes = {},
 				},
 				sections = {
@@ -1088,9 +975,6 @@ require("lazy").setup({
 						{
 							"diff",
 							colored = true,
-							color_added = "#5fd787",
-							color_modified = "#ffa500",
-							color_removed = "#ff5f5f",
 							symbols = {
 								added = "+",
 								modified = "~",
@@ -1098,7 +982,7 @@ require("lazy").setup({
 							},
 						},
 					},
-					lualine_c = { "filename" },
+					lualine_c = { "filename", "diagnostics" },
 					lualine_x = { "encoding", "filetype" },
 					lualine_y = { "progress" },
 					lualine_z = { "location" },
@@ -1319,6 +1203,15 @@ require("lazy").setup({
 							allFeatures = true,
 							loadOutDirsFromCheck = true,
 							runBuildScripts = true,
+
+							-- Build all binaries by default (remove specific target)
+							-- target = 'your-binary-name',  -- Comment this out
+							-- Or specify features explicitly instead of allFeatures
+							-- features = { 'feature1', 'feature2', 'tokio/full' },
+							-- Additional cargo arguments to build all binaries
+							extraArgs = { "--bins" },
+							-- For workspace projects, you can specify the target dir
+							-- targetDir = true,
 						},
 						-- Add clippy lints for extra help
 						check = {
@@ -1377,24 +1270,24 @@ require("lazy").setup({
 					},
 				},
 			})
-
-			-- Highlight line number instead of having icons in sign column
-			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#highlight-line-number-instead-of-having-icons-in-sign-column
-			vim.cmd([[
-    sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-    sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
-    sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
-    sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
-    ]])
 		end,
 	},
 })
 
--- LEAVE LAST!
-vim.diagnostic.config({
-	virtual_text = false,
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
+-- Highlight line number instead of having icons in sign column
+vim.fn.sign_define("DiagnosticSignError", {
+	text = "",
+	numhl = "DiagnosticLineNrError",
+})
+vim.fn.sign_define("DiagnosticSignWarn", {
+	text = "",
+	numhl = "DiagnosticLineNrWarn",
+})
+vim.fn.sign_define("DiagnosticSignInfo", {
+	text = "",
+	numhl = "DiagnosticLineNrInfo",
+})
+vim.fn.sign_define("DiagnosticSignHint", {
+	text = "",
+	numhl = "DiagnosticLineNrHint",
 })
