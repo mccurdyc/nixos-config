@@ -55,17 +55,17 @@ end
 hi("DiffAdd", { fg = colors.background, bg = colors.green })
 hi("DiffChange", { fg = colors.background, bg = colors.yellow })
 hi("DiffDelete", { fg = colors.background, bg = colors.red })
-hi("DiffText", { fg = colors.dark_grey, bg = colors.green, bold = true })
+hi("DiffText", { fg = colors.dark_grey, bg = colors.green })
 hi("DiffAdded", { fg = colors.green, bg = colors.background })
-hi("DiffFile", { fg = colors.yellow, bg = colors.background, bold = true })
+hi("DiffFile", { fg = colors.yellow, bg = colors.background })
 hi("DiffNewFile", { fg = colors.green, bg = colors.background })
-hi("DiffLine", { fg = colors.yellow, bg = colors.background, bold = true })
+hi("DiffLine", { fg = colors.yellow, bg = colors.background })
 hi("DiffRemoved", { fg = colors.red, bg = colors.background })
 
 -- Git highlighting
 hi("gitcommitOverflow", { fg = colors.red })
-hi("gitcommitSummary", { fg = colors.light_grey })
-hi("gitcommitComment", { fg = colors.light_grey })
+hi("gitcommitSummary", { fg = colors.background })
+hi("gitcommitComment", { fg = colors.background })
 hi("gitcommitUntracked", { fg = colors.green })
 hi("gitcommitDiscarded", { fg = colors.dark_grey })
 hi("gitcommitSelected", { fg = colors.blue })
@@ -84,6 +84,41 @@ hi("GitGutterAdd", { fg = colors.green, bg = "NONE", bold = true })
 hi("GitGutterChange", { fg = colors.yellow, bg = "NONE", bold = true })
 hi("GitGutterDelete", { fg = colors.red, bg = "NONE", bold = true })
 hi("GitGutterChangeDelete", { fg = colors.red, bg = "NONE", bold = true })
+
+-- Git messenger
+hi("gitmessengerPopupNormal", { fg = colors.green, bg = colors.yellow })
+hi("gitmessengerHeader", { fg = colors.foreground, bg = colors.yellow })
+hi("gitmessengerHash", { fg = colors.background, bg = colors.yellow })
+hi("gitmessengerHistory", { fg = colors.background, bg = colors.yellow })
+
+-- Neogit
+hi("NeogitDiffAdd", { fg = colors.background, bg = colors.green })
+hi("NeogitDiffDelete", { fg = colors.background, bg = colors.red })
+hi("NeogitDiffAddCursor", { fg = colors.background, bg = colors.green })
+hi("NeogitDiffDeleteCursor", { fg = colors.background, bg = colors.red })
+hi("NeogitChangeAdded", { fg = colors.background, bg = colors.green })
+hi("NeogitChangeModified", { bg = colors.background, fg = colors.yellow })
+hi("NeogitChangeRenamed", { bg = colors.background, fg = colors.yellow })
+hi("NeogitChangeUpdated", { bg = colors.background, fg = colors.yellow })
+hi("NeogitChangeCopied", { bg = colors.background, fg = colors.yellow })
+hi("NeogitChangeNewFile", { bg = colors.background, fg = colors.green })
+hi("NeogitChangeUnmerged", { bg = colors.background, fg = colors.blue })
+hi("NeogitDiffDeleted", { bg = colors.background, fg = colors.red })
+hi("NeogitActiveItem", { bg = colors.background, fg = colors.yellow })
+-- SIGNS FOR LINE HIGHLIGHTING CURRENT CONTEXT
+-- These are essentially an accented version of the above highlight groups. Only
+-- applies to the current context the cursor is within.
+-- The "Cursor" suffix applies only to the Cursor line
+hi("NeogitHunkHeaderHighlight", { fg = colors.background, bg = colors.dark_grey })
+hi("NeogitDiffHeaderHighlight", { fg = colors.background, bg = colors.dark_grey })
+hi("NeogitDiffContextHighlight", { fg = "NONE", bg = "NONE" })
+hi("NeogitDiffAddHighlight", { fg = colors.background, bg = colors.green })
+hi("NeogitDiffDeleteHighlight", { fg = colors.background, bg = colors.red })
+hi("NeogitHunkHeaderCursor", { fg = "NONE", bg = colors.comment, bold = true })
+hi("NeogitDiffHeaderCursor", { fg = "NONE", bg = colors.comment, bold = true })
+hi("NeogitDiffContextCursor", { fg = "NONE", bg = colors.comment, bold = true })
+hi("NeogitDiffAddCursor", { fg = colors.background, bg = colors.green, bold = true })
+hi("NeogitDiffDeleteCursor", { fg = colors.background, bg = colors.red, bold = true })
 
 -- NERDTree highlighting
 hi("NERDTreeDirSlash", { fg = colors.yellow })
@@ -109,12 +144,6 @@ hi("DiagnosticLineNrHint", { fg = colors.background, bg = colors.blue, bold = tr
 -- Debug adapter protocol (DAP)
 hi("DapBreakpoint", { fg = colors.green, bg = colors.background, bold = true })
 hi("DapStopped", { fg = colors.red, bg = colors.background, bold = true })
-
--- Git messenger
-hi("gitmessengerPopupNormal", { fg = colors.green, bg = colors.yellow })
-hi("gitmessengerHeader", { fg = colors.foreground, bg = colors.yellow, bold = true })
-hi("gitmessengerHash", { fg = colors.grey, bg = colors.yellow, bold = true })
-hi("gitmessengerHistory", { fg = colors.background, bg = colors.yellow, bold = true })
 
 -- Rainbow delimiters
 hi("RainbowDelimiterNormal", { fg = colors.grey })
