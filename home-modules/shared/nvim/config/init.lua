@@ -48,79 +48,6 @@ local function map(modes, lhs, rhs, opts)
 	end
 end
 
-local window_config = {
-	-- Border style: 'none', 'single', 'double', 'rounded', 'solid', 'shadow'
-	-- Or custom border: { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-	border = "single",
-
-	-- Maximum width of the hover window (in characters)
-	max_width = 30,
-
-	-- Maximum height of the hover window (in lines)
-	max_height = 20,
-
-	-- Window highlights
-	-- Format: "NormalGroup:LinkedGroup,FloatBorder:LinkedGroup"
-	winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
-
-	-- Focus the hover window when opened
-	focusable = true,
-
-	-- Close the hover window with <Esc>
-	close_events = { "CursorMoved", "BufHidden", "InsertCharPre" },
-
-	-- Padding inside the window [top, right, bottom, left]
-	pad_top = 1,
-	pad_bottom = 1,
-
-	-- Wrap long lines
-	wrap = true,
-
-	-- Window position relative to cursor
-	-- 'cursor' places it at cursor, 'cursor+1' one line below
-	anchor_bias = "auto",
-
-	-- Offset from cursor position [row, col]
-	offset_x = 0,
-	offset_y = 1,
-
-	-- Relative positioning: 'cursor', 'win', 'mouse'
-	relative = "cursor",
-
-	-- Window title (if supported)
-	title = " Hover ",
-	title_pos = "center", -- 'left', 'center', 'right'
-
-	-- Z-index (higher = on top)
-	zindex = 50,
-}
-
-local diagnostic_config = {
-	float = {
-		border = "rounded",
-		max_width = 80,
-		max_height = 20,
-		focusable = true,
-		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-		scope = "cursor", -- 'line', 'cursor', 'buffer'
-		severity_sort = true,
-		source = "always", -- show source in diagnostics
-		prefix = function(diagnostic, i, total)
-			local icon = "●"
-			if diagnostic.severity == vim.diagnostic.severity.ERROR then
-				icon = ""
-			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-				icon = ""
-			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-				icon = ""
-			elseif diagnostic.severity == vim.diagnostic.severity.HINT then
-				icon = ""
-			end
-			return string.format("%s ", icon)
-		end,
-	},
-}
-
 cmd("filetype plugin indent on")
 
 -- nvim-tree recommendation
@@ -802,8 +729,24 @@ require("lazy").setup({
 
 			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 			null_ls.setup({
+
 				-- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
 				on_attach = function(client, bufnr)
+					client.server_capabilities.hoverProvider = false
+
+					local diagnostic_config = {
+						float = {
+							border = "rounded",
+							max_width = 90,
+							max_height = 20,
+							focusable = true,
+							close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+							scope = "cursor", -- 'line', 'cursor', 'buffer'
+							severity_sort = true,
+							source = "always", -- show source in diagnostics
+						},
+					}
+
 					vim.diagnostic.config(diagnostic_config)
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_clear_autocmds({
@@ -996,7 +939,6 @@ require("lazy").setup({
 				options = {
 					icons_enabled = false,
 					theme = function()
-						local mccurdyc_colors = require("colors")
 						return {
 							normal = {
 								a = { bg = mccurdyc_colors.yellow, fg = mccurdyc_colors.background, gui = "bold" },
@@ -1071,11 +1013,6 @@ require("lazy").setup({
 		dependencies = { "hrsh7th/nvim-cmp" },
 		config = function()
 			local lspconfig = require("lspconfig")
-			local handlers = {
-				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, window_config),
-				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, window_config),
-			}
-
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -1092,13 +1029,11 @@ require("lazy").setup({
 			for _, lsp in ipairs(servers) do
 				lspconfig[lsp].setup({
 					capabilities = capabilities,
-					handlers = handlers,
 				})
 			end
 
 			lspconfig["gopls"].setup({
 				capabilities = capabilities,
-				handlers = handlers,
 
 				cmd = { "gopls" },
 				settings = {
@@ -1114,7 +1049,6 @@ require("lazy").setup({
 
 			lspconfig["rust_analyzer"].setup({
 				capabilities = capabilities,
-				handlers = handlers,
 
 				settings = {
 					["rust-analyzer"] = {
@@ -1330,6 +1264,15 @@ require("lazy").setup({
 			-- See `:help vim.lsp.*` for documentation on any of the below functions
 			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+			local original_hover = vim.lsp.buf.hover
+			vim.lsp.buf.hover = function()
+				return original_hover({
+					border = "single",
+					max_width = 90,
+					max_height = 20,
+					winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+				})
+			end
 			map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 			map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 			map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)

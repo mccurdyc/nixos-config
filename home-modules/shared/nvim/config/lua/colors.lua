@@ -168,9 +168,9 @@ hi("LazyH2", { fg = colors.foreground, bg = colors.background })
 
 -- Vim editor colors
 hi("Normal", { fg = colors.foreground, bg = colors.background })
-hi("NormalFloat", { fg = colors.foreground, bg = colors.grey })
-hi("FloatBorder", { fg = colors.yellow, bg = colors.grey, bold = true })
-hi("Special", { fg = colors.yellow, bg = colors.grey })
+hi("NormalFloat", { fg = "NONE", bg = colors.dark_grey })
+hi("FloatBorder", { fg = colors.yellow, bg = colors.dark_grey })
+hi("Special", { fg = colors.yellow, bg = "NONE" })
 hi("Bold", { bold = true })
 hi("Debug", { fg = colors.yellow })
 hi("Directory", { fg = colors.yellow })
