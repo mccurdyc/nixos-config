@@ -109,8 +109,8 @@ hi("NeogitActiveItem", { bg = colors.background, fg = colors.yellow })
 -- These are essentially an accented version of the above highlight groups. Only
 -- applies to the current context the cursor is within.
 -- The "Cursor" suffix applies only to the Cursor line
-hi("NeogitHunkHeaderHighlight", { fg = colors.background, bg = colors.dark_grey })
-hi("NeogitDiffHeaderHighlight", { fg = colors.background, bg = colors.dark_grey })
+hi("NeogitHunkHeaderHighlight", { fg = colors.background, bg = colors.light_grey })
+hi("NeogitDiffHeaderHighlight", { fg = colors.background, bg = colors.light_grey })
 hi("NeogitDiffContextHighlight", { fg = "NONE", bg = "NONE" })
 hi("NeogitDiffAddHighlight", { fg = colors.background, bg = colors.green })
 hi("NeogitDiffDeleteHighlight", { fg = colors.background, bg = colors.red })
