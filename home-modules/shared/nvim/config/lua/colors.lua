@@ -10,7 +10,7 @@ local colors = {
 	green = "#5fd787", -- green (good)
 	blue = "#2950c5", -- blue
 	-- Black and White
-	background = "#000000", -- as black as I could make it without neovim tripping out at #040404; bug for another day
+	background = "#040405", -- as black as I could make it without neovim tripping out at #040404; bug for another day
 	almost_black = "#0d0d0d", -- almost black
 	dark_grey = "#1d1d1d", -- dark grey
 	grey = "#2d2d2d", -- grey

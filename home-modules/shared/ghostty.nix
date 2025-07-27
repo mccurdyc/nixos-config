@@ -19,26 +19,26 @@ _: {
     cursor-style-blink = true
     cursor-color = "#d3d0c8"
 
-    background = "#202020"
-    foreground = "#d3d0c8"
-    selection-background = "#262626"
-    selection-foreground = "#d3d0c8"
+    background = "#040405"
+    foreground = "#e4e4e4"
+    selection-background = "#1d1d1d"
+    selection-foreground = "#e4e4e4"
 
-    palette = 0=#414141
-    palette = 1=#f2777a
-    palette = 2=#99cc99
-    palette = 3=#ffcc66
-    palette = 4=#6699cc
+    palette = 0=#040405
+    palette = 1=#ff5f5f
+    palette = 2=#5fd787
+    palette = 3=#ffa500
+    palette = 4=#2950c5
     palette = 5=#cc99cc
     palette = 6=#66cccc
-    palette = 7=#d3d0c8
-    palette = 8=#414141
-    palette = 9=#f2777a
-    palette = 10=#99cc99
-    palette = 11=#ffcc66
-    palette = 12=#6699cc
+    palette = 7=#e4e4e4
+    palette = 8=#2d2d2d
+    palette = 9=#ff5f5f
+    palette = 10=#5fd787
+    palette = 11=#ffa500
+    palette = 12=#2950c5
     palette = 13=#cc99cc
     palette = 14=#66cccc
-    palette = 16=#d3d0c8
+    palette = 16=#e4e4e4
   '';
 }
