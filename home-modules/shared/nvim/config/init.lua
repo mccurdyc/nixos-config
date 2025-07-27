@@ -48,6 +48,79 @@ local function map(modes, lhs, rhs, opts)
 	end
 end
 
+local window_config = {
+	-- Border style: 'none', 'single', 'double', 'rounded', 'solid', 'shadow'
+	-- Or custom border: { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+	border = "single",
+
+	-- Maximum width of the hover window (in characters)
+	max_width = 30,
+
+	-- Maximum height of the hover window (in lines)
+	max_height = 20,
+
+	-- Window highlights
+	-- Format: "NormalGroup:LinkedGroup,FloatBorder:LinkedGroup"
+	winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+
+	-- Focus the hover window when opened
+	focusable = true,
+
+	-- Close the hover window with <Esc>
+	close_events = { "CursorMoved", "BufHidden", "InsertCharPre" },
+
+	-- Padding inside the window [top, right, bottom, left]
+	pad_top = 1,
+	pad_bottom = 1,
+
+	-- Wrap long lines
+	wrap = true,
+
+	-- Window position relative to cursor
+	-- 'cursor' places it at cursor, 'cursor+1' one line below
+	anchor_bias = "auto",
+
+	-- Offset from cursor position [row, col]
+	offset_x = 0,
+	offset_y = 1,
+
+	-- Relative positioning: 'cursor', 'win', 'mouse'
+	relative = "cursor",
+
+	-- Window title (if supported)
+	title = " Hover ",
+	title_pos = "center", -- 'left', 'center', 'right'
+
+	-- Z-index (higher = on top)
+	zindex = 50,
+}
+
+local diagnostic_config = {
+	float = {
+		border = "rounded",
+		max_width = 80,
+		max_height = 20,
+		focusable = true,
+		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+		scope = "cursor", -- 'line', 'cursor', 'buffer'
+		severity_sort = true,
+		source = "always", -- show source in diagnostics
+		prefix = function(diagnostic, i, total)
+			local icon = "●"
+			if diagnostic.severity == vim.diagnostic.severity.ERROR then
+				icon = ""
+			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+				icon = ""
+			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
+				icon = ""
+			elseif diagnostic.severity == vim.diagnostic.severity.HINT then
+				icon = ""
+			end
+			return string.format("%s ", icon)
+		end,
+	},
+}
+
 cmd("filetype plugin indent on")
 
 -- nvim-tree recommendation
@@ -731,14 +804,7 @@ require("lazy").setup({
 			null_ls.setup({
 				-- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
 				on_attach = function(client, bufnr)
-					vim.diagnostic.config({
-						virtual_text = false,
-						signs = true, -- this is what makes colors diagnostic line numbers work
-						underline = true,
-						update_in_insert = false,
-						severity_sort = true,
-					})
-
+					vim.diagnostic.config(diagnostic_config)
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_clear_autocmds({
 							group = augroup,
@@ -1005,14 +1071,9 @@ require("lazy").setup({
 		dependencies = { "hrsh7th/nvim-cmp" },
 		config = function()
 			local lspconfig = require("lspconfig")
-
 			local handlers = {
-				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-					border = "rounded",
-				}),
-				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-					border = "rounded",
-				}),
+				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, window_config),
+				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, window_config),
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -1197,7 +1258,7 @@ require("lazy").setup({
 					height = 5,
 					completion = {
 						border = "single",
-						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+						winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
 						col_offset = -3,
 						side_padding = 0,
 					},
@@ -1272,6 +1333,7 @@ require("lazy").setup({
 			map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 			map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 			map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+			map("i", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 			map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 			map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 			map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
