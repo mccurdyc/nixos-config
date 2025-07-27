@@ -40,7 +40,7 @@
       whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
       curls = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
-      gitc = "nvim -c Neogit";
+      g = "nvim -c Neogit";
       gits = "git status";
       gitfc = ''(){ git log --format=format:"%H" | tail -1 ;}'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
