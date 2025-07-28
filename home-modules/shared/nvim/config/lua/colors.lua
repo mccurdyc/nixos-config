@@ -15,7 +15,7 @@ local colors = {
 	dark_grey = "#1d1d1d", -- dark grey
 	grey = "#2d2d2d", -- grey
 	comment = "#5d5d5d", -- comment
-	light_grey = "#d3d0c8", -- light grey
+	light_grey = "#b1b1b1", -- light grey
 	foreground = "#e4e4e4", -- foreground
 	white = "#eeeeee", -- white
 	pure_white = "#ffffff", -- pure white
@@ -189,7 +189,7 @@ hi("Substitute", { fg = colors.background, bg = colors.yellow })
 hi("SpecialKey", { fg = colors.green })
 hi("TooLong", { fg = colors.yellow })
 hi("Underlined", { fg = colors.yellow })
-hi("Visual", { bg = colors.grey, fg = "NONE" })
+hi("Visual", { bg = colors.yellow, fg = "NONE" })
 hi("VisualNOS", { fg = colors.yellow })
 hi("WarningMsg", { fg = colors.yellow })
 hi("WildMenu", { fg = colors.background, bg = colors.dark_grey })
