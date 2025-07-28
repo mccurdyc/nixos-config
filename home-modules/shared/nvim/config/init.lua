@@ -741,7 +741,7 @@ require("lazy").setup({
 							max_height = 20,
 							focusable = true,
 							close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-							scope = "cursor", -- 'line', 'cursor', 'buffer'
+							scope = "line", -- 'line', 'cursor', 'buffer'
 							severity_sort = true,
 							source = "always", -- show source in diagnostics
 						},
