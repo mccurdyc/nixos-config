@@ -1284,6 +1284,10 @@ require("lazy").setup({
 			map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
 		end,
 	},
+}, {
+	ui = {
+		backdrop = 100, -- or 100 for solid background
+	},
 })
 
 -- Use lsp formatting for Rust instead of none-ls
