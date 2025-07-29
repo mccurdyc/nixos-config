@@ -76,6 +76,7 @@
       export CTAGS_COMMAND=ctags # zoekt - https://github.com/sourcegraph/zoekt/blob/5ac92b1a7d4ab7b0dbeeaa9df77abb13d555e16b/doc/ctags.md?plain=1#L18-L21
       # https://minsw.github.io/fzf-color-picker/
       export FZF_DEFAULT_OPTS='--color=fg:#9e9e9e,bg:#040405,hl: --color=fg+:#e4e4e4,bg+:#262626,hl+:#ffa500 --color=info:#9e9e9e,prompt:#ffa500,pointer:#ffa500 --color=marker:#ff5f5f,spinner:#ffa500,header:#ffa500'
+      export CODELLDB_PATH="${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb"
     '';
 
     history = {

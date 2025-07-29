@@ -498,7 +498,133 @@ require("lazy").setup({
 			end
 		end,
 	},
-	{ "mfussenegger/nvim-dap" },
+	{
+		"mfussenegger/nvim-dap",
+		config = function()
+			-- Setup Rust debugging with codelldb
+			local dap = require("dap")
+
+			local codelldb_path = os.getenv("CODELLDB_PATH")
+			if not codelldb_path then
+				vim.notify("CODELLDB_PATH not set. Make sure you're in a nix shell.", vim.log.levels.ERROR)
+				return
+			end
+
+			dap.adapters.codelldb = {
+				type = "server",
+				port = "${port}",
+				executable = {
+					command = codelldb_path,
+					args = { "--port", "${port}" },
+				},
+			}
+
+			-- Configure Rust debugging
+			dap.configurations.rust = {
+				-- there are a few optons
+				-- lldb-dap (prev: lldb-vscode) - official llvm DAP adapter; bundled with llvm/lldb
+				-- codelldb - vscode-extension (seems to be better support, but third-party)
+				-- gdb+rust-gdb - GNU debugger with rust support. Less featured / integrated. But just gdb.
+				{
+					name = "Launch",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = {},
+				},
+				{
+					name = "Launch (with args)",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = function()
+						local args_string = vim.fn.input("Arguments: ")
+						return vim.split(args_string, " ")
+					end,
+				},
+				{
+					name = "Debug Test",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						-- Build tests first
+						vim.fn.system("cargo test --no-run")
+
+						-- Find the test executable
+						local handle = io.popen(
+							'cargo test --no-run --message-format=json 2>/dev/null | jq -r "select(.executable != null) | .executable" | head -1'
+						)
+						local executable = handle:read("*a"):gsub("%s+", "")
+						handle:close()
+
+						if executable == "" then
+							return vim.fn.input(
+								"Path to test executable: ",
+								vim.fn.getcwd() .. "/target/debug/deps/",
+								"file"
+							)
+						end
+
+						return executable
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = function()
+						local test_name = vim.fn.input("Test name (or empty for all): ")
+						if test_name == "" then
+							return {}
+						else
+							return { test_name }
+						end
+					end,
+				},
+				{
+					name = "Debug Test (Exact)",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						-- Build tests first
+						vim.fn.system("cargo test --no-run")
+
+						-- Find the test executable
+						local handle = io.popen(
+							'cargo test --no-run --message-format=json 2>/dev/null | jq -r "select(.executable != null) | .executable" | head -1'
+						)
+						local executable = handle:read("*a"):gsub("%s+", "")
+						handle:close()
+
+						if executable == "" then
+							return vim.fn.input(
+								"Path to test executable: ",
+								vim.fn.getcwd() .. "/target/debug/deps/",
+								"file"
+							)
+						end
+
+						return executable
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = function()
+						local test_name = vim.fn.input("Test name (or empty for all): ")
+						if test_name == "" then
+							return {}
+						else
+							return { test_name, "--exact" }
+						end
+					end,
+				},
+			}
+		end,
+	},
 	{
 		"leoluz/nvim-dap-go",
 		config = function()

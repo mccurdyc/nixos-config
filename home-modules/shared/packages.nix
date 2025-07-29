@@ -42,5 +42,7 @@
     yamlfmt
     yamllint
     zoekt
+
+    vscode-extensions.vadimcn.vscode-lldb # codelldb
   ];
 }
