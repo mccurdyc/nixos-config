@@ -437,7 +437,25 @@ require("lazy").setup({
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
 		config = function()
-			local cfg = {
+			vim.keymap.set("n", "<leader>bp", require("dap").toggle_breakpoint)
+			vim.keymap.set("n", "<leader>dc", require("dap").continue)
+			vim.keymap.set("n", "<leader>dt", require("dapui").toggle)
+
+			vim.keymap.set("n", "<leader>df", function()
+				local widgets = require("dap.ui.widgets")
+				local frames = widgets.frames
+				widgets.centered_float(frames)
+			end, { desc = "Float DAP stack" })
+
+			vim.keymap.set("n", "<leader>ds", function()
+				local widgets = require("dap.ui.widgets")
+				local scopes = widgets.scopes
+				widgets.centered_float(scopes)
+			end, { desc = "Float DAP scopes" })
+
+			-- Set up the DAP UI to open automatically when debugging starts:
+			local dap, dapui = require("dap"), require("dapui")
+			dapui.setup({
 				icons = { expanded = "▾", collapsed = "▸" },
 				mappings = {
 					-- Use a table to apply multiple mappings
@@ -479,44 +497,11 @@ require("lazy").setup({
 						position = "bottom",
 					},
 				},
-				floating = {
-					enter = true,
-					max_height = 0.9, -- These can be integers or a float between 0 and 1.
-					max_width = 0.9, -- Floats will be treated as percentage of your screen.
-					border = "single", -- Border style. Can be "single", "double" or "rounded"
-					mappings = { close = { "q" } },
-				},
 				windows = { indent = 1 },
 				render = {
 					max_type_length = nil, -- Can be integer or nil.
 				},
-			}
-
-			vim.keymap.set("n", "<leader>bp", require("dap").toggle_breakpoint)
-			vim.keymap.set("n", "<leader>dc", require("dap").continue)
-			vim.keymap.set("n", "<leader>dt", require("dapui").toggle)
-
-			vim.keymap.set("n", "<leader>df", function()
-				local widgets = require("dap.ui.widgets")
-				local frames = widgets.frames
-				widgets.centered_float(frames)
-			end, { desc = "Float DAP stack" })
-
-			vim.keymap.set("n", "<leader>dr", function()
-				local widgets = require("dap.ui.widgets")
-				local repl = widgets.repl
-				widgets.centered_float(repl)
-			end, { desc = "Float DAP repl" })
-
-			vim.keymap.set("n", "<leader>ds", function()
-				local widgets = require("dap.ui.widgets")
-				local scopes = widgets.scopes
-				widgets.centered_float(scopes)
-			end, { desc = "Float DAP scopes" })
-
-			-- Set up the DAP UI to open automatically when debugging starts:
-			local dap, dapui = require("dap"), require("dapui")
-			dapui.setup(cfg)
+			})
 
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
