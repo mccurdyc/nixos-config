@@ -429,11 +429,15 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- 1. set breakpoint - `,bp`
+	-- 2. dap continue - `,dc`
+	-- 3. open the dap ui - `,dt`
+	-- 4. select `Test` for `cargo test <foo>` or `Test (Exact)` for `cargo test <foo> -- --exact` which will require the full module path like `foo::tests::foo_increment_foo`
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "nvim-neotest/nvim-nio" },
 		config = function()
-			require("dapui").setup({
+			local cfg = {
 				icons = { expanded = "▾", collapsed = "▸" },
 				mappings = {
 					-- Use a table to apply multiple mappings
@@ -455,40 +459,64 @@ require("lazy").setup({
 				layouts = {
 					{
 						elements = {
-							-- Elements can be strings or table with id and size keys.
-							{ id = "scopes", size = 0.8 },
 							"breakpoints",
-							"stacks",
-							"repl",
 						},
-						size = 50,
-						position = "left",
+						size = 5,
+						position = "bottom",
 					},
 					{
-						elements = { "console" },
-						size = 0.25, -- 25% of total lines
+						elements = {
+							"console",
+						},
+						size = 5, -- Other half
+						position = "bottom",
+					},
+					{
+						elements = {
+							"repl",
+						},
+						size = 5, -- Other half
 						position = "bottom",
 					},
 				},
 				floating = {
-					max_height = 0.8, -- These can be integers or a float between 0 and 1.
-					max_width = 0.8, -- Floats will be treated as percentage of your screen.
+					enter = true,
+					max_height = 0.9, -- These can be integers or a float between 0 and 1.
+					max_width = 0.9, -- Floats will be treated as percentage of your screen.
 					border = "single", -- Border style. Can be "single", "double" or "rounded"
-					mappings = { close = { "q", "<Esc>" } },
+					mappings = { close = { "q" } },
 				},
 				windows = { indent = 1 },
 				render = {
 					max_type_length = nil, -- Can be integer or nil.
 				},
-			})
+			}
 
 			vim.keymap.set("n", "<leader>bp", require("dap").toggle_breakpoint)
 			vim.keymap.set("n", "<leader>dc", require("dap").continue)
 			vim.keymap.set("n", "<leader>dt", require("dapui").toggle)
 
+			vim.keymap.set("n", "<leader>df", function()
+				local widgets = require("dap.ui.widgets")
+				local frames = widgets.frames
+				widgets.centered_float(frames)
+			end, { desc = "Float DAP stack" })
+
+			vim.keymap.set("n", "<leader>dr", function()
+				local widgets = require("dap.ui.widgets")
+				local repl = widgets.repl
+				widgets.centered_float(repl)
+			end, { desc = "Float DAP repl" })
+
+			vim.keymap.set("n", "<leader>ds", function()
+				local widgets = require("dap.ui.widgets")
+				local scopes = widgets.scopes
+				widgets.centered_float(scopes)
+			end, { desc = "Float DAP scopes" })
+
 			-- Set up the DAP UI to open automatically when debugging starts:
 			local dap, dapui = require("dap"), require("dapui")
-			dapui.setup()
+			dapui.setup(cfg)
 
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
