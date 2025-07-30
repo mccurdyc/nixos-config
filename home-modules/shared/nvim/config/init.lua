@@ -449,13 +449,13 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>dc", require("dap").continue)
 			vim.keymap.set("n", "<leader>dt", require("dapui").toggle)
 
-			vim.keymap.set("n", "<leader>df", function()
+			vim.keymap.set("n", "<leader>dsf", function()
 				local widgets = require("dap.ui.widgets")
 				local frames = widgets.frames
 				widgets.centered_float(frames)
 			end, { desc = "Float DAP stack" })
 
-			vim.keymap.set("n", "<leader>ds", function()
+			vim.keymap.set("n", "<leader>dss", function()
 				local widgets = require("dap.ui.widgets")
 				local scopes = widgets.scopes
 				widgets.centered_float(scopes)
@@ -766,10 +766,29 @@ require("lazy").setup({
 			-- 	opts
 			-- )
 
-			-- LSP
-			-- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
-			-- https://neovim.discourse.group/t/jump-to-definition-in-vertical-horizontal-split/2605/14
-			map("n", "<leader>gd", ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>', opts)
+			-- This used to be simple
+			-- https://github.com/nvim-telescope/telescope.nvim/issues/2690
+			-- require('telescope.builtin').lsp_definitions({jump_type='vsplit'})
+			local function lsp_definitions_picker()
+				local params = vim.lsp.util.make_position_params()
+
+				vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result)
+					if err or not result or #result == 0 then
+						print("No definition found")
+						return
+					end
+
+					-- Force picker even for single results
+					vim.schedule(function()
+						require("telescope.builtin").lsp_definitions({
+							jump_type = "never", -- This might work in some versions
+							-- Or use a custom finder
+						})
+					end)
+				end)
+			end
+
+			vim.keymap.set("n", "<leader>gd", lsp_definitions_picker)
 		end,
 	},
 	{
