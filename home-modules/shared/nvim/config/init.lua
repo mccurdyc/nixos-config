@@ -180,24 +180,6 @@ map(
 	opts
 )
 
--- FzfLua when Telescope is slow
-
--- Telescope
--- map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
--- map("n", "<leader>b", ":lua require('telescope.builtin').buffers()<CR>", opts)
--- map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
--- map(
--- 	"n",
--- 	"<C-g>",
--- 	":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
--- 	opts
--- )
-
--- LSP
--- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
--- https://neovim.discourse.group/t/jump-to-definition-in-vertical-horizontal-split/2605/14
--- map("n", "<leader>gd", ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>', opts)
-
 -- Source the colors configuration
 local mccurdyc_colors = require("colors")
 
@@ -691,90 +673,105 @@ require("lazy").setup({
 			})
 		end,
 	},
-	-- {
-	-- 	"nvim-telescope/telescope.nvim",
-	-- 	dependencies = { "nvim-lua/plenary.nvim" },
-	-- 	config = function()
-	-- 		require("telescope").setup({
-	-- 			defaults = {
-	-- 				-- :lua print(vim.inspect(require('telescope.config').values.file_ignore_patterns))
-	-- 				file_ignore_patterns = {
-	-- 					"vendor/.*",
-	-- 					".git/.*",
-	-- 					".direnv/.*",
-	-- 				},
-	-- 				mappings = {
-	-- 					i = {
-	-- 						-- Insert mode mappings
-	-- 						["<C-d>"] = require("telescope.actions").results_scrolling_down,
-	-- 						["<C-u>"] = require("telescope.actions").results_scrolling_up,
-	-- 					},
-	-- 					n = {
-	-- 						-- Normal mode mappings
-	-- 						["<C-d>"] = require("telescope.actions").results_scrolling_down,
-	-- 						["<C-u>"] = require("telescope.actions").results_scrolling_up,
-	-- 					},
-	-- 				},
-	-- 				vimgrep_arguments = {
-	-- 					"rg",
-	-- 					"--hidden",
-	-- 					"--color=never",
-	-- 					"--no-heading",
-	-- 					"--with-filename",
-	-- 					"--line-number",
-	-- 					"--column",
-	-- 					"--smart-case",
-	-- 				},
-	-- 				layout_config = { horizontal = { height = 0.8, width = 0.9 } },
-	-- 				prompt_prefix = "> ",
-	-- 				selection_caret = "> ",
-	-- 				entry_prefix = "  ",
-	-- 				initial_mode = "insert",
-	-- 				selection_strategy = "closest",
-	-- 				sorting_strategy = "descending",
-	-- 				layout_strategy = "horizontal",
-	-- 				file_sorter = require("telescope.sorters").get_fuzzy_file,
-	-- 				generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-	-- 				path_display = "absolute",
-	-- 				winblend = 0,
-	-- 				border = {},
-	-- 				borderchars = {
-	-- 					"─",
-	-- 					"│",
-	-- 					"─",
-	-- 					"│",
-	-- 					"╭",
-	-- 					"╮",
-	-- 					"╯",
-	-- 					"╰",
-	-- 				},
-	-- 				color_devicons = false,
-	-- 				use_less = true,
-	-- 				set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-	-- 			},
-	-- 			pickers = {
-	-- 				buffers = { sort_lastused = true },
-	-- 				find_files = {
-	-- 					hidden = true,
-	-- 					--- no_ignore = true,
-	-- 					previewer = false,
-	-- 					layout_config = { prompt_position = "top" },
-	-- 				},
-	-- 			},
-	-- 			--[[extensions = {
-	-- 			fzf = {
-	-- 			    fuzzy = true,
-	-- 			    override_generic_sorter = true,
-	-- 			    override_file_sorter = true,
-	-- 			    case_mode = "smart_case"
-	-- 			}
-	-- 		    }]]
-	-- 		})
-	--
-	-- 		-- load extensions after calling setup function
-	-- 		-- require("telescope").load_extension("fzf")
-	-- 	end,
-	-- },
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("telescope").setup({
+				defaults = {
+					-- :lua print(vim.inspect(require('telescope.config').values.file_ignore_patterns))
+					file_ignore_patterns = {
+						"vendor/.*",
+						".git/.*",
+						".direnv/.*",
+					},
+					mappings = {
+						i = {
+							-- Insert mode mappings
+							["<C-d>"] = require("telescope.actions").results_scrolling_down,
+							["<C-u>"] = require("telescope.actions").results_scrolling_up,
+						},
+						n = {
+							-- Normal mode mappings
+							["<C-d>"] = require("telescope.actions").results_scrolling_down,
+							["<C-u>"] = require("telescope.actions").results_scrolling_up,
+						},
+					},
+					vimgrep_arguments = {
+						"rg",
+						"--hidden",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--smart-case",
+					},
+					layout_config = { horizontal = { height = 0.8, width = 0.9 } },
+					prompt_prefix = "> ",
+					selection_caret = "> ",
+					entry_prefix = "  ",
+					initial_mode = "insert",
+					selection_strategy = "closest",
+					sorting_strategy = "descending",
+					layout_strategy = "horizontal",
+					file_sorter = require("telescope.sorters").get_fuzzy_file,
+					generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+					path_display = "absolute",
+					winblend = 0,
+					border = {},
+					borderchars = {
+						"─",
+						"│",
+						"─",
+						"│",
+						"╭",
+						"╮",
+						"╯",
+						"╰",
+					},
+					color_devicons = false,
+					use_less = true,
+					set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+				},
+				pickers = {
+					buffers = { sort_lastused = true },
+					find_files = {
+						hidden = true,
+						--- no_ignore = true,
+						previewer = false,
+						layout_config = { prompt_position = "top" },
+					},
+				},
+				--[[extensions = {
+				fzf = {
+				    fuzzy = true,
+				    override_generic_sorter = true,
+				    override_file_sorter = true,
+				    case_mode = "smart_case"
+				}
+			    }]]
+			})
+
+			-- FzfLua when Telescope is slow
+
+			-- Telescope
+			-- map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
+			-- map("n", "<leader>b", ":lua require('telescope.builtin').buffers()<CR>", opts)
+			-- map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
+			-- map(
+			-- 	"n",
+			-- 	"<C-g>",
+			-- 	":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
+			-- 	opts
+			-- )
+
+			-- LSP
+			-- https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/doc/lspconfig.txt#L444
+			-- https://neovim.discourse.group/t/jump-to-definition-in-vertical-horizontal-split/2605/14
+			map("n", "<leader>gd", ':lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>', opts)
+		end,
+	},
 	{
 		"folke/trouble.nvim",
 		cmd = "Trouble",
@@ -1427,8 +1424,8 @@ require("lazy").setup({
 			local opts = { noremap = true, silent = true }
 
 			-- See `:help vim.lsp.*` for documentation on any of the below functions
-			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+			-- map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+			-- map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 			local original_hover = vim.lsp.buf.hover
 			vim.lsp.buf.hover = function()
 				return original_hover({
