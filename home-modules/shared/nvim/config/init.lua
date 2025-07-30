@@ -411,6 +411,7 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- :help marks.nvim
 	-- mx              Set mark x
 	-- m,              Set the next available alphabetical (lowercase) mark
 	-- m;              Toggle the next available mark at the current line
@@ -437,6 +438,7 @@ require("lazy").setup({
 			require("marks").setup({})
 		end,
 	},
+	-- :help dap.txt
 	-- 1. set breakpoint - `,bp`
 	-- 2. dap continue - `,dc`
 	-- 3. open the dap ui - `,dt`
