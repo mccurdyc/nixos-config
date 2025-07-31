@@ -1463,8 +1463,6 @@ require("lazy").setup({
 			map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 			map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 			map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-			map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-			map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
 		end,
 	},
 }, {
