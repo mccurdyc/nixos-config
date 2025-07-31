@@ -29,6 +29,7 @@
     just
     keychain
     k3d
+    k9s
     lsof
     ncurses
     nodePackages_latest.bash-language-server
