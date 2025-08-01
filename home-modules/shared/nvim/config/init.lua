@@ -280,7 +280,7 @@ require("lazy").setup({
 			require("nvim-tree").setup({
 				view = {
 					signcolumn = "no",
-					width = 20,
+					width = 35,
 					float = {
 						enable = false,
 						quit_on_focus_loss = true,
