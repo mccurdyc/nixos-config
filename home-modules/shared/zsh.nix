@@ -144,6 +144,9 @@
       setopt HIST_IGNORE_ALL_DUPS
       setopt HIST_REDUCE_BLANKS
 
+      typeset -A ZSH_HIGHLIGHT_STYLES
+      ZSH_HIGHLIGHT_STYLES[comment]='fg=251' # grey
+
       # NOTE: I had issues where fzf-tab wasn't including hidden files even
       # though my FZF_DEFAULT_COMMAND specifies to do so.
       # https://github.com/Aloxaf/fzf-tab/issues/193#issuecomment-784722265
