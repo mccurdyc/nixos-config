@@ -754,43 +754,6 @@ require("lazy").setup({
 				}
 			    }]]
 			})
-
-			-- FzfLua when Telescope is slow
-
-			-- Telescope
-			-- map("n", "<leader>f", ":lua require('telescope.builtin').live_grep()<CR>", opts)
-			-- map("n", "<leader>b", ":lua require('telescope.builtin').buffers()<CR>", opts)
-			-- map("n", "<C-p>", ":lua require('telescope.builtin').find_files()<CR>", opts)
-			-- map(
-			-- 	"n",
-			-- 	"<C-g>",
-			-- 	":lua require('telescope.builtin').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
-			-- 	opts
-			-- )
-
-			-- This used to be simple
-			-- https://github.com/nvim-telescope/telescope.nvim/issues/2690
-			-- require('telescope.builtin').lsp_definitions({jump_type='vsplit'})
-			local function lsp_definitions_picker()
-				local params = vim.lsp.util.make_position_params()
-
-				vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result)
-					if err or not result or #result == 0 then
-						print("No definition found")
-						return
-					end
-
-					-- Force picker even for single results
-					vim.schedule(function()
-						require("telescope.builtin").lsp_definitions({
-							jump_type = "never", -- This might work in some versions
-							-- Or use a custom finder
-						})
-					end)
-				end)
-			end
-
-			vim.keymap.set("n", "<leader>gd", lsp_definitions_picker)
 		end,
 	},
 	{
@@ -968,7 +931,6 @@ require("lazy").setup({
 					null_ls.builtins.diagnostics.hadolint,
 					-- null_ls.builtins.diagnostics.markdownlint,
 					-- null_ls.builtins.diagnostics.shellcheck,
-					null_ls.builtins.diagnostics.staticcheck,
 					null_ls.builtins.diagnostics.statix,
 					null_ls.builtins.diagnostics.trail_space,
 					-- null_ls.builtins.diagnostics.todo_comments,
@@ -1221,10 +1183,8 @@ require("lazy").setup({
 				cmd = { "gopls" },
 				settings = {
 					gopls = {
-						experimentalPostfixCompletions = true,
 						-- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
 						analyses = { unusedparams = true, shadow = true },
-						staticcheck = true,
 					},
 				},
 				init_options = { usePlaceholders = true },
@@ -1445,8 +1405,8 @@ require("lazy").setup({
 			local opts = { noremap = true, silent = true }
 
 			-- See `:help vim.lsp.*` for documentation on any of the below functions
-			-- map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-			-- map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 			local original_hover = vim.lsp.buf.hover
 			vim.lsp.buf.hover = function()
 				return original_hover({
