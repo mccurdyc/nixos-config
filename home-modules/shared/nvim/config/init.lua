@@ -1407,6 +1407,7 @@ require("lazy").setup({
 			-- See `:help vim.lsp.*` for documentation on any of the below functions
 			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+			map("n", "ca", "<cmd>lua vim.lsp.buf.code_action({apply=true})<CR>", opts)
 			-- this is a hack because it's not built-in to go to definition in a split
 			vim.keymap.set("n", "<leader>gd", function()
 				vim.lsp.buf.definition()
