@@ -799,9 +799,6 @@ require("lazy").setup({
 		config = function()
 			require("trouble").setup({
 				modes = {
-					diagnostics = {
-						auto_open = true, -- auto open when there are items
-					},
 					symbols = {
 						win = {
 							type = "split",
@@ -810,6 +807,8 @@ require("lazy").setup({
 						},
 					},
 				},
+				auto_open = false,
+				auto_close = true,
 				auto_preview = true, -- automatically open preview when on an item
 				auto_refresh = true, -- auto refresh when open
 				auto_jump = false, -- auto jump to the item when there's only one
