@@ -84,7 +84,6 @@ opt("title", false)
 opt("clipboard", "unnamedplus")
 opt("swapfile", false, buffer)
 opt("wrap", false, window)
-opt("number", true, window)
 opt("linebreak", true, window)
 opt("showbreak", "━━")
 opt("breakindent", true, window)
@@ -109,6 +108,7 @@ opt("foldenable", true)
 opt("cursorline", true)
 opt("conceallevel", 1)
 opt("modifiable", true)
+opt("relativenumber", true, window)
 
 cmd("filetype plugin indent on")
 
@@ -761,7 +761,7 @@ require("lazy").setup({
 		cmd = "Trouble",
 		keys = {
 			{
-				"<leader>xx",
+				"<leader>xX",
 				"<cmd>Trouble diagnostics toggle<cr>",
 				desc = "Diagnostics (Trouble)",
 			},
@@ -771,13 +771,13 @@ require("lazy").setup({
 				desc = "Diagnostics in Floating window",
 			},
 			{
-				"<leader>xX",
+				"<leader>xx",
 				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
 				desc = "Buffer Diagnostics (Trouble)",
 			},
 			{
-				"<leader>cs",
-				"<cmd>Trouble symbols toggle focus=false<cr>",
+				"<leader>ds",
+				"<cmd>Trouble symbols toggle<cr>",
 				desc = "Symbols (Trouble)",
 			},
 			{
@@ -798,8 +798,18 @@ require("lazy").setup({
 		},
 		config = function()
 			require("trouble").setup({
-				auto_close = false, -- auto close when there are no items
-				auto_open = false, -- auto open when there are items
+				modes = {
+					diagnostics = {
+						auto_open = true, -- auto open when there are items
+					},
+					symbols = {
+						win = {
+							type = "split",
+							position = "right", -- or "right" if you want
+							size = 40, -- fixed width of 30 columns
+						},
+					},
+				},
 				auto_preview = true, -- automatically open preview when on an item
 				auto_refresh = true, -- auto refresh when open
 				auto_jump = false, -- auto jump to the item when there's only one
@@ -816,7 +826,7 @@ require("lazy").setup({
 				win = {
 					-- https://github.com/folke/trouble.nvim/blob/42dcb58e95723f833135d5cf406c38bd54304389/lua/trouble/view/window.lua#L7
 					size = {
-						height = 5,
+						height = 8,
 					},
 				},
 				keys = {
