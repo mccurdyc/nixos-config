@@ -1052,6 +1052,9 @@ require("lazy").setup({
 				files = {
 					previewer = false,
 				},
+				buffers = {
+					previewer = false,
+				},
 			})
 		end,
 	},
