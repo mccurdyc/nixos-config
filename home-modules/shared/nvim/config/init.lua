@@ -171,7 +171,7 @@ map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmatio
 
 -- "search term" ctrl-g "file extension"
 map("n", "<leader>f", ":lua require('fzf-lua').live_grep({ cmd = 'rg --line-number' })<CR>", opts)
-map("n", "<leader>b", ":lua require('fzf-lua').buffers()<CR>", opts)
+map("n", "<leader>bb", ":lua require('fzf-lua').buffers()<CR>", opts)
 map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
 map(
 	"n",
@@ -1053,6 +1053,24 @@ require("lazy").setup({
 				},
 				buffers = {
 					previewer = false,
+					ignore_current_buffer = true,
+					cwd_only = true,
+					file_icons = false,
+					git_icons = false,
+					color_icons = false,
+					-- Add these for even better performance:
+					sort_lastused = true, -- Show recently used buffers first
+					show_unlisted = false, -- Don't show unlisted buffers
+					no_term_buffers = true,
+					fzf_opts = {
+						["--no-multi"] = "", -- Disable multi-select for speed
+						["--cycle"] = "", -- Allow cycling through results
+					},
+					actions = {
+						["default"] = require("fzf-lua.actions").buf_edit,
+						["ctrl-s"] = require("fzf-lua.actions").buf_split,
+						["ctrl-v"] = require("fzf-lua.actions").buf_vsplit,
+					},
 				},
 			})
 		end,
