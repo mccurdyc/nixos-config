@@ -201,7 +201,6 @@ require("lazy").setup({
 	"tpope/vim-fugitive",
 
 	"tpope/vim-rhubarb", -- :GBrowse
-	"tomtom/tcomment_vim",
 	"nvim-lua/plenary.nvim",
 	{
 		"nvim-treesitter/nvim-treesitter",
