@@ -1046,7 +1046,7 @@ require("lazy").setup({
 				-- fzf_bin = "fzf-tmux",
 				-- fzf_tmux_opts = { ["-d"] = "40%" },
 				winopts = {
-					split = "belowright new", -- open in a split instead?
+					split = "belowright 10new", -- open in a split instead?
 				},
 				files = {
 					previewer = false,
