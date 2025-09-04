@@ -1074,6 +1074,9 @@ require("lazy").setup({
 						["ctrl-v"] = require("fzf-lua.actions").buf_vsplit,
 					},
 				},
+				marks = {
+					marks = "%a", -- only show user-defined marks
+				},
 			})
 		end,
 	},
