@@ -116,9 +116,9 @@ autocmd("nix_foldlevel_1", {
 	[[FileType nix setlocal foldlevel=1]],
 }, true)
 
-opt("conceallevel", 1) -- concealing of characters like `, ", etc
-autocmd("conceallevel_0_to_avoid_red_quotes", {
-	[[FileType trouble,json,md setlocal conceallevel=0]],
+opt("conceallevel", 0) -- concealing of characters like `, ", etc
+autocmd("conceallevel_1", {
+	[[FileType trouble setlocal conceallevel=1]],
 }, true)
 
 cmd("filetype plugin indent on")
