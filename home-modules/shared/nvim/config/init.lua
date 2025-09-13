@@ -101,31 +101,30 @@ opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
 opt("showmode", false)
+opt("cursorline", true)
+opt("modifiable", true)
+opt("relativenumber", true, window)
+
+opt("foldenable", true)
 opt("foldminlines", 0) -- Minimum number of screen lines for a fold to be displayed closed.
 opt("foldmethod", "indent")
 opt("foldlevel", 0) -- Show top-level folds
-opt("foldenable", true)
-opt("cursorline", true)
-opt("conceallevel", 1)
-opt("modifiable", true)
-opt("relativenumber", true, window)
+autocmd("dont_fold_telescope_results", {
+	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
+}, true)
+autocmd("nix_foldlevel_1", {
+	[[FileType nix setlocal foldlevel=1]],
+}, true)
+
+opt("conceallevel", 1) -- concealing of characters like `, ", etc
+autocmd("conceallevel_0_to_avoid_red_quotes", {
+	[[FileType trouble,json,md setlocal conceallevel=0]],
+}, true)
 
 cmd("filetype plugin indent on")
 
 autocmd("misc_aucmds", {
 	[[FileType yaml setlocal ts=2 sts=2 sw=2 expandtab]],
-}, true)
-
-autocmd("dont_fold_telescope_results", {
-	[[FileType TelescopeResults setlocal foldexpr= foldmethod=manual]],
-}, true)
-
-autocmd("nix_foldlevel_1", {
-	[[FileType nix setlocal foldlevel=1]],
-}, true)
-
-autocmd("conceallevel_0_to_avoid_red_quotes", {
-	[[FileType json,md setlocal conceallevel=0]],
 }, true)
 
 local opts = { noremap = true }
@@ -172,7 +171,6 @@ map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmatio
 -- "search term" ctrl-g "file extension"
 map("n", "<leader>ff", ":lua require('fzf-lua').live_grep({ cmd = 'rg --line-number' })<CR>", opts)
 map("n", "<leader>fb", ":lua require('fzf-lua').buffers()<CR>", opts)
-map("n", "<leader>fgm", ":lua require('fzf-lua').marks()<CR>", opts)
 map("n", "<leader>fm", ":lua require('fzf-lua').marks()<CR>", opts)
 map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
 map(
