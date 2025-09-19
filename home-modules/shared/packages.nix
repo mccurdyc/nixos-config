@@ -1,10 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   home.packages = with pkgs; [
     _1password-cli
     # arguably extras
-    aider-chat-full
     awscli2
     ssm-session-manager-plugin
     google-cloud-sdk
@@ -43,7 +42,9 @@
     yamlfmt
     yamllint
     zoekt
-
     vscode-extensions.vadimcn.vscode-lldb # codelldb
-  ];
+  ] ++ (with pkgs-unstable;
+    [
+      aider-chat-full
+    ]);
 }
