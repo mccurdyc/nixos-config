@@ -169,7 +169,7 @@ map("n", "<Leader>rw", ":lua ReplaceWordUnderCursorGlobally()<CR>", opts)
 map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmation=true})<CR>", opts)
 
 -- "search term" ctrl-g "file extension"
-map("n", "<leader>ff", ":lua require('fzf-lua').live_grep({ cmd = 'rg --line-number' })<CR>", opts)
+map("n", "<leader>ff", ":lua require('fzf-lua').live_grep()<CR>", opts)
 map("n", "<leader>fb", ":lua require('fzf-lua').buffers()<CR>", opts)
 map("n", "<leader>fm", ":lua require('fzf-lua').marks()<CR>", opts)
 map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
@@ -698,16 +698,6 @@ require("lazy").setup({
 							["<C-u>"] = require("telescope.actions").results_scrolling_up,
 						},
 					},
-					vimgrep_arguments = {
-						"rg",
-						"--hidden",
-						"--color=never",
-						"--no-heading",
-						"--with-filename",
-						"--line-number",
-						"--column",
-						"--smart-case",
-					},
 					layout_config = { horizontal = { height = 0.8, width = 0.9 } },
 					prompt_prefix = "> ",
 					selection_caret = "> ",
@@ -739,7 +729,7 @@ require("lazy").setup({
 					buffers = { sort_lastused = true },
 					find_files = {
 						hidden = true,
-						--- no_ignore = true,
+						no_ignore = true,
 						previewer = false,
 						layout_config = { prompt_position = "top" },
 					},
@@ -1050,6 +1040,9 @@ require("lazy").setup({
 				},
 				files = {
 					previewer = false,
+					actions = {
+						["ctrl-r"] = { require("fzf-lua.actions").toggle_ignore },
+					},
 				},
 				buffers = {
 					previewer = false,
@@ -1074,6 +1067,13 @@ require("lazy").setup({
 				},
 				marks = {
 					marks = "%a", -- only show user-defined marks
+				},
+				grep = {
+					no_ignore = false, -- respect ".gitignore"  by default
+					rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+					actions = {
+						["ctrl-r"] = { require("fzf-lua.actions").toggle_ignore },
+					},
 				},
 			})
 		end,
