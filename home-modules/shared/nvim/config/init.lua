@@ -1224,6 +1224,8 @@ require("lazy").setup({
 
 			lspconfig["rust_analyzer"].setup({
 				capabilities = capabilities,
+				-- fixes jump-to-defition errors trying to treat the stdlib as part of a project's workspace
+				root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".git"),
 
 				settings = {
 					["rust-analyzer"] = {
@@ -1252,48 +1254,6 @@ require("lazy").setup({
 						completion = {
 							postfix = {
 								enable = false,
-							},
-						},
-						-- Inlay hints
-						inlayHints = {
-							bindingModeHints = {
-								enable = false,
-							},
-							chainingHints = {
-								enable = true,
-							},
-							closingBraceHints = {
-								enable = true,
-								minLines = 25,
-							},
-							closureReturnTypeHints = {
-								enable = "never",
-							},
-							lifetimeElisionHints = {
-								enable = "never",
-								useParameterNames = false,
-							},
-							maxLength = 25,
-							parameterHints = {
-								enable = true,
-							},
-							reborrowHints = {
-								enable = "never",
-							},
-							renderColons = true,
-							typeHints = {
-								enable = true,
-								hideClosureInitialization = false,
-								hideNamedConstructor = false,
-							},
-						},
-						-- Proc macro support
-						procMacro = {
-							enable = true,
-							ignored = {
-								["async-trait"] = { "async_trait" },
-								["napi-derive"] = { "napi" },
-								["async-recursion"] = { "async_recursion" },
 							},
 						},
 					},
