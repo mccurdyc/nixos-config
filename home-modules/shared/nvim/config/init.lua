@@ -878,7 +878,16 @@ require("lazy").setup({
 				on_attach = function(client, bufnr)
 					client.server_capabilities.hoverProvider = false
 
-					local diagnostic_config = {
+					vim.diagnostic.config({
+						virtual_text = {
+							severity = { min = vim.diagnostic.severity.HINT }, -- Show all levels
+						},
+						signs = {
+							severity = { min = vim.diagnostic.severity.HINT }, -- Show all levels
+						},
+						underline = {
+							severity = { min = vim.diagnostic.severity.HINT }, -- Show all levels
+						},
 						float = {
 							border = "rounded",
 							max_width = 90,
@@ -889,9 +898,8 @@ require("lazy").setup({
 							severity_sort = true,
 							source = "always", -- show source in diagnostics
 						},
-					}
+					})
 
-					vim.diagnostic.config(diagnostic_config)
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_clear_autocmds({
 							group = augroup,
@@ -1230,6 +1238,15 @@ require("lazy").setup({
 				settings = {
 					["rust-analyzer"] = {
 						-- Enable all features
+						diagnostics = {
+							enable = true,
+							enableExperimental = true,
+						},
+						checkOnSave = {
+							enable = true,
+							command = "clippy",
+							extraArgs = { "--all-targets", "--all-features" }, -- Remove --no-deps
+						},
 						cargo = {
 							allFeatures = true,
 							loadOutDirsFromCheck = true,
