@@ -118,7 +118,7 @@ autocmd("nix_foldlevel_1", {
 
 opt("conceallevel", 0) -- concealing of characters like `, ", etc
 autocmd("conceallevel_1", {
-	[[FileType trouble setlocal conceallevel=1]],
+	[[FileType Trouble setlocal conceallevel=1 ]],
 }, true)
 
 cmd("filetype plugin indent on")
@@ -789,6 +789,28 @@ require("lazy").setup({
 			require("trouble").setup({
 				modes = {
 					symbols = {
+						mode = "lsp_document_symbols",
+						filter = {
+							-- list taken directly from :help trouble.nvim.txt and then removed Field.
+							-- the ["not"] filter was not working
+							-- ["not"] = { kind = "Field" },
+							any = {
+								kind = {
+									"Class",
+									"Constructor",
+									"Enum",
+									"Function",
+									"Interface",
+									"Method",
+									"Module",
+									"Namespace",
+									"Package",
+									"Property",
+									"Struct",
+									"Trait",
+								},
+							},
+						},
 						win = {
 							type = "split",
 							position = "right", -- or "right" if you want
@@ -805,7 +827,7 @@ require("lazy").setup({
 				restore = false, -- restores the last location in the list when opening
 				follow = true, -- Follow the current item
 				indent_guides = true, -- show indent guides
-				max_items = 10, -- limit number of items that can be displayed per section
+				max_items = nil, -- limit number of items that can be displayed per section. If you limit this you may think symbols are being filtered.
 				multiline = true, -- render multi-line messages
 				pinned = true, -- When pinned, the opened trouble window will be bound to the current buffer
 				warn_no_results = false, -- show a warning when there are no results
@@ -948,7 +970,7 @@ require("lazy").setup({
 					}), -- null_ls.builtins.formatting.beautysh,
 					null_ls.builtins.formatting.cue_fmt,
 					-- BUG: causes bracket formatting issue
-          -- null_ls.builtins.formatting.cueimports,
+					-- null_ls.builtins.formatting.cueimports,
 					null_ls.builtins.formatting.just,
 					null_ls.builtins.formatting.gofumpt,
 					null_ls.builtins.formatting.goimports,
