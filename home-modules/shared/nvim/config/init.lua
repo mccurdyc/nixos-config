@@ -115,6 +115,9 @@ autocmd("dont_fold_telescope_results", {
 autocmd("nix_foldlevel_1", {
 	[[FileType nix setlocal foldlevel=1]],
 }, true)
+autocmd("markdown_treesitter_folding", {
+	[[FileType markdown setlocal foldmethod=expr foldexpr=v:lua.vim.treesitter.foldexpr() foldlevel=1 foldminlines=0]],
+}, true)
 
 opt("conceallevel", 0) -- concealing of characters like `, ", etc
 autocmd("conceallevel_1", {
@@ -223,6 +226,7 @@ require("lazy").setup({
 					"json",
 					"make",
 					"markdown",
+					"markdown_inline",
 					"terraform",
 					"yaml",
 					"query",
@@ -237,6 +241,7 @@ require("lazy").setup({
 					disable = { "json", "markdown" },
 				},
 				indent = { enable = true },
+				fold = { enable = true },
 			})
 		end,
 	},
@@ -901,9 +906,6 @@ require("lazy").setup({
 					client.server_capabilities.hoverProvider = false
 
 					vim.diagnostic.config({
-						virtual_text = {
-							severity = { min = vim.diagnostic.severity.HINT }, -- Show all levels
-						},
 						signs = {
 							severity = { min = vim.diagnostic.severity.HINT }, -- Show all levels
 						},
@@ -1257,47 +1259,6 @@ require("lazy").setup({
 				capabilities = capabilities,
 				-- fixes jump-to-defition errors trying to treat the stdlib as part of a project's workspace
 				root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".git"),
-
-				settings = {
-					["rust-analyzer"] = {
-						-- Enable all features
-						diagnostics = {
-							enable = true,
-							enableExperimental = true,
-						},
-						checkOnSave = {
-							enable = true,
-							command = "clippy",
-							extraArgs = { "--all-targets", "--all-features" }, -- Remove --no-deps
-						},
-						cargo = {
-							allFeatures = true,
-							loadOutDirsFromCheck = true,
-							runBuildScripts = true,
-
-							-- Build all binaries by default (remove specific target)
-							-- target = 'your-binary-name',  -- Comment this out
-							-- Or specify features explicitly instead of allFeatures
-							-- features = { 'feature1', 'feature2', 'tokio/full' },
-							-- Additional cargo arguments to build all binaries
-							extraArgs = { "--bins" },
-							-- For workspace projects, you can specify the target dir
-							-- targetDir = true,
-						},
-						-- Add clippy lints for extra help
-						check = {
-							allFeatures = true,
-							command = "clippy",
-							extraArgs = { "--no-deps" },
-						},
-						-- Enhanced completion
-						completion = {
-							postfix = {
-								enable = false,
-							},
-						},
-					},
-				},
 			})
 		end,
 	},
