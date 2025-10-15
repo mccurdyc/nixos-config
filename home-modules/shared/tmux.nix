@@ -49,6 +49,10 @@
       # NOTE: copy-paste doesn't work if you use mosh instead of ssh.
       # https://github.com/mobile-shell/mosh/pull/1054
 
+      # Copy & keep copy mode active with selection highlight
+      # Ideally, I wanted it to clear the selection, but hold its place in copy mode.
+      bind-key -T copy-mode-vi Enter send-keys -X copy-selection
+
       # https://github.com/tmux/tmux/wiki/Clipboard/
       set -g set-clipboard external
       set -g allow-passthrough on
@@ -63,6 +67,9 @@
       # for tmux version (tmux -V) <3.2
       # Need this for mosh - https://github.com/mobile-shell/mosh/pull/1054#issuecomment-1303725548
       set -as terminal-features ',xterm-256color:clipboard'
+
+      # Don't exit copy-mode after hitting enter, but still clear selection
+      bind-key -T copy-mode-vi Enter send-keys -X copy-selection-no-clear
 
       # default statusbar colors
       set-option -g status-interval 1
