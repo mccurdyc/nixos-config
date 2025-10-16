@@ -10,9 +10,18 @@
     shortcut = "a";
     escapeTime = 1;
     extraConfig = ''
+      # Reload tmux config
+      bind-key R source-file ~/.config/tmux/tmux.conf \; display "Reloaded"
+
+      # Pane navigation (vim-style)
+      bind-key h select-pane -L
+      bind-key j select-pane -D
+      bind-key k select-pane -U
+      bind-key l select-pane -R
+
       # Pane resizing (vertical only)
-      bind-key j resize-pane -D 5
-      bind-key k resize-pane -U 5
+      bind-key J resize-pane -D 5
+      bind-key K resize-pane -U 5
 
       # clear scrollback buffer - https://stackoverflow.com/questions/10543684/how-can-i-clear-scrollback-buffer-in-tmux#10553992
       bind -n C-k clear-history
@@ -104,6 +113,10 @@
 
       # bell
       set-window-option -g window-status-bell-style "fg=#040405,bg=#ffa500"
+
+      # Auto-install tpm if not present
+      if "test ! -d ~/.tmux/plugins/tpm" \
+         "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
 
       set -g @plugin 'tmux-plugins/tpm'
       set -g @plugin 'tmux-plugins/tmux-yank'
