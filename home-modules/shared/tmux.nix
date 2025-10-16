@@ -6,11 +6,14 @@
     clock24 = true;
     newSession = false;
     keyMode = "vi";
-    customPaneNavigationAndResize = true;
     terminal = "xterm-256color";
     shortcut = "a";
     escapeTime = 1;
     extraConfig = ''
+      # Pane resizing (vertical only)
+      bind-key j resize-pane -D 5
+      bind-key k resize-pane -U 5
+
       # clear scrollback buffer - https://stackoverflow.com/questions/10543684/how-can-i-clear-scrollback-buffer-in-tmux#10553992
       bind -n C-k clear-history
 
