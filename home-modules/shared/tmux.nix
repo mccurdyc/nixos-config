@@ -122,6 +122,19 @@
       set -g @plugin 'tmux-plugins/tmux-yank'
 
       run '~/.tmux/plugins/tpm/tpm'
+
+      # Tmux session resurrection
+      # Prefix+Ctrl+s - save
+      # Prefix+Ctrl+r - restore
+      set -g @plugin 'tmux-plugins/tmux-resurrect'
+      set -g @plugin 'tmux-plugins/tmux-continuum'
+
+      # Auto-save every 15 minutes
+      set -g @continuum-restore 'on'
+      set -g @continuum-save-interval '15'
+
+      # Restore shell history (optional)
+      set -g @resurrect-save-shell-history 'on'
     '';
   };
 }
