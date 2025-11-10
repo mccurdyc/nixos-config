@@ -1055,6 +1055,14 @@ require("lazy").setup({
 					end)
 					map("n", "<leader>td", gs.toggle_deleted)
 
+					-- Quick review workflow: stage hunk and jump to next
+					map("n", "<leader>sn", function()
+						gs.stage_hunk()
+						vim.schedule(function()
+							gs.next_hunk()
+						end)
+					end, { desc = "Stage hunk and jump to next" })
+
 					-- Text object
 					map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 				end,
@@ -1120,6 +1128,82 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neogit").setup({})
+		end,
+	},
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			local actions = require("diffview.actions")
+			require("diffview").setup({
+				enhanced_diff_hl = true,
+				view = {
+					default = { layout = "diff2_vertical" },
+					merge_tool = { layout = "diff3_vertical" },
+				},
+				file_panel = {
+					listing_style = "list",
+					win_config = {
+						position = "left",
+						width = 25,
+					},
+				},
+				keymaps = {
+					view = {
+						-- Navigation
+						["]c"] = actions.select_next_entry,
+						["[c"] = actions.select_prev_entry,
+						["[x"] = actions.prev_conflict,
+						["]x"] = actions.next_conflict,
+						-- Stage hunks
+						["<leader>hs"] = actions.stage_all,
+						["<leader>hr"] = actions.restore_entry,
+						-- Quick review: stage and move to next
+						["<leader>sn"] = function()
+							actions.stage_all()
+							actions.select_next_entry()
+						end,
+						-- Exit
+						["q"] = actions.close,
+						["<esc>"] = actions.close,
+					},
+					file_panel = {
+						["j"] = actions.next_entry,
+						["k"] = actions.prev_entry,
+						["<cr>"] = actions.select_entry,
+						["o"] = actions.select_entry,
+						["<2-LeftMouse>"] = actions.select_entry,
+						["-"] = actions.toggle_stage_entry,
+						["S"] = actions.stage_all,
+						["U"] = actions.unstage_all,
+						["R"] = actions.refresh_files,
+						["<tab>"] = actions.select_next_entry,
+						["<s-tab>"] = actions.select_prev_entry,
+						["q"] = actions.close,
+						["<esc>"] = actions.close,
+					},
+				},
+			})
+
+			-- :DiffReview command for reviewing unstaged changes
+			vim.api.nvim_create_user_command("DiffReview", function()
+				vim.cmd("DiffviewOpen")
+			end, { desc = "Open diffview for reviewing unstaged changes" })
+
+			-- :DiffReviewStaged for reviewing staged changes
+			vim.api.nvim_create_user_command("DiffReviewStaged", function()
+				vim.cmd("DiffviewOpen --staged")
+			end, { desc = "Open diffview for reviewing staged changes" })
+
+			-- :DiffReviewBranch for reviewing changes against a branch
+			vim.api.nvim_create_user_command("DiffReviewBranch", function(opts)
+				local branch = opts.args ~= "" and opts.args or "main"
+				vim.cmd("DiffviewOpen " .. branch)
+			end, { nargs = "?", desc = "Review changes against branch (default: main)" })
+
+			-- Quick access keymaps
+			map("n", "<leader>dr", ":DiffReview<CR>", { noremap = true, silent = true })
+			map("n", "<leader>ds", ":DiffReviewStaged<CR>", { noremap = true, silent = true })
 		end,
 	},
 	{

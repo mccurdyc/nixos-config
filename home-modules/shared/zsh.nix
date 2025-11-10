@@ -42,6 +42,8 @@
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
       gits = "git status";
       g = ''nvim -c Neogit'';
+      gr = ''nvim -c DiffReview'';
+      grs = ''nvim -c DiffReviewStaged'';
       gitfc = ''(){ git log --format = format: "%H" | tail - 1; }'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{ range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       docker_ps = ''docker ps --format "{{.Names}}\t{{.Ports}}\t{{.Status}}"'';
