@@ -1343,6 +1343,15 @@ require("lazy").setup({
 				capabilities = capabilities,
 				-- fixes jump-to-defition errors trying to treat the stdlib as part of a project's workspace
 				root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".git"),
+
+				settings = {
+					["rust-analyzer"] = {
+						cargo = {
+							-- Support for modules hidden behind feature flags (e.g., my gossip-glomers stuff).
+							features = "all",
+						},
+					},
+				},
 			})
 		end,
 	},
