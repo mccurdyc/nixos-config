@@ -1200,10 +1200,6 @@ require("lazy").setup({
 				local branch = opts.args ~= "" and opts.args or "main"
 				vim.cmd("DiffviewOpen " .. branch)
 			end, { nargs = "?", desc = "Review changes against branch (default: main)" })
-
-			-- Quick access keymaps
-			map("n", "<leader>dr", ":DiffReview<CR>", { noremap = true, silent = true })
-			map("n", "<leader>ds", ":DiffReviewStaged<CR>", { noremap = true, silent = true })
 		end,
 	},
 	{
