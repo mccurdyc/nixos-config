@@ -141,6 +141,7 @@ map("x", "p", "pgvy", opts)
 
 -- Clear search highlights.
 map("n", "<Leader>cs", ":nohls<CR>", opts)
+map("n", "<Leader>rtw", ":%s/\\s\\+$//<CR>", opts)
 
 -- Tab movement.
 map("n", "<c-Left>", "<cmd>tabpre<cr>", opts)
