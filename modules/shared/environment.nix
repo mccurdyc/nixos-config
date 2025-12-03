@@ -18,7 +18,6 @@
       zsh
       pkgs.neovim
       pkgs-unstable.tailscale
-      ruby_3_2
     ];
 
     variables = {
@@ -26,7 +25,6 @@
       # If you screw the path up, export PATH=/run/current-system/sw/bin:$PATH
       PATH = [
         "$PATH"
-        "\${HOME}/.local/share/gem/ruby/3.2.0/bin"
         "/opt/homebrew/bin"
       ];
       EDITOR = "nvim";

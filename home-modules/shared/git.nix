@@ -81,8 +81,4 @@
       ".aider*"
     ];
   };
-
-  programs.gitui = {
-    enable = true;
-  };
 }

@@ -8,6 +8,9 @@ _: {
     font-size = "25"
     font-family = "SpaceMono Nerd Font"
 
+    window-width = 200
+    window-height = 100
+
     window-decoration = "none"
     term = "xterm-256color"
     scrollback-limit = 10000
