@@ -225,6 +225,7 @@ require("lazy").setup({
 					"dockerfile",
 					"gomod",
 					"json",
+					"latex",
 					"make",
 					"markdown",
 					"markdown_inline",

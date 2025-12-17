@@ -14,6 +14,7 @@
     dig
     fd
     fzf
+    tree-sitter
     zsh-fzf-tab
     zsh-fzf-history-search
     gh
@@ -31,6 +32,7 @@
     k9s
     lsof
     ncurses
+    nodejs
     nodePackages_latest.bash-language-server
     ookla-speedtest
     qmk
