@@ -50,6 +50,13 @@ end
 
 cmd("filetype plugin indent on")
 
+vim.filetype.add({
+	extension = {
+		s = "asm",
+		S = "asm",
+	},
+})
+
 -- nvim-tree recommendation
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1
@@ -215,6 +222,7 @@ require("lazy").setup({
 			configs.setup({
 				auto_install = true,
 				ensure_installed = {
+					"asm",
 					"go",
 					"nix",
 					"lua",

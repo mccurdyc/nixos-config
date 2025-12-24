@@ -35,6 +35,7 @@
     nodejs
     nodePackages_latest.bash-language-server
     ookla-speedtest
+    pinfo
     qmk
     subnetcalc
     tree

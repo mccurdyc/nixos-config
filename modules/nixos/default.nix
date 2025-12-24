@@ -4,7 +4,7 @@
 
     ./docker.nix
     ./nix.nix
-    ./no-docs.nix
+    ./docs.nix
     ./openssh.nix
     ./system.nix
     ./user.nix
