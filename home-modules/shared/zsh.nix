@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
 
   programs.zsh = {
     enable = true;
@@ -121,7 +121,7 @@
       ];
     };
     profileExtra = "";
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     loginExtra = ''
       # This has to come after where FZF_DEFAULT_OPTS is set
       # Remember that fzf-tab doesn't follow FZF_DEFAULT_OPTS by default. If you want it to use your default fzf options, you can set:
