@@ -11,23 +11,24 @@ let
     then home-manager.darwinModules.home-manager
     else home-manager.nixosModules.home-manager;
 
-  pkgs = import nixpkgs {
-    inherit system;
-    config.allowUnfree = true;
-    config.allowBroken = true; #ghostty
-  };
   pkgs-unstable = import nixpkgs-unstable {
     inherit system;
     config.allowUnfree = true;
     config.allowBroken = true; #ghostty
   };
-  extendedSpecialArgs = specialArgs // { inherit pkgs pkgs-unstable home-manager; };
+  extendedSpecialArgs = specialArgs // { inherit pkgs-unstable home-manager; };
 in
 
 systemFn {
   inherit system;
   specialArgs = extendedSpecialArgs;
   modules = darwin-modules ++ nixos-modules ++ [
+    {
+      nixpkgs.config = {
+        allowUnfree = true;
+        allowBroken = true; #ghostty
+      };
+    }
 
     homeFn
     {
