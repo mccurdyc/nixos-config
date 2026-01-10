@@ -48,7 +48,8 @@
     vscode-extensions.vadimcn.vscode-lldb # codelldb
   ] ++ (with pkgs-unstable;
     [
-      claude-code
-      aider-chat-full
+      opencode
+      # claude-code
+      # aider-chat-full
     ]);
 }
