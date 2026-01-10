@@ -1,13 +1,8 @@
 _: {
   # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.ssh.matchBlocks
   programs.ssh = {
+    enableDefaultConfig = false;
     enable = true;
-    controlMaster = "no";
-    controlPath = "~/.ssh/master-%r@%n:%p";
-    controlPersist = "30m";
-    forwardAgent = true;
-    serverAliveInterval = 30;
-    serverAliveCountMax = 120;
 
     # Today, I just manage these ssh configs outside of Nix because I don't currently
     # have a way to "inject" or "consume" secret Nix modules.
@@ -20,7 +15,14 @@ _: {
     ];
 
     matchBlocks = {
-      "*" = { };
+      "*" = {
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "30m";
+        forwardAgent = true;
+        serverAliveInterval = 30;
+        serverAliveCountMax = 120;
+      };
 
       # programs.ssh doesn't work well for darwin.
       # home.file.".ssh/config".text = ''
