@@ -220,14 +220,23 @@ require("lazy").setup({
 		config = function()
 			---@type opencode.Opts
 			vim.g.opencode_opts = {
-				-- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
+				-- Configure OpenCode to open in horizontal split instead of vertical
+				provider = {
+					enabled = "snacks",
+					snacks = {
+						win = {
+							position = "bottom", -- Opens at bottom for horizontal split
+							height = 0.6, -- 60% of screen height
+						},
+					},
+				},
 			}
 
 			-- Required for `opts.events.reload`.
 			vim.o.autoread = true
 
 			-- Recommended/example keymaps.
-			vim.keymap.set({ "n", "x" }, "<C-a>", function()
+			vim.keymap.set({ "n", "x" }, "<leader>a", function()
 				require("opencode").ask("@this: ", { submit = true })
 			end, { desc = "Ask opencode" })
 			vim.keymap.set({ "n", "x" }, "<C-x>", function()
