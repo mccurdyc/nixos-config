@@ -126,6 +126,11 @@ autocmd("markdown_treesitter_folding", {
 	[[FileType markdown setlocal foldmethod=expr foldexpr=v:lua.vim.treesitter.foldexpr() foldlevel=1 foldminlines=0]],
 }, true)
 
+-- When 'binary' is turned on for a buffer, switch it to hex view
+autocmd("binary_show_hex_view", {
+	[[BufReadPost * if &binary | %!xxd]],
+}, true)
+
 opt("conceallevel", 0) -- concealing of characters like `, ", etc
 autocmd("conceallevel_1", {
 	[[FileType Trouble setlocal conceallevel=1 ]],
