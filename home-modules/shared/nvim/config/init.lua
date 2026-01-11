@@ -220,14 +220,12 @@ require("lazy").setup({
 		config = function()
 			---@type opencode.Opts
 			vim.g.opencode_opts = {
-				-- Configure OpenCode to open in horizontal split instead of vertical
+				-- Configure OpenCode to open in a right vertical split
 				provider = {
-					enabled = "snacks",
-					snacks = {
-						win = {
-							position = "bottom", -- Opens at bottom for horizontal split
-							height = 0.6, -- 60% of screen height
-						},
+					enabled = "terminal",
+					terminal = {
+						split = "right",
+						width = math.floor(vim.o.columns * 0.4),
 					},
 				},
 			}
