@@ -4,9 +4,9 @@
 
     ./apps.nix
     ./nix.nix
-    ./skhd.nix
     ./system.nix
     ./user.nix
-    ./yabai.nix
+    # ./skhd.nix
+    # ./yabai.nix
   ];
 }
