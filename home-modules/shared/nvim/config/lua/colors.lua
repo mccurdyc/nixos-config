@@ -215,9 +215,9 @@ hi("CursorColumn", { bg = colors.almost_black })
 hi("QuickFixLine", { bg = colors.dark_grey, bold = true })
 hi("PMenu", { fg = colors.foreground, bg = colors.dark_grey })
 hi("PMenuSel", { bg = colors.dark_grey, bold = true })
-hi("TabLine", { fg = colors.blue, bg = colors.yellow })
-hi("TabLineFill", { fg = colors.blue, bg = colors.yellow })
-hi("TabLineSel", { fg = colors.grey, bg = colors.yellow })
+hi("TabLine", { fg = colors.background, bg = colors.comment })
+hi("TabLineFill", { fg = colors.background, bg = colors.background })
+hi("TabLineSel", { fg = colors.background, bg = colors.yellow, bold = true })
 
 -- treesitter
 hi("@punctuation.special", { fg = colors.red })
