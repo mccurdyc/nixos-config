@@ -7,5 +7,6 @@
     ./networking.nix
     ./packages.nix
     ./zoekt.nix
+    ./zsh.nix
   ];
 }
