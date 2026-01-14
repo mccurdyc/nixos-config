@@ -5,17 +5,18 @@
     ./nvim
 
     ./alacritty.nix
-    ./ghostty.nix
     ./direnv.nix
+    ./ghostty.nix
     ./git.nix
     ./gpg.nix
+    ./opencode.nix
     ./packages.nix
     ./ripgrep.nix
     ./ssh.nix
     ./tmux.nix
     ./zellij.nix
-    ./zoxide.nix
     ./zoekt.nix
+    ./zoxide.nix
     ./zsh.nix
   ];
 

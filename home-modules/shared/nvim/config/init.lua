@@ -240,7 +240,10 @@ require("lazy").setup({
 
 			-- Recommended/example keymaps.
 			vim.keymap.set("n", "<leader>.", function()
-				vim.cmd("tabnew | term opencode")
+				-- %% opencode models openrouter
+				-- openrouter/anthropic/claude-sonnet-4.5
+				-- openrouter/anthropic/claude-opus-4.5
+				vim.cmd("tabnew | term opencode --model openrouter/anthropic/claude-sonnet-4.5")
 			end, { desc = "Open OpenCode TUI in new tab" })
 
 			-- Then, you can highlight something in the other tab to ask about.
