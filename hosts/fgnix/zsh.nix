@@ -8,7 +8,7 @@
           echo "refreshing SSO session"; \
           aws --no-browser --use-device-code sso login --profile bedrock; \
       fi; \
-      AWS_PROFILE=bedrock AWS_REGION=us-west-2 opencode --model amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0
+      AWS_PROFILE=bedrock AWS_REGION=us-west-2 command opencode --model amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0 "$@"
     }'';
   };
 }
