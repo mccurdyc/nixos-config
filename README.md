@@ -73,6 +73,12 @@
 sudo darwin-rebuild switch --flake '.#faamac'
 ```
 
+I've run into situations where I needed to clean old generations.
+
+```
+sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system && nix-collect-garbage -d
+```
+
 ### fgnix Rebuild
 
 ```bash
