@@ -111,6 +111,7 @@ opt("showmode", false)
 opt("cursorline", true)
 opt("modifiable", true)
 opt("relativenumber", true, window)
+opt("showtabline", 2) -- Always show tabline (managed by lualine)
 
 opt("foldenable", true)
 opt("foldminlines", 0) -- Minimum number of screen lines for a fold to be displayed closed.
@@ -154,12 +155,6 @@ map("x", "p", "pgvy", opts)
 -- Clear search highlights.
 map("n", "<Leader>cs", ":nohls<CR>", opts)
 map("n", "<Leader>rtw", ":%s/\\s\\+$//<CR>", opts)
-
--- Tab movement.
-map("n", "<c-Left>", "<cmd>tabpre<cr>", opts)
-map("n", "<c-Right>", "<cmd>tabnext<cr>", opts)
-
--- }}
 
 function ReplaceWordUnderCursorWithWordFromPastebuffer(global_confirmation)
 	local replace_context = global_confirmation and "gc" or "g"
@@ -1362,7 +1357,20 @@ require("lazy").setup({
 					lualine_y = {},
 					lualine_z = {},
 				},
-				tabline = {},
+				tabline = {
+					lualine_a = {
+						{
+							"tabs",
+							mode = 2, -- 0: shows tab_nr, 1: shows tab_name, 2: shows tab_nr + tab_name
+							max_length = vim.o.columns, -- use full width
+							show_modified_status = false,
+							tabs_color = {
+								active = { bg = mccurdyc_colors.yellow, fg = mccurdyc_colors.background, gui = "bold" },
+								inactive = { bg = mccurdyc_colors.grey, fg = mccurdyc_colors.foreground },
+							},
+						},
+					},
+				},
 				extensions = {},
 			})
 		end,
