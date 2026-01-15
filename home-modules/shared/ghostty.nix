@@ -5,7 +5,7 @@ _: {
 
   xdg.configFile."ghostty/config".text = ''
     # https://ghostty.org/docs/config/reference
-    font-size = "25"
+    font-size = "18"
     font-family = "SpaceMono Nerd Font"
 
     window-width = 200
