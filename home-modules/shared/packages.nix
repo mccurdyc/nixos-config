@@ -28,6 +28,9 @@
     jq
     just
     keychain
+    kubectl
+    kubernetes-helm
+    kubie
     k3d
     k9s
     lsof
