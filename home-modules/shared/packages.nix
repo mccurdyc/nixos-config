@@ -17,6 +17,7 @@
     tree-sitter
     zsh-fzf-tab
     zsh-fzf-history-search
+    gdb # for debugging asm files via DAP
     gh
     gitrs
     go

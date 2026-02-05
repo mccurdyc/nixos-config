@@ -241,26 +241,13 @@ require("lazy").setup({
 				vim.cmd("tabnew | term opencode --model openrouter/anthropic/claude-sonnet-4.5")
 			end, { desc = "Open OpenCode TUI in new tab" })
 
-			-- Then, you can highlight something in the other tab to ask about.
 			vim.keymap.set({ "n", "x" }, "<leader>a", function()
-				require("opencode").ask("@this: ", { submit = true })
-			end, { desc = "Ask opencode" })
-
-			vim.keymap.set({ "n", "x" }, "<C-x>", function()
-				require("opencode").select()
-			end, { desc = "Execute opencode action…" })
+				return require("opencode").operator("@this ")
+			end, { expr = true, desc = "Add range to opencode" })
 
 			vim.keymap.set({ "n", "t" }, "<leader>t", function()
 				require("opencode").toggle()
 			end, { desc = "Toggle opencode" })
-
-			vim.keymap.set({ "n", "x" }, "go", function()
-				return require("opencode").operator("@this ")
-			end, { expr = true, desc = "Add range to opencode" })
-
-			vim.keymap.set("n", "goo", function()
-				return require("opencode").operator("@this ") .. "_"
-			end, { expr = true, desc = "Add line to opencode" })
 		end,
 	},
 	"tpope/vim-fugitive",
@@ -574,6 +561,14 @@ require("lazy").setup({
 						size = 5, -- Other half
 						position = "bottom",
 					},
+					{
+						elements = {
+							"stacks",
+							"watches",
+						},
+						size = 40,
+						position = "left",
+					},
 				},
 				windows = { indent = 1 },
 				render = {
@@ -594,6 +589,28 @@ require("lazy").setup({
 		config = function()
 			-- Setup Rust debugging with codelldb
 			local dap = require("dap")
+
+			-- Setup GDB for assembly debugging
+			dap.adapters.gdb = {
+				type = "executable",
+				command = "gdb",
+				args = { "-i", "dap" },
+			}
+
+			-- Configure assembly debugging
+			-- gdbserver localhost:1234 <binary>
+			dap.configurations.asm = {
+				{
+					name = "Attach to gdbserver :1234",
+					type = "gdb",
+					request = "attach",
+					target = "localhost:1234",
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+				},
+			}
 
 			local codelldb_path = os.getenv("CODELLDB_PATH")
 			if not codelldb_path then
