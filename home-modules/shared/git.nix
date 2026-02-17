@@ -6,19 +6,20 @@
         user = {
           name = "Colton J. McCurdy";
           email = "mccurdyc22@gmail.com";
-
-          alias = {
-            l = "log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary";
-            lb = "!f() { git log --graph $(git branch --show-current) --not origin/main --decorate --oneline; }; f";
-            ll = "log --graph --all --decorate --oneline";
-            ls = "log --pretty=format:\"%C(green)%h %C(yellow)[%ad]%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative";
-            ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
-            cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
-            m = "mergetool";
-            review = "!nvim -c DiffReview";
-            reviews = "!nvim -c DiffReviewStaged";
-          };
         };
+
+        alias = {
+          l = "log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary";
+          lb = "!f() { git log --graph $(git branch --show-current) --not origin/main --decorate --oneline; }; f";
+          ll = "log --graph --all --decorate --oneline";
+          ls = "log --pretty=format:\"%C(green)%h %C(yellow)[%ad]%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative";
+          ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
+          cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
+          m = "mergetool";
+          review = "!nvim -c DiffReview";
+          reviews = "!nvim -c DiffReviewStaged";
+        };
+
         help = { autoCorrect = 5; }; # Run guessed command after 500ms if there is only one reasonable guess
         init = { defaultBranch = "main"; };
         core = {
