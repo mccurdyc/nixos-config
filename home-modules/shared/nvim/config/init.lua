@@ -250,7 +250,19 @@ require("lazy").setup({
 			end, { desc = "Toggle opencode" })
 		end,
 	},
-	"tpope/vim-fugitive",
+	{
+		"tpope/vim-fugitive",
+		lazy = false,
+		init = function()
+			-- Fix for fugitive blame not setting filetype properly
+			vim.api.nvim_create_autocmd("BufReadPost", {
+				pattern = "*.fugitiveblame",
+				callback = function()
+					vim.bo.filetype = "fugitiveblame"
+				end,
+			})
+		end,
+	},
 
 	"tpope/vim-rhubarb", -- :GBrowse
 	"nvim-lua/plenary.nvim",
@@ -1017,6 +1029,10 @@ require("lazy").setup({
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
+								-- Skip fugitive buffers to avoid interference with blame/commit views
+								if vim.bo.filetype == "fugitiveblame" or vim.bo.filetype == "fugitive" then
+									return
+								end
 								-- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#choosing-a-client-for-formatting
 								vim.lsp.buf.format({
 									bufnr = bufnr,
@@ -1624,9 +1640,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	group = rust_group,
 	pattern = "*.rs",
 	callback = function()
+		-- Skip fugitive buffers to avoid interference with blame/commit views
+		if vim.bo.filetype == "fugitiveblame" or vim.bo.filetype == "fugitive" then
+			return
+		end
 		vim.lsp.buf.format({ async = false })
 	end,
 })
+
+-- Note: Removed FugitiveConfig autocmd as it was preventing proper filetype detection
 
 -- Highlight line number instead of having icons in sign column
 vim.fn.sign_define("DiagnosticSignError", {
