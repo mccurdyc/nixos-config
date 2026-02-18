@@ -60,9 +60,11 @@
       };
       ignores = [
         ".devenv"
-        ".direnv"
+        ".direnv/"
+        ".pre-commit-config.yaml"
         "build_"
         ".aider*"
+        "tilt.out"
       ];
     };
 
