@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ ... }: {
 
   programs.tmux = {
     enable = true;
@@ -6,7 +6,7 @@
     clock24 = true;
     newSession = false;
     keyMode = "vi";
-    terminal = "xterm-256color";
+    terminal = "tmux-256color";
     shortcut = "a";
     escapeTime = 1;
     extraConfig = ''
@@ -28,6 +28,8 @@
 
       # bind key for synchronizing panes
       bind-key y set-window-option synchronize-panes \; display "toggled synchronize-pages #{?pane_synchronized,on,off}"
+
+      set -ag terminal-overrides ",xterm-256color:RGB"
 
       # Undercurl
       # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
