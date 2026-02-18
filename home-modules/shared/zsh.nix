@@ -47,6 +47,7 @@
       gitfc = ''(){ git log --format = format: "%H" | tail - 1; }'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{ range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       docker_ps = ''docker ps --format "{{.Names}}\t{{.Ports}}\t{{.Status}}"'';
+      tu = ''nohup tilt up --host 0.0.0.0 > tilt.out 2>&1 &'';
       k = "kubectl";
       zkt = "zoekt -index_dir $HOME/zoekt-serving/index -r";
       zobs = "zoekt -index_dir $HOME/zoekt-serving/index \"r:obsidian.md $@\"";
