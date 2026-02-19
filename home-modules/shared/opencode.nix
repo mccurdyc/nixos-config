@@ -25,12 +25,9 @@ in
       "theme": "orng",
       "default_agent": "brainstorm",
       "share": "manual",
-      "model": "openrouter/anthropic/claude-opus-4.6",
-      "small_model": "openrouter/anthropic/claude-haiku-4.5",
       "agent": {
         "build": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-sonnet-4.6",
           "prompt": "{file:./prompts/build.txt}",
           "tools": {
             "write": true,
@@ -40,7 +37,6 @@ in
         },
         "plan": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-opus-4.6",
           "prompt": "{file:./prompts/plan.txt}",
           "temperature": 0.1,
           "tools": {
@@ -51,7 +47,6 @@ in
         },
         "brainstorm": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-opus-4.6",
           "prompt": "{file:./prompts/brainstorm.txt}",
           "temperature": 0.8,
           "tools": {
