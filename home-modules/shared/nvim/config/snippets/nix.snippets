@@ -1,14 +1,29 @@
 snippet fm
-	{
-		inputs = {
-			nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-			flake-parts.url = "github:hercules-ci/flake-parts";
-		};
+  # This is a flake-parts perSystem module
+  #
+  # Usage in your flake:
+  #   imports = [ ./nix/modules/${1}.nix ];
+  #
+  # Configuration example:
+  #   perSystem.mccurdyc.${1} = {
+  #     enable = true;
+  #   };
+  { lib, flake-parts-lib, ... }:
+  let
+    inherit (flake-parts-lib) mkPerSystemOption;
+  in
+  {
+    options.perSystem = mkPerSystemOption (_: {
+      options.mccurdyc.${1} = {
+        enable = lib.mkEnableOption "${1}" // { default = true; };
+      };
+    });
 
-		outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-			systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
-			perSystem = { config, self', inputs', pkgs, system, ... }: {
-				${0}
-			};
-		};
-	}
+    config.perSystem = { config, pkgs, options, ... }:
+      let
+        cfg = config.mccurdyc.${1};
+      in
+      lib.mkIf cfg.enable {
+        ${2}
+      };
+  }
