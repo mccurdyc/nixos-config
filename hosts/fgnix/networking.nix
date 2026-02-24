@@ -4,14 +4,15 @@
   networking.hostName = "fgnix";
 
   programs.mosh.enable = true;
-  services.sshd.enable = true;
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings.PermitRootLogin = "prohibit-password";
+  services = {
+    sshd.enable = true;
+    openssh = {
+      enable = true;
+      ports = [ 22 ];
+      settings.PermitRootLogin = "prohibit-password";
+    };
+    tailscale.enable = true;
   };
-
-  services.tailscale.enable = true;
 
   networking.firewall = {
     enable = true;
