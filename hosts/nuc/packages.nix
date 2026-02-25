@@ -9,7 +9,8 @@
     (writeShellScriptBin "docker-prune-all" ''
       docker-stop-all
       docker rmi -f $(docker images -a -q)
-      docker volume prune -f
+      docker system prune -a -f
+      docker buildx prune -a -f
     '')
   ];
 }

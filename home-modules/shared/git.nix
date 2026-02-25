@@ -65,6 +65,7 @@
         "build_"
         ".aider*"
         "tilt.out"
+        ".git-worktrees/"
       ];
     };
 
