@@ -61,6 +61,10 @@
             inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
             # TODO: add lvk so that my mac can use the devbox for nix build, etc.
           };
+
+          funixArgs = {
+            system = "x86_64-linux";
+          };
         in
         {
           # sudo nixos-rebuild switch --flake '.#fgnix'
@@ -71,6 +75,24 @@
 
           # darwin-rebuild switch --flake '.#faamac'
           darwinConfigurations.faamac = mkSystem faamacArgs;
+
+          # home-manager switch --flake '.#funix'
+          homeConfigurations.funix = home-manager.lib.homeManagerConfiguration {
+            pkgs = import nixpkgs {
+              system = funixArgs.system;
+              config.allowUnfree = true;
+              config.allowBroken = true;
+            };
+            extraSpecialArgs = specialArgs // {
+              pkgs-unstable = import nixpkgs-unstable {
+                system = funixArgs.system;
+                config.allowUnfree = true;
+                config.allowBroken = true;
+              };
+              inherit home-manager;
+            };
+            modules = [ ./home-modules/funix ];
+          };
         };
 
       systems = [

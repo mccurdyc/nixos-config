@@ -73,17 +73,29 @@
 sudo darwin-rebuild switch --flake '.#faamac'
 ```
 
-I've run into situations where I needed to clean old generations.
+I've run into situations where I needed to clean old
+generations.
 
 ```
-sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system && nix-collect-garbage -d
+sudo nix-env --delete-generations old \
+  --profile /nix/var/nix/profiles/system \
+  && nix-collect-garbage -d
 ```
 
 ### fgnix Rebuild
 
 ```bash
 sudo nixos-rebuild switch --flake '.#fgnix'
-# nixos-rebuild switch --flake 'github:mccurdyc/nixos-config#fgnix'
+# nixos-rebuild switch \
+#   --flake 'github:mccurdyc/nixos-config#fgnix'
+```
+
+### funix Rebuild
+
+Standalone home-manager on an Ubuntu VM (not NixOS).
+
+```bash
+home-manager switch --flake '.#funix'
 ```
 
 ### Update Flake
