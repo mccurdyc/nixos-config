@@ -62,7 +62,8 @@
 ## Installation Docs
 
 - [nix-darwin](./docs/nix-darwin-install.md)
-- [nixos](./docs/nix-darwin-install.md)
+- [nixos](./docs/nixos-install.md)
+- [funix](./docs/funix-install.md)
 - [shared](./docs/shared.md)
 
 ## Common Commands
