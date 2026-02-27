@@ -85,7 +85,7 @@
               config.allowBroken = true;
             };
             extraSpecialArgs = specialArgs // {
-              zshPath = "/home/${specialArgs.user}/.nix-profile/bin/zsh";
+              zshPath = "/home/cmccurdy_fastly_com/.nix-profile/bin/zsh";
               pkgs-unstable = import nixpkgs-unstable {
                 system = funixArgs.system;
                 config.allowUnfree = true;
