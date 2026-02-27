@@ -1,4 +1,4 @@
-{ ... }: {
+{ zshPath, ... }: {
 
   programs.tmux = {
     enable = true;
@@ -39,8 +39,8 @@
 
       # https://unix.stackexchange.com/a/320496
       # necessary to reload shell config changes
-      set -g default-shell "/etc/profiles/per-user/$USER/bin/zsh"
-      set -g default-command "/etc/profiles/per-user/$USER/bin/zsh"
+      set -g default-shell "${zshPath}"
+      set -g default-command "${zshPath}"
 
       set -g status-justify "left"
       set -g status "on"

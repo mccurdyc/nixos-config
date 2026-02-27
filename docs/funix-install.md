@@ -52,6 +52,26 @@ Standalone home-manager on a GCP Ubuntu VM (not NixOS).
     home-manager switch --flake '.#funix'
     ```
 
+5. Set zsh as your login shell
+
+    home-manager cannot change the login shell on non-NixOS
+    systems. You need to do it once manually. First, ensure
+    the nix-managed zsh is in `/etc/shells` (required by
+    `chsh`):
+
+    ```bash
+    echo "$HOME/.nix-profile/bin/zsh" \
+      | sudo tee -a /etc/shells
+    ```
+
+    Then change your login shell:
+
+    ```bash
+    chsh -s "$HOME/.nix-profile/bin/zsh"
+    ```
+
+    Log out and back in for the change to take effect.
+
 ## Existing Multi-User Nix Install
 
 If Nix is already installed in multi-user (daemon) mode, verify

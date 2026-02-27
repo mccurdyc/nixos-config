@@ -25,6 +25,7 @@
           specialArgs = {
             user = "mccurdyc";
             hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5";
+            zshPath = "/etc/profiles/per-user/mccurdyc/bin/zsh";
           };
 
           fgnixArgs = {
@@ -84,6 +85,7 @@
               config.allowBroken = true;
             };
             extraSpecialArgs = specialArgs // {
+              zshPath = "/home/${specialArgs.user}/.nix-profile/bin/zsh";
               pkgs-unstable = import nixpkgs-unstable {
                 system = funixArgs.system;
                 config.allowUnfree = true;
