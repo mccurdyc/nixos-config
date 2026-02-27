@@ -1,14 +1,13 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
-      url = "github:lnl7/nix-darwin/nix-darwin-25.11";
+      url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -17,7 +16,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, flake-parts, nix-darwin, disko, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, flake-parts, nix-darwin, disko, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
@@ -36,7 +35,7 @@
             ];
             home-module = ./home-modules/nixos;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
           nucArgs = {
@@ -47,7 +46,7 @@
             ];
             home-module = ./home-modules/nixos;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
@@ -59,7 +58,7 @@
             ];
             home-module = ./home-modules/darwin;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nixpkgs-unstable nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
             # TODO: add lvk so that my mac can use the devbox for nix build, etc.
           };
 
@@ -80,17 +79,12 @@
           # home-manager switch --flake '.#funix'
           homeConfigurations.funix = home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs {
-              system = funixArgs.system;
+              inherit (funixArgs) system;
               config.allowUnfree = true;
               config.allowBroken = true;
             };
             extraSpecialArgs = specialArgs // {
               zshPath = "/home/cmccurdy_fastly_com/.nix-profile/bin/zsh";
-              pkgs-unstable = import nixpkgs-unstable {
-                system = funixArgs.system;
-                config.allowUnfree = true;
-                config.allowBroken = true;
-              };
               inherit home-manager;
             };
             modules = [ ./home-modules/funix ];
@@ -102,20 +96,13 @@
         "x86_64-linux"
       ];
 
-      # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
-      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
-
       perSystem = { system, ... }:
         let
           pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
         in
         {
-          # This is needed for pkgs-unstable - https://github.com/hercules-ci/flake-parts/discussions/105
-          overlayAttrs = { inherit pkgs-unstable; };
-
           formatter = pkgs.nixpkgs-fmt;
-          devShells.default = import ./shell.nix { inherit pkgs pkgs-unstable; };
+          devShells.default = import ./shell.nix { inherit pkgs; };
 
           # nix build '.#fgnix'
           # packages.fgnix = pkgs.testers.runNixOSTest {
