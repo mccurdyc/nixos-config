@@ -1,5 +1,8 @@
-{ pkgs, user, zshPath, ... }:
+{ zshPath, ... }:
 
+let
+  user = "cmccurdy_fastly_com";
+in
 {
   imports = [
     ../shared
