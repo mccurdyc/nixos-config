@@ -1,0 +1,8 @@
+{ ... }:
+
+{
+  imports = [
+    ../nixos
+    ./packages.nix
+  ];
+}
