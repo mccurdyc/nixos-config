@@ -3,10 +3,6 @@
 {
   home.packages = with pkgs; [
     _1password-cli
-    # arguably extras
-    awscli2
-    ssm-session-manager-plugin
-    google-cloud-sdk
     bat
     bc
     cloc
@@ -28,11 +24,6 @@
     jq
     just
     keychain
-    kubectl
-    kubernetes-helm
-    kubie
-    k3d
-    k9s
     lsof
     ncurses
     nodejs
@@ -44,10 +35,8 @@
     tree
     unzip
     wdiff
-    wireguard-tools
     yamlfmt
     yamllint
-    zoekt
     vscode-extensions.vadimcn.vscode-lldb # codelldb
     opencode
 
