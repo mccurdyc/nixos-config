@@ -152,6 +152,10 @@
       # https://github.com/Aloxaf/fzf-tab/issues/193#issuecomment-784722265
       setopt globdots
 
+      # compinit must come before anything that calls compdef
+      autoload bashcompinit && bashcompinit
+      autoload -Uz compinit && compinit
+
       eval "$(starship init zsh)"
       eval "$(just --completions zsh)"
 
@@ -180,13 +184,9 @@
 
       eval $(keychain --eval --quiet ~/.ssh/config.d/work/fastly_rsa)
 
-      # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
-      autoload bashcompinit && bashcompinit
-      autoload -Uz compinit && compinit
-
       complete -C "${pkgs.awscli2}/bin/aws_completer" aws
 
-      eval "$(zoxide init zsh)"
+      # zoxide init handled by programs.zoxide.enableZshIntegration
     '';
   };
 
