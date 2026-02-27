@@ -38,7 +38,6 @@
     yamlfmt
     yamllint
     vscode-extensions.vadimcn.vscode-lldb # codelldb
-    opencode
 
     (writeShellScriptBin "docker-stop-all" ''
       docker stop $(docker ps -q)

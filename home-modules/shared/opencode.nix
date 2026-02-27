@@ -25,6 +25,15 @@ in
       "theme": "orng",
       "default_agent": "brainstorm",
       "share": "manual",
+      "provider": {
+        "amazon-bedrock": {
+          "options": {
+            "region": "us-east-2",
+            "profile": "bedrock"
+          }
+        }
+      },
+      "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "agent": {
         "build": {
           "mode": "primary",

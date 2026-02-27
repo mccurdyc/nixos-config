@@ -219,16 +219,7 @@ require("lazy").setup({
 		},
 		config = function()
 			---@type opencode.Opts
-			vim.g.opencode_opts = {
-				-- Configure OpenCode to open in a right vertical split
-				provider = {
-					enabled = "terminal",
-					terminal = {
-						split = "right",
-						width = math.floor(vim.o.columns * 0.4),
-					},
-				},
-			}
+			vim.g.opencode_opts = {}
 
 			-- Required for `opts.events.reload`.
 			vim.o.autoread = true
@@ -238,7 +229,7 @@ require("lazy").setup({
 				-- %% opencode models openrouter
 				-- openrouter/anthropic/claude-sonnet-4.5
 				-- openrouter/anthropic/claude-opus-4.5
-				vim.cmd("tabnew | term opencode --model openrouter/anthropic/claude-sonnet-4.5")
+				vim.cmd("tabnew | term opencode")
 			end, { desc = "Open OpenCode TUI in new tab" })
 
 			vim.keymap.set({ "n", "x" }, "<leader>a", function()
