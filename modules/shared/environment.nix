@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 
 {
   environment = {
@@ -16,8 +16,8 @@
       ripgrep
       wget
       zsh
-      pkgs.neovim
-      pkgs-unstable.tailscale
+      neovim
+      tailscale
     ];
 
     variables = {

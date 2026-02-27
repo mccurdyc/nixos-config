@@ -127,7 +127,7 @@
           #       {
           #         config._module.args = {
           #           user = "mccurdyc";
-          #           inherit pkgs-unstable;
+          #           inherit pkgs;
           #         };
           #       }
           #     ];

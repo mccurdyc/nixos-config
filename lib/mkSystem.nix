@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-module, disko, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
+{ nixpkgs, nix-darwin, home-manager, home-module, disko, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
 
 let
   systemFn =
@@ -11,12 +11,7 @@ let
     then home-manager.darwinModules.home-manager
     else home-manager.nixosModules.home-manager;
 
-  pkgs-unstable = import nixpkgs-unstable {
-    inherit system;
-    config.allowUnfree = true;
-    config.allowBroken = true; #ghostty
-  };
-  extendedSpecialArgs = specialArgs // { inherit pkgs-unstable home-manager; };
+  extendedSpecialArgs = specialArgs // { inherit home-manager; };
 in
 
 systemFn {

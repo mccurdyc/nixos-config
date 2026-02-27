@@ -1,9 +1,9 @@
-{ pkgs-unstable, ... }:
+{ pkgs, ... }:
 
 {
   programs.zellij = {
     enable = false;
-    package = pkgs-unstable.zellij;
+    package = pkgs.zellij;
     enableZshIntegration = false; # disable auto startup in every zsh shell
   };
 

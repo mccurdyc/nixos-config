@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -50,10 +50,6 @@
     yamllint
     zoekt
     vscode-extensions.vadimcn.vscode-lldb # codelldb
-  ] ++ (with pkgs-unstable;
-    [
-      opencode
-      # claude-code
-      # aider-chat-full
-    ]);
+    opencode
+  ];
 }
