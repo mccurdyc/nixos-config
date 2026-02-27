@@ -51,5 +51,5 @@
     vscode-extensions.vadimcn.vscode-lldb # codelldb
     opencode
   ]
-  ++ lib.optional stdenv.isx86_64Linux gdb; # for debugging asm files via DAP
+  ++ lib.optional stdenv.isLinux gdb; # for debugging asm files via DAP
 }
