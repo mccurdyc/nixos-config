@@ -7,6 +7,8 @@ in
   imports = [
     ../shared
     ./bash.nix
+    ./packages.nix
+    ./zsh.nix
   ];
 
   home = {
