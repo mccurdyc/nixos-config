@@ -184,6 +184,9 @@
 
       eval $(keychain --eval --quiet ~/.ssh/config.d/work/fastly_rsa)
 
+      # https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key#telling-git-about-your-gpg-key
+      export GPG_TTY=$(tty)
+
       complete -C "${pkgs.awscli2}/bin/aws_completer" aws
 
       # zoxide init handled by programs.zoxide.enableZshIntegration

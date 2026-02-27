@@ -6,6 +6,7 @@
 
     ./alacritty.nix
     ./direnv.nix
+    ./environment.nix
     ./ghostty.nix
     ./git.nix
     ./gpg.nix
