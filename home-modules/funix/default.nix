@@ -6,6 +6,7 @@ in
 {
   imports = [
     ../shared
+    ./bash.nix
   ];
 
   home = {
