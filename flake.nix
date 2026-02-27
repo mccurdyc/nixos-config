@@ -33,7 +33,7 @@
               ./hosts/fgnix
               ./modules/nixos
             ];
-            home-module = ./home-modules/nixos;
+            home-module = ./home-modules/fgnix;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
@@ -44,7 +44,7 @@
               ./hosts/nuc
               ./modules/nixos
             ];
-            home-module = ./home-modules/nixos;
+            home-module = ./home-modules/nuc;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
           };
@@ -56,7 +56,7 @@
               ./hosts/faamac
               ./modules/darwin
             ];
-            home-module = ./home-modules/darwin;
+            home-module = ./home-modules/faamac;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
             # TODO: add lvk so that my mac can use the devbox for nix build, etc.

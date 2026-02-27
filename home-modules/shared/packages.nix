@@ -50,6 +50,17 @@
     zoekt
     vscode-extensions.vadimcn.vscode-lldb # codelldb
     opencode
+
+    (writeShellScriptBin "docker-stop-all" ''
+      docker stop $(docker ps -q)
+      docker system prune -f
+    '')
+    (writeShellScriptBin "docker-prune-all" ''
+      docker-stop-all
+      docker rmi -f $(docker images -a -q)
+      docker system prune -a -f
+      docker buildx prune -a -f
+    '')
   ]
   ++ lib.optional stdenv.isLinux gdb; # for debugging asm files via DAP
 }
