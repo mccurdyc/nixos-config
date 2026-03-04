@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 let
   shared_prompt = ''
     You are a software engineer who cares deeply about following idioms, best practices and operates in a domain where being especially critical matters.
@@ -33,6 +33,16 @@ in
           }
         }
       },
+      "mcp": {
+        "github": {
+          "type": "local",
+          "command": ["${pkgs.github-mcp-server}/bin/github-mcp-server", "stdio"],
+          "environment": {
+            "GITHUB_TOOLSETS": "repos,issues,pull_requests",
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.github-token}"
+          }
+        }
+      },
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "agent": {
         "build": {
@@ -51,7 +61,7 @@ in
           "tools": {
             "write": false,
             "edit": false,
-            "bash": false
+            "bash": true
           }
         },
         "brainstorm": {
@@ -63,10 +73,10 @@ in
             "list": false,
             "grep": false,
             "glob": false,
-            "read": false,
+            "read": true,
             "write": false,
             "edit": false,
-            "bash": false
+            "bash": true
           }
         },
       },
