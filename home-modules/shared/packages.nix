@@ -34,6 +34,7 @@
     subnetcalc
     tree
     unzip
+    uv
     wdiff
     yamlfmt
     yamllint

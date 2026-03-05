@@ -40,6 +40,22 @@ in
           "headers": {
             "Authorization": "Bearer {file:~/.github-token}"
           }
+        },
+        "atlassian": {
+          "type": "local",
+          "command": [
+            "uvx", "mcp-atlassian",
+            "--enabled-tools",
+            "jira_create_issue,jira_update_issue,jira_get_issue,jira_search,jira_get_transitions,jira_transition_issue,jira_search_fields,jira_get_field_options,confluence_search,confluence_get_page"
+          ],
+          "environment": {
+            "JIRA_URL": "https://fastly.atlassian.net",
+            "JIRA_USERNAME": "{file:~/.atlassian-email}",
+            "JIRA_API_TOKEN": "{file:~/.atlassian-api-token}",
+            "CONFLUENCE_URL": "https://fastly.atlassian.net/wiki",
+            "CONFLUENCE_USERNAME": "{file:~/.atlassian-email}",
+            "CONFLUENCE_API_TOKEN": "{file:~/.atlassian-api-token}"
+          }
         }
       },
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",

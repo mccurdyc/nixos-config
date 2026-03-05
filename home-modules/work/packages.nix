@@ -1,9 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
     awscli2
-    cntr
     google-cloud-sdk
     infra
     k3d
@@ -25,5 +24,6 @@
       AWS_REGION=us-east-2 \
       exec ${opencode}/bin/opencode "$@"
     '')
-  ];
+  ]
+  ++ lib.optional stdenv.isLinux cntr;
 }
