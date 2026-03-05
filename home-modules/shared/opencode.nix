@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 let
   shared_prompt = ''
     You are a software engineer who cares deeply about following idioms, best practices and operates in a domain where being especially critical matters.
@@ -35,11 +35,10 @@ in
       },
       "mcp": {
         "github": {
-          "type": "local",
-          "command": ["${pkgs.github-mcp-server}/bin/github-mcp-server", "stdio"],
-          "environment": {
-            "GITHUB_TOOLSETS": "repos,issues,pull_requests",
-            "GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.github-token}"
+          "type": "remote",
+          "url": "https://api.githubcopilot.com/mcp",
+          "headers": {
+            "Authorization": "Bearer {file:~/.github-token}"
           }
         }
       },
