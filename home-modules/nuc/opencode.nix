@@ -1,4 +1,7 @@
 { ... }:
+let
+  shared_prompt = builtins.readFile ../shared/claude/config/PROMPT.md;
+in
 {
   imports = [
     ../shared/opencode.nix
@@ -10,12 +13,12 @@
       "$schema": "https://opencode.ai/config.json",
       "autoupdate": true,
       "theme": "orng",
-      "default_agent": "brainstorm",
+      "default_agent": "free",
       "share": "manual",
       "provider": {
-        "openrouter": {
+        "opencode": {
           "options": {
-            "apiKey": "{file:~/.openrouter-api-key}"
+            "apiKey": "{file:~/.opencode-api-key}"
           }
         }
       },
@@ -31,7 +34,7 @@
       "agent": {
         "build": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-sonnet-4.6",
+          "model": "opencode/claude-sonnet-4-6",
           "prompt": "{file:./prompts/build.txt}",
           "tools": {
             "write": true,
@@ -41,7 +44,7 @@
         },
         "plan": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-sonnet-4.6",
+          "model": "opencode/claude-sonnet-4-6",
           "prompt": "{file:./prompts/plan.txt}",
           "temperature": 0.1,
           "tools": {
@@ -50,9 +53,20 @@
             "bash": true
           }
         },
+        "free": {
+          "description": "Free-tier agent using Big Pickle via OpenCode Zen",
+          "mode": "primary",
+          "model": "opencode/big-pickle",
+          "prompt": "{file:./prompts/free.txt}",
+          "tools": {
+            "write": true,
+            "edit": true,
+            "bash": true
+          }
+        },
         "brainstorm": {
           "mode": "primary",
-          "model": "openrouter/anthropic/claude-opus-4.6",
+          "model": "opencode/claude-opus-4-6",
           "prompt": "{file:./prompts/brainstorm.txt}",
           "temperature": 0.8,
           "tools": {
@@ -68,5 +82,13 @@
         }
       }
     }
+  '';
+  xdg.configFile."opencode/prompts/free.txt".text = ''
+    ${shared_prompt}
+    I encourage thoughtful feedback and creative alternatives, rather than simple acceptance.
+    You are running as the Big Pickle model via OpenCode Zen. Big Pickle is a free stealth
+    model with unknown capability limits. Be transparent about uncertainty when you lack
+    confidence, and flag tasks that may exceed your abilities rather than producing
+    low-quality output silently.
   '';
 }
