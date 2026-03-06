@@ -11,7 +11,6 @@
     ./ghostty.nix
     ./git.nix
     ./gpg.nix
-    ./opencode.nix
     ./packages.nix
     ./ripgrep.nix
     ./ssh.nix
