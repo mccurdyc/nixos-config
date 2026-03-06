@@ -2,8 +2,6 @@
 
 {
   imports = [
-    ../hardware/vm-gce-x86_64.nix
-
     ./docker.nix
     ./networking.nix
     ./zoekt.nix

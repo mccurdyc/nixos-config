@@ -17,19 +17,22 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-parts, nix-darwin, disko, ... }:
+    let
+      specialArgs = {
+        user = "mccurdyc";
+        hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5";
+        zshPath = "/etc/profiles/per-user/mccurdyc/bin/zsh";
+      };
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake =
         let
           mkSystem = import ./lib/mkSystem.nix;
-          specialArgs = {
-            user = "mccurdyc";
-            hashedPassword = "$y$j9T$5CjBgjlXBsYF3FYnTP9wQ.$hl8uCypIgOcrh3OrhcJA600Fgv5T9l0U85InRwmRdy5";
-            zshPath = "/etc/profiles/per-user/mccurdyc/bin/zsh";
-          };
 
           fgnixArgs = {
             system = "x86_64-linux";
             nixos-modules = [
+              ./hosts/hardware/vm-gce-x86_64.nix
               ./hosts/fgnix
               ./modules/nixos
             ];
@@ -41,6 +44,7 @@
           nucArgs = {
             system = "x86_64-linux";
             nixos-modules = [
+              ./hosts/hardware/x86_64.nix
               ./hosts/nuc
               ./modules/nixos
             ];
@@ -104,40 +108,21 @@
           formatter = pkgs.nixpkgs-fmt;
           devShells.default = import ./shell.nix { inherit pkgs; };
 
-          # nix build '.#fgnix'
-          # packages.fgnix = pkgs.testers.runNixOSTest {
-          #   name = "Test connectivity to SSH";
-          #   nodes.fgnix = {
-          #     imports = [
-          #       ./hosts/fgnix
-          #       ./modules/nixos
-          #
-          #       # TODO fix
-          #       home-manager.nixosModules.home-manager
-          #       {
-          #         home-manager = {
-          #           useGlobalPkgs = true;
-          #           useUserPackages = true;
-          #           extraSpecialArgs = { user = "mccurdyc"; }; # WRONG needs pkgs, etc.
-          #           users.mccurdyc = import ./home-modules/nixos;
-          #         };
-          #       }
-          #
-          #       # passed to every module as 'specialArgs'.
-          #       {
-          #         config._module.args = {
-          #           user = "mccurdyc";
-          #           inherit pkgs;
-          #         };
-          #       }
-          #     ];
-          #   };
-          #   testScript = ''
-          #     start_all()
-          #     fgnix.wait_for_unit("network-online.target")
-          #     fgnix.succeed("tailscale status")
-          #   '';
-          # };
+          checks = pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+            fgnix = import ./tests/fgnix.nix {
+              inherit pkgs specialArgs;
+              inherit (inputs) home-manager;
+            };
+            nuc = import ./tests/nuc.nix {
+              inherit pkgs specialArgs;
+              inherit (inputs) home-manager;
+            };
+            # Eval-only: building the activation package confirms the config evaluates.
+            funix = inputs.self.homeConfigurations.funix.activationPackage;
+          } // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+            # Eval-only: building the system drv confirms the darwin config evaluates.
+            faamac = inputs.self.darwinConfigurations.faamac.system;
+          };
         };
     };
 }

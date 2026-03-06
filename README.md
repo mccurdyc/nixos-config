@@ -113,26 +113,43 @@ nix fmt
 
 ### Testing
 
-#### Automated
+Checks are exposed under `checks.<system>.<name>` and run by `nix flake check`.
+
+| Check | Kind | Systems |
+|-------|------|---------|
+| `fgnix` | NixOS VM test (boots the config, asserts nftables) | `x86_64-linux` |
+| `nuc` | NixOS VM test (boots the config, asserts nftables) | `x86_64-linux` |
+| `funix` | Eval-only (builds `activationPackage`) | `x86_64-linux` |
+| `faamac` | Eval-only (builds darwin `system` drv) | `aarch64-darwin` |
+
+#### Eval all checks (no build, fast)
 
 ```bash
-nix build '.#fgnix'
+nix flake check --no-build
 ```
 
-### VM
+#### Run all checks (builds and executes VM tests)
 
 ```bash
-sudo nixos-rebuild build-vm --flake '.#fgnix'
-./nix/store/<hash>-nixos-vm/bin/run-fgnix-vm
+nix flake check
 ```
 
-#### Interactive (debugging tests)
-
-- https://blog.thalheim.io/2023/01/08/how-to-execute-nixos-tests-interactively-for-debugging/
+#### Run a single check
 
 ```bash
-nix build '.#packages.x86_64-linux.fgnix.driver'
+nix build '.#checks.x86_64-linux.fgnix'
+nix build '.#checks.x86_64-linux.nuc'
+nix build '.#checks.x86_64-linux.funix'
+nix build '.#checks.aarch64-darwin.faamac'  # on macOS only
+```
+
+#### Interactive debugging (drop into a running VM)
+
+```bash
+nix build '.#checks.x86_64-linux.fgnix.driver'
 ./result/bin/nixos-test-driver --interactive
 (repl) fgnix.start()
 (repl) fgnix.shell_interact()
 ```
+
+Reference: https://blog.thalheim.io/2023/01/08/how-to-execute-nixos-tests-interactively-for-debugging/
