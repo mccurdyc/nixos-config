@@ -62,10 +62,10 @@ hi("DiffNewFile", { fg = colors.green, bg = colors.background })
 hi("DiffLine", { fg = colors.yellow, bg = colors.background })
 hi("DiffRemoved", { fg = colors.red, bg = colors.background })
 
--- Git highlighting
+-- Git highlighting (used by neogit and the `g` alias)
 hi("gitcommitOverflow", { fg = colors.red })
-hi("gitcommitSummary", { fg = colors.background })
-hi("gitcommitComment", { fg = colors.background })
+hi("gitcommitSummary", { fg = colors.foreground })
+hi("gitcommitComment", { fg = colors.comment })
 hi("gitcommitUntracked", { fg = colors.green })
 hi("gitcommitDiscarded", { fg = colors.dark_grey })
 hi("gitcommitSelected", { fg = colors.blue })
