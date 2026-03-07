@@ -16,6 +16,32 @@ are eval-only; building the activation package confirms the config evaluates.
 Hardware modules are excluded from tests; the VM framework supplies its own
 root filesystem and bootloader.
 
+The VM test nodes in `tests/` do not go through `lib/mkSystem.nix` and do not
+inherit its `nixpkgs.overlays`. They also receive their `pkgs` from the
+`perSystem` block in `flake.nix`, which is a separate pkgs instantiation from
+the one used by the actual host configurations. Do not use the check commands
+to verify that a package is available in pkgs or that an overlay is applied
+correctly -- use `nix build '.#nixosConfigurations.<host>.pkgs.<pkg>'` or
+`nix build '.#nixosConfigurations.<host>.config.system.build.toplevel' --dry-run`
+instead.
+
+## Git
+
+When showing a git diff, use `git diff` for unstaged changes or `git diff HEAD`
+if files are staged. Always exclude lock files and other generated files with
+large diffs that add no review value:
+
+```sh
+git diff -- . ':(exclude)*lock*' ':(exclude)*.lock'
+git diff HEAD -- . ':(exclude)*lock*' ':(exclude)*.lock'
+```
+
+If a commit fails due to a GPG signing error, retry with `--no-gpg-sign`:
+
+```sh
+git commit --no-gpg-sign -m "message"
+```
+
 ## Formatting and Linting
 
 ```sh
@@ -48,3 +74,8 @@ deadnix .          # find dead code
 - **`allowBroken = true`**: required for ghostty; not a general policy.
 - **`autoupdate = true` in opencode**: accepted; opencode is installed
   outside Nix via its own updater on hosts that use it.
+- **pi-coding-agent packaged locally**: `@mariozechner/pi-coding-agent` is not
+  in nixpkgs and ships no `package-lock.json`. A lock file is generated via
+  `npm install --package-lock-only --ignore-scripts` against the published
+  tarball and committed to `pkgs/pi-coding-agent/`. The derivation uses
+  `buildNpmPackage`. Config is managed via `home-modules/{shared,nuc,work}/pi.nix`.

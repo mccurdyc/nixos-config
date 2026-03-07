@@ -23,6 +23,11 @@ systemFn {
         allowUnfree = true;
         allowBroken = true; #ghostty
       };
+      nixpkgs.overlays = [
+        (final: _prev: {
+          pi-coding-agent = final.callPackage ../pkgs/pi-coding-agent { };
+        })
+      ];
     }
 
     homeFn

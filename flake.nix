@@ -86,6 +86,11 @@
               inherit (funixArgs) system;
               config.allowUnfree = true;
               config.allowBroken = true;
+              overlays = [
+                (final: _prev: {
+                  pi-coding-agent = final.callPackage ./pkgs/pi-coding-agent { };
+                })
+              ];
             };
             extraSpecialArgs = specialArgs // {
               zshPath = "/home/cmccurdy_fastly_com/.nix-profile/bin/zsh";
