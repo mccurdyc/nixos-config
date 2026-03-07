@@ -1,18 +1,13 @@
-{ ... }:
-let
-  shared_prompt = builtins.readFile ./claude/config/PROMPT.md;
-in
+{ config, ... }:
 {
   # https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent
-  # pi is installed outside Nix: npm install -g @mariozechner/pi-coding-agent
+  # pi is installed via Nix (see pkgs/pi-coding-agent/)
   # Config dir: ~/.pi/agent/
 
-  # Global system prompt loaded at startup from ~/.pi/agent/AGENTS.md.
-  # Equivalent to the shared_prompt used across opencode agents.
-  home.file.".pi/agent/AGENTS.md".text = ''
-    ${shared_prompt}
-    I encourage thoughtful feedback and creative alternatives, rather than simple acceptance.
-  '';
+  # Global agents file for opencode (~/.config/opencode/AGENTS.md).
+  # Also symlinked for pi (~/.pi/agent/AGENTS.md).
+  home.file."${config.xdg.configHome}/opencode/AGENTS.md".source = ./AGENTS.md;
+  home.file.".pi/agent/AGENTS.md".source = ./AGENTS.md;
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".text = ''
