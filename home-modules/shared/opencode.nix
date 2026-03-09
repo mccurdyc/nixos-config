@@ -3,6 +3,7 @@ let
   shared_prompt = builtins.readFile ./claude/config/PROMPT.md;
 in
 {
+  xdg.configFile."opencode/AGENTS.md".source = ./AGENTS.md;
   # https://opencode.ai/docs/config
   xdg.configFile."opencode/agents/review.md".text = ''
     You are in code review mode. Focus on:

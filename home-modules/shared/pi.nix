@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 {
   # https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent
   # pi is installed via Nix (see pkgs/pi-coding-agent/)
@@ -6,7 +6,6 @@
 
   # Global agents file for opencode (~/.config/opencode/AGENTS.md).
   # Also symlinked for pi (~/.pi/agent/AGENTS.md).
-  home.file."${config.xdg.configHome}/opencode/AGENTS.md".source = ./AGENTS.md;
   home.file.".pi/agent/AGENTS.md".source = ./AGENTS.md;
 
   # Prompt templates: type /review in pi to expand.
