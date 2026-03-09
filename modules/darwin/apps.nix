@@ -12,14 +12,15 @@
     # `brew install --cask` equivalent
     casks = [
       "1password"
-      "obsidian"
       "firefox"
-      "zen-browser"
+      "ghostty"
+      "obsidian"
+      "raycast"
+      "signal"
       "slack"
       "spotify"
+      "zen-browser"
       "zoom"
-      "signal"
-      "ghostty"
     ];
   };
 }
