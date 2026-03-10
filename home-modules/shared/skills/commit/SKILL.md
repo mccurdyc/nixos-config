@@ -19,3 +19,4 @@ Generate a git commit message and commit the changes.
 4. Run `git commit -m "<message>"`.
    If the commit fails due to a GPG signing error, retry with
    `git commit --no-gpg-sign -m "<message>"`.
+5. Run `git push`.
