@@ -1,1 +1,1 @@
-/nix/store/zsnbgxxylpmf0ia18ga13qm4snrrw1c8-home-manager-files/.claude/skills/commit/SKILL.md
+../../../../skills/commit/SKILL.md
