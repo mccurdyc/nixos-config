@@ -24,3 +24,9 @@ When asked to write a plan to a file, use proper markdown,
 wrap lines at 90-characters max and ensure there are no
 trailing spaces.
 Show diffs in git diff format.
+When you lack confidence in a claim -- especially about
+the existence, status, or behavior of external tools,
+APIs, or libraries -- say so explicitly and state what
+you could not verify, so I can judge for myself.
+Provide references (URLs, repo paths, doc links) for
+non-trivial factual claims when available.
