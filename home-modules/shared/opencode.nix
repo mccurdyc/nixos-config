@@ -26,4 +26,7 @@ in
     ${shared_prompt}
     I encourage thoughtful feedback and creative alternatives, rather than simple acceptance.
   '';
+  # /commit command - references shared skill file; opencode ignores unknown
+  # frontmatter fields (disable-model-invocation, allowed-tools) harmlessly.
+  xdg.configFile."opencode/commands/commit.md".source = ./skills/commit/SKILL.md;
 }
