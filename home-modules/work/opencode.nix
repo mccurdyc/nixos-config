@@ -82,6 +82,19 @@
             "edit": false,
             "bash": true
           }
+        },
+        "commit": {
+          "mode": "primary",
+          "model": "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
+          "prompt": "{file:./prompts/commit.txt}",
+          "tools": {
+            "read": true,
+            "glob": true,
+            "grep": true,
+            "bash": true,
+            "write": false,
+            "edit": false
+          }
         }
       }
     }
