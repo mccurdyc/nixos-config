@@ -79,3 +79,16 @@ deadnix .          # find dead code
   `npm install --package-lock-only --ignore-scripts` against the published
   tarball and committed to `pkgs/pi-coding-agent/`. The derivation uses
   `buildNpmPackage`. Config is managed via `home-modules/{shared,nuc,work}/pi.nix`.
+- **Shared skills across Claude, pi, and opencode**: Skill definitions live in
+  `home-modules/shared/skills/<name>/SKILL.md` as a single source of truth.
+  Each tool discovers or references them differently:
+  - Claude: deployed to `~/.claude/skills/` via `home.file` entries in
+    `home-modules/shared/claude/default.nix`.
+  - pi: deployed to `~/.pi/agent/skills/` via `home.file` entries in
+    `home-modules/shared/pi.nix`.
+  - opencode: referenced as a command via `xdg.configFile` in
+    `home-modules/shared/opencode.nix`; also auto-discovered from
+    `~/.claude/skills/` as a skill.
+  Frontmatter uses the Claude schema (`disable-model-invocation`,
+  `allowed-tools`). Opencode and pi ignore unknown fields harmlessly.
+  Do not create per-tool copies of skill files.
