@@ -81,6 +81,32 @@
             "write": false,
             "edit": false,
             "bash": true
+          },
+          "permission": {
+            "edit": "deny",
+            "bash": {
+              "*": "deny",
+              "cat *": "allow",
+              "file *": "allow",
+              "git branch*": "allow",
+              "git diff*": "allow",
+              "git log*": "allow",
+              "git rev-parse*": "allow",
+              "git show*": "allow",
+              "git status*": "allow",
+              "head *": "allow",
+              "ls *": "allow",
+              "man *": "allow",
+              "nix build * --dry-run*": "allow",
+              "nix eval*": "allow",
+              "nix flake*": "allow",
+              "rg *": "allow",
+              "stat *": "allow",
+              "tail *": "allow",
+              "tree *": "allow",
+              "wc *": "allow",
+              "which *": "allow"
+            }
           }
         },
       }
