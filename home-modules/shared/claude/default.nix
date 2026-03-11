@@ -10,7 +10,7 @@ in
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/claude/config/settings.json";
   home.file.".claude/skills/github-mcp/SKILL.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/claude/config/skills/github-mcp/SKILL.md";
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/github-mcp/SKILL.md";
   home.file.".claude/skills/commit/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/commit/SKILL.md";
 }
