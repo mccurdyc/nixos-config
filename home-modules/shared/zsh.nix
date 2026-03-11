@@ -40,6 +40,8 @@
       whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
       curls = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
+      rmc = ''(){ git rm -rf "$@" && git commit -s -m "rm -rf $*"; }'';
+      mvc = ''(){ git mv "$@" && git commit -s -m "mv $*"; }'';
       gits = "git status";
       g = ''nvim -c Neogit'';
       gr = ''nvim -c DiffReview'';
