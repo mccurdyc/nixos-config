@@ -99,6 +99,7 @@
               "man *": "allow",
               "nix build * --dry-run*": "allow",
               "nix eval*": "allow",
+              "nix develop*": "allow",
               "nix flake*": "allow",
               "rg *": "allow",
               "stat *": "allow",
