@@ -1044,30 +1044,26 @@ require("lazy").setup({
 					null_ls.builtins.diagnostics.statix,
 					null_ls.builtins.diagnostics.trail_space,
 					-- null_ls.builtins.diagnostics.todo_comments,
-					null_ls.builtins.diagnostics.yamllint.with({
-						extra_args = {
-							"-d",
-							"{extends: relaxed, rules: {line-length: {max: 120}, document-start: disable}}",
-						},
-					}), -- null_ls.builtins.formatting.beautysh,
-					null_ls.builtins.formatting.cue_fmt,
-					-- BUG: causes bracket formatting issue
-					-- null_ls.builtins.formatting.cueimports,
-					null_ls.builtins.formatting.just,
-					null_ls.builtins.formatting.gofumpt,
-					null_ls.builtins.formatting.goimports,
-					null_ls.builtins.formatting.goimports_reviser,
-					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.formatting.nixpkgs_fmt,
-					null_ls.builtins.formatting.rego,
-					null_ls.builtins.formatting.just,
-					null_ls.builtins.formatting.shfmt.with({ extra_args = { "-i", "2", "-ci" } }),
-					null_ls.builtins.formatting.terraform_fmt,
-					null_ls.builtins.formatting.yamlfmt.with({
-						-- https://github.com/google/yamlfmt/blob/main/docs/config-file.md#basic-formatter
-						extra_args = { "-formatter", "indent=2,include_document_start=true,retain_line_breaks=true" },
-					}),
-				},
+				null_ls.builtins.diagnostics.yamllint,
+				-- null_ls.builtins.formatting.beautysh,
+				null_ls.builtins.formatting.cue_fmt,
+				-- BUG: causes bracket formatting issue
+				-- null_ls.builtins.formatting.cueimports,
+				null_ls.builtins.formatting.just,
+				null_ls.builtins.formatting.gofumpt,
+				null_ls.builtins.formatting.goimports,
+				null_ls.builtins.formatting.goimports_reviser,
+				null_ls.builtins.formatting.stylua,
+				null_ls.builtins.formatting.nixpkgs_fmt,
+				null_ls.builtins.formatting.rego,
+				null_ls.builtins.formatting.just,
+				null_ls.builtins.formatting.shfmt.with({ extra_args = { "-i", "2", "-ci" } }),
+				null_ls.builtins.formatting.terraform_fmt,
+				null_ls.builtins.formatting.yamlfmt.with({
+					-- https://github.com/google/yamlfmt/blob/main/docs/config-file.md#basic-formatter
+					extra_args = { "-formatter", "indent=2,include_document_start=false,retain_line_breaks=true" },
+				}),
+			},
 			})
 		end,
 	},
