@@ -218,27 +218,74 @@ require("lazy").setup({
 			{ "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
 		},
 		config = function()
+			-- Tab-based opencode terminal management.
+			-- oc_bufnr tracks the terminal buffer; oc_tabnr tracks the tab it lives in.
+			local oc_bufnr, oc_tabnr
+
+			local function oc_toggle()
+				if oc_bufnr == nil then
+					-- First call: open a new tab, start the terminal in it.
+					vim.cmd("tabnew")
+					oc_tabnr = vim.api.nvim_get_current_tabpage()
+					local win = vim.api.nvim_get_current_win()
+					oc_bufnr = vim.api.nvim_get_current_buf()
+					require("opencode.terminal").setup(win)
+					vim.fn.jobstart("opencode --port", {
+						term = true,
+						on_exit = function()
+							oc_bufnr = nil
+							oc_tabnr = nil
+						end,
+					})
+				elseif oc_tabnr ~= nil and vim.api.nvim_tabpage_is_valid(oc_tabnr) then
+					-- Tab is open: switch to it.
+					vim.api.nvim_set_current_tabpage(oc_tabnr)
+				elseif oc_bufnr ~= nil and vim.api.nvim_buf_is_valid(oc_bufnr) then
+					-- Buffer exists but tab was closed: reopen in a new tab.
+					vim.cmd("tabnew")
+					vim.api.nvim_win_set_buf(0, oc_bufnr)
+					oc_tabnr = vim.api.nvim_get_current_tabpage()
+				end
+			end
+
 			---@type opencode.Opts
-			vim.g.opencode_opts = {}
+			vim.g.opencode_opts = {
+				server = {
+					start = oc_toggle,
+					stop = function()
+						require("opencode.terminal").stop()
+						oc_bufnr = nil
+						oc_tabnr = nil
+					end,
+					toggle = oc_toggle,
+				},
+			}
 
 			-- Required for `opts.events.reload`.
 			vim.o.autoread = true
 
 			-- Recommended/example keymaps.
-			vim.keymap.set("n", "<leader>.", function()
-				-- %% opencode models openrouter
-				-- openrouter/anthropic/claude-sonnet-4.5
-				-- openrouter/anthropic/claude-opus-4.5
-				vim.cmd("tabnew | term opencode")
-			end, { desc = "Open OpenCode TUI in new tab" })
+			-- Toggle the plugin-managed opencode TUI (started with --port).
+			-- First press opens it; subsequent presses switch to its tab.
+			vim.keymap.set({ "n", "t" }, "<leader>.", function()
+				require("opencode").toggle()
+			end, { desc = "Toggle opencode" })
 
+			-- Send range or selection to the running opencode instance.
+			-- Use as an operator (e.g. <leader>aip) or from visual mode.
 			vim.keymap.set({ "n", "x" }, "<leader>a", function()
 				return require("opencode").operator("@this ")
 			end, { expr = true, desc = "Add range to opencode" })
 
-			vim.keymap.set({ "n", "t" }, "<leader>t", function()
-				require("opencode").toggle()
-			end, { desc = "Toggle opencode" })
+			-- Ask opencode a question with current context pre-filled.
+			vim.keymap.set({ "n", "x" }, "<leader>A", function()
+				require("opencode").ask("@this: ", { submit = true })
+			end, { desc = "Ask opencode about this" })
+
+			-- Browse and select from prompts, commands, and server controls.
+			vim.keymap.set({ "n", "x" }, "<leader>os", function()
+				require("opencode").select()
+			end, { desc = "Select opencode action" })
 		end,
 	},
 	{
