@@ -37,7 +37,7 @@
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
-      whatsmyip = "dig +short myip.opendns.com @resolver1.opendns.com";
+      whatsmyip = "curl -s https://ipinfo.io/ip";
       curls = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
       rmc = ''(){ git rm -rf "$@" && git commit -s -m "rm -rf $*"; }'';
