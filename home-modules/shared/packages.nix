@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    _1password-cli
     bat
     bc
     cloc
@@ -51,5 +50,6 @@
       docker buildx prune -a -f
     '')
   ]
-  ++ lib.optional stdenv.isLinux gdb; # for debugging asm files via DAP
+  ++ lib.optional stdenv.isLinux gdb # for debugging asm files via DAP
+  ++ lib.optional stdenv.isLinux _1password-cli; # darwin uses brew-managed desktop app + CLI
 }
