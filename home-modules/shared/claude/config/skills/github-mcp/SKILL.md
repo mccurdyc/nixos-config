@@ -1,1 +1,0 @@
-/nix/store/qk4ynncbjvq44i9csgali1lk44l14kgm-home-manager-files/.claude/skills/github-mcp/SKILL.md
