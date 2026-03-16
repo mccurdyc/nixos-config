@@ -12,6 +12,7 @@
     # `brew install --cask` equivalent
     casks = [
       "1password"
+      "1password-cli"
       "firefox"
       "ghostty"
       "obsidian"
