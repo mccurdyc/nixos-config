@@ -13,4 +13,6 @@ in
     ../skills/github-mcp/SKILL.md;
   home.file.".claude/skills/commit/SKILL.md".source =
     ../skills/commit/SKILL.md;
+  home.file.".claude/skills/review/SKILL.md".source =
+    ../skills/review/SKILL.md;
 }
