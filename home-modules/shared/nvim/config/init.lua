@@ -110,7 +110,7 @@ opt("splitright", true)
 opt("showmode", false)
 opt("cursorline", true)
 opt("modifiable", true)
-opt("relativenumber", true, window)
+opt("number", true, window)
 opt("showtabline", 2) -- Always show tabline (managed by lualine)
 
 opt("foldenable", true)

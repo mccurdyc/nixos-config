@@ -46,7 +46,7 @@
       g = ''nvim -c Neogit'';
       gr = ''nvim -c DiffReview'';
       grs = ''nvim -c DiffReviewStaged'';
-      gw = ''() { git fetch origin main && git worktree add ./.git-worktrees/$1 -b $2 origin/main; cd .git-worktrees/$1 }'';
+
       gitfc = ''(){ git log --format = format: "%H" | tail - 1; }'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{ range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
       docker_ps = ''docker ps --format "{{.Names}}\t{{.Ports}}\t{{.Status}}"'';
@@ -71,6 +71,41 @@
         done
       '';
     };
+
+    initExtra = ''
+      # Create a git worktree under .git-worktrees/<name> on a new branch
+      # based on origin/main, then share the main worktree's nix-direnv
+      # cache so the Nix environment is not re-evaluated per worktree.
+      # Usage: gw <worktree-name> <new-branch-name>
+      function gw() {
+        local main_root
+        main_root="$(git rev-parse --show-toplevel)"
+        local wt="$main_root/.git-worktrees/$1"
+
+        git fetch origin main \
+          && git worktree add "$wt" -b "$2" origin/main \
+          || return 1
+
+        # Share the nix-direnv cache from the main worktree so each
+        # worktree reuses the same evaluation rather than re-building.
+        if [[ -d "$main_root/.direnv" ]]; then
+          ln -sfn "$main_root/.direnv" "$wt/.direnv"
+        fi
+
+        # Copy .envrc so direnv activates in the worktree. A copy
+        # (not a symlink) keeps direnv's path-based allow model clean.
+        if [[ -f "$main_root/.envrc" ]]; then
+          cp "$main_root/.envrc" "$wt/.envrc"
+        fi
+
+        cd "$wt"
+
+        # Pre-allow so there is no manual `direnv allow` step on first entry.
+        if command -v direnv &>/dev/null && [[ -f .envrc ]]; then
+          direnv allow
+        fi
+      }
+    '';
 
     envExtra = ''
       export ZELLIJ_AUTO_ATTACH=false
