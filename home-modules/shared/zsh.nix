@@ -78,12 +78,14 @@
       # cache so the Nix environment is not re-evaluated per worktree.
       # Usage: gw <worktree-name> <new-branch-name>
       function gw() {
+        # Resolve the main worktree regardless of whether we are currently
+        # inside a worktree; `git worktree list` always lists the main tree first.
         local main_root
-        main_root="$(git rev-parse --show-toplevel)"
+        main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
         local wt="$main_root/.git-worktrees/$1"
 
         git fetch origin main \
-          && git worktree add "$wt" -b "$2" origin/main \
+          && git -C "$main_root" worktree add "$wt" -b "$2" origin/main \
           || return 1
 
         # Share the nix-direnv cache from the main worktree so each
