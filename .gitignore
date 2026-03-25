@@ -1,4 +1,5 @@
 result
 *.swp
 .direnv/
+.direnv
 PLAN.md
