@@ -72,43 +72,6 @@
       '';
     };
 
-    initExtra = ''
-      # Create a git worktree under .git-worktrees/<name> on a new branch
-      # based on origin/main, then share the main worktree's nix-direnv
-      # cache so the Nix environment is not re-evaluated per worktree.
-      # Usage: gw <worktree-name> <new-branch-name>
-      function gw() {
-        # Resolve the main worktree regardless of whether we are currently
-        # inside a worktree; `git worktree list` always lists the main tree first.
-        local main_root
-        main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
-        local wt="$main_root/.git-worktrees/$1"
-
-        git fetch origin main \
-          && git -C "$main_root" worktree add "$wt" -b "$2" origin/main \
-          || return 1
-
-        # Share the nix-direnv cache from the main worktree so each
-        # worktree reuses the same evaluation rather than re-building.
-        if [[ -d "$main_root/.direnv" ]]; then
-          ln -sfn "$main_root/.direnv" "$wt/.direnv"
-        fi
-
-        # Copy .envrc so direnv activates in the worktree. A copy
-        # (not a symlink) keeps direnv's path-based allow model clean.
-        if [[ -f "$main_root/.envrc" ]]; then
-          cp "$main_root/.envrc" "$wt/.envrc"
-        fi
-
-        cd "$wt"
-
-        # Pre-allow so there is no manual `direnv allow` step on first entry.
-        if command -v direnv &>/dev/null && [[ -f .envrc ]]; then
-          direnv allow
-        fi
-      }
-    '';
-
     envExtra = ''
       export ZELLIJ_AUTO_ATTACH=false
       export ZELLIJ_AUTO_EXIT=true
@@ -229,6 +192,41 @@
       complete -C "${pkgs.awscli2}/bin/aws_completer" aws
 
       # zoxide init handled by programs.zoxide.enableZshIntegration
+
+      # Create a git worktree under .git-worktrees/<name> on a new branch
+      # based on origin/main, then share the main worktree's nix-direnv
+      # cache so the Nix environment is not re-evaluated per worktree.
+      # Usage: gw <worktree-name> <new-branch-name>
+      function gw() {
+        # Resolve the main worktree regardless of whether we are currently
+        # inside a worktree; `git worktree list` always lists the main tree first.
+        local main_root
+        main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
+        local wt="$main_root/.git-worktrees/$1"
+
+        git fetch origin main \
+          && git -C "$main_root" worktree add "$wt" -b "$2" origin/main \
+          || return 1
+
+        # Share the nix-direnv cache from the main worktree so each
+        # worktree reuses the same evaluation rather than re-building.
+        if [[ -d "$main_root/.direnv" ]]; then
+          ln -sfn "$main_root/.direnv" "$wt/.direnv"
+        fi
+
+        # Copy .envrc so direnv activates in the worktree. A copy
+        # (not a symlink) keeps direnv's path-based allow model clean.
+        if [[ -f "$main_root/.envrc" ]]; then
+          cp "$main_root/.envrc" "$wt/.envrc"
+        fi
+
+        cd "$wt"
+
+        # Pre-allow so there is no manual `direnv allow` step on first entry.
+        if command -v direnv &>/dev/null && [[ -f .envrc ]]; then
+          direnv allow
+        fi
+      }
     '';
   };
 
