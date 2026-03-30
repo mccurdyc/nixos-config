@@ -2,17 +2,17 @@
 
 buildNpmPackage {
   pname = "pi-coding-agent";
-  version = "0.56.3";
+  version = "0.64.0";
 
   src = fetchurl {
-    url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-0.56.3.tgz";
-    hash = "sha256-7ck2w/x+l9ZyW5OlgR7kwHce/976iMZlukxLbgJNjlw=";
+    url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-0.64.0.tgz";
+    hash = "sha256-SSdIyhoK9DEa0qFNK3dAsTPcOhvhJQ/w7klVCB2kqZo=";
   };
 
   # Generated via:
   #   curl -sL <tarball> | tar -xzf - && cd package
   #   npm install --package-lock-only --ignore-scripts
-  npmDepsHash = "sha256-jthwTes1neS6OJ5ziYNQQFsoPpW1cmJ74oipUy8HwmA=";
+  npmDepsHash = "sha256-eH3Z1iTclJaKkaA0blTTgs9gbVZJ/eEuOicNLgOkgn4=";
 
   # The tarball unpacks to a "package/" subdirectory.
   sourceRoot = "package";
