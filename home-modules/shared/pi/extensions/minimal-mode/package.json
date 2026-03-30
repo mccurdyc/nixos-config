@@ -1,0 +1,14 @@
+{
+	"name": "pi-extension-minimal-mode",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"pi": {
+		"extensions": [
+			"./index.ts"
+		]
+	},
+	"dependencies": {
+		"@anthropic-ai/sandbox-runtime": "^0.0.26"
+	}
+}
