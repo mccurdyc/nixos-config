@@ -34,8 +34,8 @@
     "customMessageText": "",
     "customMessageLabel":"yellow",
     "toolPendingBg":     "almostBlack",
-    "toolSuccessBg":     "#0d1510",
-    "toolErrorBg":       "#150d0d",
+    "toolSuccessBg":     "darkGrey",
+    "toolErrorBg":       "darkGrey",
     "toolTitle":         "yellow",
     "toolOutput":        "lightGrey",
 

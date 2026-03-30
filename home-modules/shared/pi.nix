@@ -18,7 +18,11 @@ in
   home.file.".pi/agent/prompts/review.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/review/SKILL.md";
 
+  # Extensions
+  home.file.".pi/agent/extensions/quit.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/quit.ts";
+
   # Custom theme derived from the neovim colorscheme.
   home.file.".pi/agent/themes/mccurdyc-minimal.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/themes/mccurdyc-minimal.json";
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/themes/mccurdyc-minimal.json";
 }
