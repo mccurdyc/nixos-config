@@ -48,7 +48,7 @@
       "agent": {
         "build": {
           "mode": "primary",
-          "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-6",
+          "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
           "prompt": "{file:./prompts/build.txt}",
           "tools": {
             "write": true,
@@ -58,7 +58,7 @@
         },
         "plan": {
           "mode": "primary",
-          "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-6",
+          "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
           "prompt": "{file:./prompts/plan.txt}",
           "temperature": 0.1,
           "tools": {

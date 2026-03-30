@@ -8,7 +8,7 @@
   home.file.".pi/agent/settings.json".text = ''
     {
       "defaultProvider": "opencode",
-      "defaultModel": "claude-sonnet-4-6",
+      "defaultModel": "claude-opus-4-6",
       "theme": "dark"
     }
   '';

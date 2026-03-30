@@ -34,7 +34,7 @@ in
       "agent": {
         "build": {
           "mode": "primary",
-          "model": "opencode/claude-sonnet-4-6",
+          "model": "opencode/claude-opus-4-6",
           "prompt": "{file:./prompts/build.txt}",
           "tools": {
             "write": true,
@@ -44,7 +44,7 @@ in
         },
         "plan": {
           "mode": "primary",
-          "model": "opencode/claude-sonnet-4-6",
+          "model": "opencode/claude-opus-4-6",
           "prompt": "{file:./prompts/plan.txt}",
           "temperature": 0.1,
           "tools": {
