@@ -210,85 +210,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{
-		"NickvanDyke/opencode.nvim",
-		dependencies = {
-			-- Recommended for `ask()` and `select()`.
-			-- Required for `snacks` provider.
-			---@module 'snacks' <- Loads `snacks.nvim` types for configuration intellisense.
-			{ "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
-		},
-		config = function()
-			-- Tab-based opencode terminal management.
-			-- oc_bufnr tracks the terminal buffer; oc_tabnr tracks the tab it lives in.
-			local oc_bufnr, oc_tabnr
-
-			local function oc_toggle()
-				if oc_bufnr == nil then
-					-- First call: open a new tab, start the terminal in it.
-					vim.cmd("tabnew")
-					oc_tabnr = vim.api.nvim_get_current_tabpage()
-					local win = vim.api.nvim_get_current_win()
-					oc_bufnr = vim.api.nvim_get_current_buf()
-					require("opencode.terminal").setup(win)
-					vim.fn.jobstart("opencode --port", {
-						term = true,
-						on_exit = function()
-							oc_bufnr = nil
-							oc_tabnr = nil
-						end,
-					})
-				elseif oc_tabnr ~= nil and vim.api.nvim_tabpage_is_valid(oc_tabnr) then
-					-- Tab is open: switch to it.
-					vim.api.nvim_set_current_tabpage(oc_tabnr)
-				elseif oc_bufnr ~= nil and vim.api.nvim_buf_is_valid(oc_bufnr) then
-					-- Buffer exists but tab was closed: reopen in a new tab.
-					vim.cmd("tabnew")
-					vim.api.nvim_win_set_buf(0, oc_bufnr)
-					oc_tabnr = vim.api.nvim_get_current_tabpage()
-				end
-			end
-
-			---@type opencode.Opts
-			vim.g.opencode_opts = {
-				server = {
-					start = oc_toggle,
-					stop = function()
-						require("opencode.terminal").stop()
-						oc_bufnr = nil
-						oc_tabnr = nil
-					end,
-					toggle = oc_toggle,
-				},
-			}
-
-			-- Required for `opts.events.reload`.
-			vim.o.autoread = true
-
-			-- Recommended/example keymaps.
-			-- Toggle the plugin-managed opencode TUI (started with --port).
-			-- First press opens it; subsequent presses switch to its tab.
-			vim.keymap.set({ "n", "t" }, "<leader>.", function()
-				require("opencode").toggle()
-			end, { desc = "Toggle opencode" })
-
-			-- Send range or selection to the running opencode instance.
-			-- Use as an operator (e.g. <leader>aip) or from visual mode.
-			vim.keymap.set({ "n", "x" }, "<leader>a", function()
-				return require("opencode").operator("@this ")
-			end, { expr = true, desc = "Add range to opencode" })
-
-			-- Ask opencode a question with current context pre-filled.
-			vim.keymap.set({ "n", "x" }, "<leader>A", function()
-				require("opencode").ask("@this: ", { submit = true })
-			end, { desc = "Ask opencode about this" })
-
-			-- Browse and select from prompts, commands, and server controls.
-			vim.keymap.set({ "n", "x" }, "<leader>os", function()
-				require("opencode").select()
-			end, { desc = "Select opencode action" })
-		end,
-	},
-	{
 		"tpope/vim-fugitive",
 		lazy = false,
 		init = function()
@@ -1656,6 +1577,110 @@ require("lazy").setup({
 		backdrop = 100, -- or 100 for solid background
 	},
 })
+
+-- Tab-based pi coding agent terminal management.
+-- pi_bufnr tracks the terminal buffer; pi_tabnr tracks the tab it lives in.
+-- pi_chan holds the terminal job channel for sending text.
+local pi_bufnr, pi_tabnr, pi_chan
+
+local function pi_toggle()
+	if pi_bufnr == nil or not vim.api.nvim_buf_is_valid(pi_bufnr) then
+		-- First call (or buffer was wiped): open a new tab, start pi in it.
+		vim.cmd("tabnew")
+		pi_tabnr = vim.api.nvim_get_current_tabpage()
+		pi_chan = vim.fn.termopen("pi", {
+			on_exit = function()
+				pi_bufnr = nil
+				pi_tabnr = nil
+				pi_chan = nil
+			end,
+		})
+		pi_bufnr = vim.api.nvim_get_current_buf()
+		vim.cmd("startinsert")
+	elseif pi_tabnr ~= nil and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
+		-- Tab is open: switch to it and enter terminal mode.
+		vim.api.nvim_set_current_tabpage(pi_tabnr)
+		vim.cmd("startinsert")
+	else
+		-- Buffer exists but tab was closed: reopen in a new tab.
+		vim.cmd("tabnew")
+		vim.api.nvim_win_set_buf(0, pi_bufnr)
+		pi_tabnr = vim.api.nvim_get_current_tabpage()
+		vim.cmd("startinsert")
+	end
+end
+
+-- Get the visual selection or operator range as a string.
+local function get_selection()
+	local start_pos = vim.fn.getpos("'<")
+	local end_pos = vim.fn.getpos("'>")
+	local lines = vim.fn.getline(start_pos[2], end_pos[2])
+	if #lines == 0 then
+		return ""
+	end
+	-- Trim last line to selection end, first line to selection start.
+	lines[#lines] = string.sub(lines[#lines], 1, end_pos[3])
+	lines[1] = string.sub(lines[1], start_pos[3])
+	return table.concat(lines, "\n")
+end
+
+-- Send text to the running pi terminal, prefixed with an optional string.
+local function pi_send(prefix)
+	if not pi_chan then
+		vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
+		return
+	end
+	local text = get_selection()
+	if text == "" then
+		return
+	end
+	local payload = (prefix or "") .. text
+	vim.api.nvim_chan_send(pi_chan, payload)
+	-- Switch to the pi tab.
+	if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
+		vim.api.nvim_set_current_tabpage(pi_tabnr)
+		vim.cmd("startinsert")
+	end
+end
+
+vim.keymap.set({ "n", "t" }, "<leader>.", pi_toggle, { desc = "Toggle pi" })
+
+-- Send visual selection to pi's input.
+vim.keymap.set("x", "<leader>a", function()
+	-- Exit visual mode so '< and '> marks are set.
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
+	vim.schedule(function()
+		pi_send()
+	end)
+end, { desc = "Send selection to pi" })
+
+-- Send visual selection to pi with a prompt prefix and submit.
+vim.keymap.set("x", "<leader>A", function()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
+	vim.schedule(function()
+		local question = vim.fn.input("Ask pi: ")
+		if question == "" then
+			return
+		end
+		local text = get_selection()
+		if text == "" then
+			return
+		end
+		if not pi_chan then
+			vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
+			return
+		end
+		local payload = question .. "\n\n" .. text .. "\n"
+		vim.api.nvim_chan_send(pi_chan, payload)
+		if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
+			vim.api.nvim_set_current_tabpage(pi_tabnr)
+			vim.cmd("startinsert")
+		end
+	end)
+end, { desc = "Ask pi about selection" })
+
+-- Autoread so pi's file edits are picked up automatically.
+vim.o.autoread = true
 
 -- Use lsp formatting for Rust instead of none-ls
 local rust_group = vim.api.nvim_create_augroup("RustConfig", { clear = true })
