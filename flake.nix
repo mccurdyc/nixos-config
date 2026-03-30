@@ -14,9 +14,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gws = {
+      url = "github:googleworkspace/cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, flake-parts, nix-darwin, disko, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, flake-parts, nix-darwin, disko, gws, ... }:
     let
       specialArgs = {
         user = "mccurdyc";
@@ -38,7 +42,7 @@
             ];
             home-module = ./home-modules/fgnix;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko gws; # TODO - consider using 'inputs'
           };
 
           nucArgs = {
@@ -50,7 +54,7 @@
             ];
             home-module = ./home-modules/nuc;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko gws; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
@@ -62,7 +66,7 @@
             ];
             home-module = ./home-modules/faamac;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko; # TODO - consider using 'inputs'
+            inherit nixpkgs nix-darwin home-manager disko gws; # TODO - consider using 'inputs'
             # TODO: add lvk so that my mac can use the devbox for nix build, etc.
           };
 
@@ -89,6 +93,7 @@
               overlays = [
                 (final: _prev: {
                   pi-coding-agent = final.callPackage ./pkgs/pi-coding-agent { };
+                  gws = gws.packages.${final.system}.default;
                 })
               ];
             };

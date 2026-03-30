@@ -14,6 +14,7 @@
     zsh-fzf-history-search
     gh
     gitrs
+    gws
     go
     gopls
     python312Packages.grip

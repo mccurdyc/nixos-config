@@ -1,4 +1,4 @@
-{ nixpkgs, nix-darwin, home-manager, home-module, disko, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
+{ nixpkgs, nix-darwin, home-manager, home-module, disko, gws, darwin-modules ? [ ], nixos-modules ? [ ], system, specialArgs, darwin ? false }:
 
 let
   systemFn =
@@ -26,6 +26,7 @@ systemFn {
       nixpkgs.overlays = [
         (final: _prev: {
           pi-coding-agent = final.callPackage ../pkgs/pi-coding-agent { };
+          gws = gws.packages.${final.system}.default;
         })
       ];
     }
