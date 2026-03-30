@@ -43,7 +43,16 @@
       exec ${opencode}/bin/opencode "$@"
     '')
 
-    pi-coding-agent
+    (writeShellScriptBin "pi" ''
+      aws sts get-caller-identity --profile bedrock > /dev/null 2>&1
+      if [ $? -ne 0 ]; then
+        echo "refreshing SSO session"
+        aws --no-browser --use-device-code sso login --profile bedrock
+      fi
+      eval "$(aws configure export-credentials --profile bedrock --format env)"
+      export AWS_REGION=us-east-2
+      exec ${pi-coding-agent}/bin/pi "$@"
+    '')
   ]
   ++ lib.optional stdenv.isLinux cntr;
 }

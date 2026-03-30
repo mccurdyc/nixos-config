@@ -5,8 +5,10 @@
   ];
 
   # https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/docs/settings.md
-  # AWS credentials (profile bedrock, region us-east-2) are injected at runtime
-  # via the pi wrapper in packages.nix, same as the opencode wrapper.
+  # The pi wrapper in packages.nix refreshes SSO, then exports concrete
+  # AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_SESSION_TOKEN and
+  # AWS_REGION=us-east-2 so that subagents (which bypass the wrapper via
+  # process.execPath) inherit usable credentials from the parent env.
   home.file.".pi/agent/settings.json".text = ''
     {
       "defaultProvider": "amazon-bedrock",
