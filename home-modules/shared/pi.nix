@@ -41,8 +41,6 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/presets.json";
 
   # Extensions
-  home.file.".pi/agent/extensions/quit.ts".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/quit.ts";
   home.file.".pi/agent/extensions/preset.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/preset.ts";
   home.file.".pi/agent/extensions/minimal-mode.ts".source =
