@@ -10,7 +10,7 @@
   home.file.".pi/agent/settings.json".text = ''
     {
       "defaultProvider": "amazon-bedrock",
-      "defaultModel": "global.anthropic.claude-opus-4-6",
+      "defaultModel": "global.anthropic.claude-opus-4-6-v1",
       "theme": "mccurdyc-minimal"
     }
   '';
