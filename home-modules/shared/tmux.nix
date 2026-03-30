@@ -72,6 +72,7 @@
       set -g allow-passthrough on
       set -g mouse on
       set -g extended-keys on
+      set -g extended-keys-format csi-u
 
       # https://github.com/tmux/tmux/wiki/Clipboard#terminal-support---kitty
       # https://github.com/kovidgoyal/kitty/issues/1807
