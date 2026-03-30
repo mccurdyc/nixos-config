@@ -9,7 +9,7 @@
     {
       "defaultProvider": "opencode",
       "defaultModel": "claude-opus-4-6",
-      "theme": "dark"
+      "theme": "mccurdyc-minimal"
     }
   '';
 }

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
+  "name": "mccurdyc-minimal",
+  "vars": {
+    "yellow":     "#ffa500",
+    "green":      "#5fd787",
+    "red":        "#ff5f5f",
+    "blue":       "#2950c5",
+    "foreground": "#e4e4e4",
+    "lightGrey":  "#b1b1b1",
+    "comment":    "#5d5d5d",
+    "grey":       "#2d2d2d",
+    "darkGrey":   "#1d1d1d",
+    "almostBlack":"#0d0d0d",
+    "background": "#040405"
+  },
+  "colors": {
+    "accent":            "yellow",
+    "border":            "blue",
+    "borderAccent":      "green",
+    "borderMuted":       "grey",
+    "success":           "green",
+    "error":             "red",
+    "warning":           "yellow",
+    "muted":             "comment",
+    "dim":               "grey",
+    "text":              "",
+    "thinkingText":      "lightGrey",
+
+    "selectedBg":        "darkGrey",
+    "userMessageBg":     "almostBlack",
+    "userMessageText":   "",
+    "customMessageBg":   "darkGrey",
+    "customMessageText": "",
+    "customMessageLabel":"yellow",
+    "toolPendingBg":     "almostBlack",
+    "toolSuccessBg":     "#0d1510",
+    "toolErrorBg":       "#150d0d",
+    "toolTitle":         "yellow",
+    "toolOutput":        "lightGrey",
+
+    "mdHeading":         "yellow",
+    "mdLink":            "lightGrey",
+    "mdLinkUrl":         "comment",
+    "mdCode":            "yellow",
+    "mdCodeBlock":       "foreground",
+    "mdCodeBlockBorder": "grey",
+    "mdQuote":           "comment",
+    "mdQuoteBorder":     "grey",
+    "mdHr":              "grey",
+    "mdListBullet":      "green",
+
+    "toolDiffAdded":     "green",
+    "toolDiffRemoved":   "red",
+    "toolDiffContext":   "comment",
+
+    "syntaxComment":     "comment",
+    "syntaxKeyword":     "foreground",
+    "syntaxFunction":    "yellow",
+    "syntaxVariable":    "foreground",
+    "syntaxString":      "lightGrey",
+    "syntaxNumber":      "lightGrey",
+    "syntaxType":        "lightGrey",
+    "syntaxOperator":    "red",
+    "syntaxPunctuation": "comment",
+
+    "thinkingOff":       "grey",
+    "thinkingMinimal":   "comment",
+    "thinkingLow":       "blue",
+    "thinkingMedium":    "lightGrey",
+    "thinkingHigh":      "yellow",
+    "thinkingXhigh":     "red",
+
+    "bashMode":          "green"
+  },
+  "export": {
+    "pageBg":  "#040405",
+    "cardBg":  "#0d0d0d",
+    "infoBg":  "#1a1400"
+  }
+}

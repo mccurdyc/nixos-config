@@ -17,4 +17,8 @@ in
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/review/SKILL.md";
+
+  # Custom theme derived from the neovim colorscheme.
+  home.file.".pi/agent/themes/mccurdyc-minimal.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/themes/mccurdyc-minimal.json";
 }

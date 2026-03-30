@@ -11,7 +11,7 @@
     {
       "defaultProvider": "amazon-bedrock",
       "defaultModel": "global.anthropic.claude-opus-4-6",
-      "theme": "dark"
+      "theme": "mccurdyc-minimal"
     }
   '';
 }
