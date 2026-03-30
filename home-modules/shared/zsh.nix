@@ -193,20 +193,39 @@
 
       # zoxide init handled by programs.zoxide.enableZshIntegration
 
-      # Create a git worktree under .git-worktrees/<name> on a new branch
-      # based on origin/main, then share the main worktree's nix-direnv
-      # cache so the Nix environment is not re-evaluated per worktree.
-      # Usage: gw <worktree-name> <new-branch-name>
+      # Create a git worktree under .git-worktrees/<name>, then share the
+      # main worktree's nix-direnv cache so the Nix environment is not
+      # re-evaluated per worktree.
+      # Usage: gw [-e] <name> [base-ref]
+      #   gw feature-foo            → new branch feature-foo from origin/main
+      #   gw feature-foo origin/v2  → new branch feature-foo from origin/v2
+      #   gw feature-foo -e         → checkout existing origin/feature-foo
       function gw() {
+        local existing=0
+        if [[ "$1" == "-e" ]]; then
+          existing=1
+          shift
+        fi
+
+        if [[ -z "$1" ]]; then
+          echo "Usage: gw [-e] <name> [base-ref]"
+          return 1
+        fi
+
         # Resolve the main worktree regardless of whether we are currently
         # inside a worktree; `git worktree list` always lists the main tree first.
         local main_root
         main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
         local wt="$main_root/.git-worktrees/$1"
 
-        git fetch origin main \
-          && git -C "$main_root" worktree add "$wt" -b "$2" origin/main \
-          || return 1
+        git fetch origin || return 1
+
+        if (( existing )); then
+          git -C "$main_root" worktree add "$wt" "origin/$1" || return 1
+        else
+          local base="''${2:-origin/main}"
+          git -C "$main_root" worktree add "$wt" -b "$1" "$base" || return 1
+        fi
 
         # Share the nix-direnv cache from the main worktree so each
         # worktree reuses the same evaluation rather than re-building.
@@ -226,6 +245,37 @@
         if command -v direnv &>/dev/null && [[ -f .envrc ]]; then
           direnv allow
         fi
+      }
+
+      # Switch to a git worktree using fzf.
+      # Usage: gwl
+      function gwl() {
+        local wt
+        wt="$(git worktree list | fzf --prompt='worktree> ' --height=40% --reverse | awk '{print $1}')"
+        if [[ -n "$wt" ]]; then
+          cd "$wt"
+        fi
+      }
+
+      # Remove a git worktree using fzf (excludes the main worktree).
+      # Usage: gwd
+      function gwd() {
+        local main_root
+        main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
+
+        local wt
+        wt="$(git worktree list | tail -n +2 | fzf --prompt='remove worktree> ' --height=40% --reverse | awk '{print $1}')"
+        if [[ -z "$wt" ]]; then
+          echo "No worktree selected."
+          return 0
+        fi
+
+        # If we're inside the worktree being removed, go to main first
+        if [[ "$PWD" == "$wt"* ]]; then
+          cd "$main_root"
+        fi
+
+        git worktree remove "$wt" && echo "Removed worktree: $wt"
       }
     '';
   };
