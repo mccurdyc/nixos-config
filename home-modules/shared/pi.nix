@@ -17,11 +17,12 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/google-workspace/SKILL.md";
   home.file.".pi/agent/skills/atlassian/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/atlassian/SKILL.md";
+  home.file.".pi/agent/skills/git-diff/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/review/SKILL.md";
-
   # Subagent workflow prompts.
   home.file.".pi/agent/prompts/implement.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/subagent/prompts/implement.md";

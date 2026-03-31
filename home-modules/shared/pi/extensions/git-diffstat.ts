@@ -16,7 +16,25 @@ export default function (pi: ExtensionAPI) {
       const args = params.args ?? "HEAD";
       const cmd = `git --no-pager diff --stat ${args} -- . ':(exclude)*lock*' ':(exclude)*.lock'`;
       try {
-        const output = execSync(cmd, { cwd: ctx.cwd, encoding: "utf-8", maxBuffer: 1024 * 1024 });
+        let output = execSync(cmd, { cwd: ctx.cwd, encoding: "utf-8", maxBuffer: 1024 * 1024 });
+
+        // Include untracked files when diffing working tree (HEAD or --cached)
+        if (/HEAD|--cached|--staged/.test(args)) {
+          try {
+            const untracked = execSync("git ls-files --others --exclude-standard", { cwd: ctx.cwd, encoding: "utf-8" }).trim();
+            if (untracked) {
+              for (const file of untracked.split("\n")) {
+                if (/lock/i.test(file)) continue;
+                try {
+                  execSync(`git --no-pager diff --no-index --stat /dev/null ${file}`, { cwd: ctx.cwd, encoding: "utf-8", maxBuffer: 1024 * 1024 });
+                } catch (diffErr: any) {
+                  if (diffErr.stdout) output += diffErr.stdout;
+                }
+              }
+            }
+          } catch (_) { /* ignore ls-files errors */ }
+        }
+
         return {
           content: [{ type: "text", text: output || "No changes." }],
           details: { stat: output, args },
