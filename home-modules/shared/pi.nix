@@ -68,6 +68,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/package.json";
   home.file.".pi/agent/extensions/sandbox/package-lock.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/package-lock.json";
+  home.file.".pi/agent/extensions/git-diffstat.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/git-diffstat.ts";
 
   # Custom theme derived from the neovim colorscheme.
   home.file.".pi/agent/themes/mccurdyc-minimal.json".source =
