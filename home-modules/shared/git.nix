@@ -74,21 +74,25 @@
       enable = true;
       options = {
         decorations = {
-          commit-decoration-style = "bold yellow box ul";
+          commit-decoration-style = ''"#5d5d5d" box'';
           file-decoration-style = "none";
-          file-style = "bold yellow ul";
-          hunk-header-decoration-style = "yellow box ul";
+          file-style = ''"#e4e4e4" bold'';
+          hunk-header-decoration-style = "none";
+          hunk-header-style = ''"#5d5d5d"'';
         };
         line-numbers = {
-          line-numbers-left-style = "yellow";
-          line-numbers-right-style = "yellow";
-          line-numbers-minus-style = "124";
-          line-numbers-plus-style = "28";
+          line-numbers-left-style = ''"#5d5d5d"'';
+          line-numbers-right-style = ''"#5d5d5d"'';
+          line-numbers-minus-style = ''"#ff5f5f"'';
+          line-numbers-plus-style = ''"#5fd787"'';
         };
         features = "decorations line-numbers";
         syntax-theme = "none";
-        plus-style = ''green bold "#ccffcc"'';
-        minus-style = ''red bold "#ffcccc"'';
+        plus-style = ''"#5fd787" "#1d1d1d"'';
+        plus-emph-style = ''"#5fd787" bold "#1d1d1d"'';
+        minus-style = ''"#ff5f5f" "#1d1d1d"'';
+        minus-emph-style = ''"#ff5f5f" bold "#1d1d1d"'';
+        zero-style = ''"#b1b1b1" "#1d1d1d"'';
       };
     };
   };

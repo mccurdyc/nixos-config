@@ -1616,12 +1616,25 @@ local function get_selection()
 	local end_pos = vim.fn.getpos("'>")
 	local lines = vim.fn.getline(start_pos[2], end_pos[2])
 	if #lines == 0 then
-		return ""
+		return "", nil, nil, nil
 	end
 	-- Trim last line to selection end, first line to selection start.
 	lines[#lines] = string.sub(lines[#lines], 1, end_pos[3])
 	lines[1] = string.sub(lines[1], start_pos[3])
-	return table.concat(lines, "\n")
+	local file = vim.api.nvim_buf_get_name(0)
+	return table.concat(lines, "\n"), file, start_pos[2], end_pos[2]
+end
+
+local function selection_header()
+	local text, file, start_line, end_line = get_selection()
+	if text == "" then
+		return nil
+	end
+	local header = ""
+	if file and file ~= "" then
+		header = file .. ":" .. start_line .. "-" .. end_line .. "\n"
+	end
+	return header .. text
 end
 
 -- Send text to the running pi terminal, prefixed with an optional string.
@@ -1630,11 +1643,11 @@ local function pi_send(prefix)
 		vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
 		return
 	end
-	local text = get_selection()
-	if text == "" then
+	local body = selection_header()
+	if not body then
 		return
 	end
-	local payload = (prefix or "") .. text
+	local payload = (prefix or "") .. body
 	vim.api.nvim_chan_send(pi_chan, payload)
 	-- Switch to the pi tab.
 	if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
@@ -1662,15 +1675,15 @@ vim.keymap.set("x", "<leader>A", function()
 		if question == "" then
 			return
 		end
-		local text = get_selection()
-		if text == "" then
-			return
-		end
 		if not pi_chan then
 			vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
 			return
 		end
-		local payload = question .. "\n\n" .. text .. "\n"
+		local body = selection_header()
+		if not body then
+			return
+		end
+		local payload = question .. "\n\n" .. body .. "\n"
 		vim.api.nvim_chan_send(pi_chan, payload)
 		if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
 			vim.api.nvim_set_current_tabpage(pi_tabnr)
