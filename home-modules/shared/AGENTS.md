@@ -16,6 +16,12 @@ not raw file contents or command output.
    main context.
 5. **Parallelize when possible.** If multiple independent pieces of context
    are needed, run scouts in parallel.
+6. **Never commit, push, or open PRs in a single delegation.** Always follow
+   this sequence:
+   1. **Worker** creates/edits files (no commit, no push)
+   2. **Show the diff** to the user using `git_diffstat` + `git_diff`
+   3. **Wait for user approval** before proceeding
+   4. **Worker** commits, pushes, and opens PR only after approval
 
 ## Delegation patterns
 
