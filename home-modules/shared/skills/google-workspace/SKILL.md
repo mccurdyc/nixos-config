@@ -1,5 +1,6 @@
 ---
 name: google-workspace
+description: Interact with Google Workspace services (Calendar, Gmail, Drive, Sheets, Docs, Chat, Tasks, Contacts) via the gws CLI
 user-invocable: true
 ---
 
