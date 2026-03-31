@@ -11,6 +11,8 @@ in
     ../skills/github-mcp/SKILL.md;
   home.file.".claude/skills/google-workspace/SKILL.md".source =
     ../skills/google-workspace/SKILL.md;
+  home.file.".claude/skills/atlassian/SKILL.md".source =
+    ../skills/atlassian/SKILL.md;
   home.file.".claude/skills/commit/SKILL.md".source =
     ../skills/commit/SKILL.md;
   home.file.".claude/skills/review/SKILL.md".source =

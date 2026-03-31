@@ -15,6 +15,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/commit/SKILL.md";
   home.file.".pi/agent/skills/google-workspace/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/google-workspace/SKILL.md";
+  home.file.".pi/agent/skills/atlassian/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/atlassian/SKILL.md";
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =

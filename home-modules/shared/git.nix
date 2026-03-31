@@ -61,6 +61,7 @@
       };
       ignores = [
         ".devenv"
+        ".direnv"
         ".direnv/"
         ".pre-commit-config.yaml"
         "build_"
