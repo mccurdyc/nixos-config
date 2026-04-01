@@ -11,15 +11,18 @@ not raw file contents or command output.
 2. **Never run commands directly.** Delegate to `worker` for any bash, edit,
    or write operations.
 3. **Never implement directly.** Use scout → planner → worker chains.
-4. **Summarize, don't echo.** When a subagent returns, summarize the key
-   findings or outcome in 1-3 sentences. Do not paste raw output into the
-   main context.
+4. **Summarize scout/planner output, but always show diffs for file changes.**
+   When a scout or planner returns, summarize findings in 1-3 sentences.
+   When a worker makes file changes, **always** run `git_diff` (and
+   optionally `git_diffstat`) to show the exact diff to the user. Never
+   summarize or paraphrase file changes — the user must see the real diff.
 5. **Parallelize when possible.** If multiple independent pieces of context
    are needed, run scouts in parallel.
 6. **Never commit, push, or open PRs in a single delegation.** Always follow
    this sequence:
    1. **Worker** creates/edits files (no commit, no push)
-   2. **Show the diff** to the user using `git_diffstat` + `git_diff`
+   2. **Always show the diff** to the user using `git_diffstat` + `git_diff`
+      — this is mandatory for every file change, not just commits
    3. **Wait for user approval** before proceeding
    4. **Worker** commits, pushes, and opens PR only after approval
 
