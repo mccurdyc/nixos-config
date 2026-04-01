@@ -10,7 +10,8 @@
       "defaultProvider": "opencode",
       "defaultModel": "claude-opus-4-6",
       "theme": "mccurdyc-minimal",
-      "hideThinkingBlock": true
+      "hideThinkingBlock": true,
+      "quietStartup": true
     }
   '';
 }

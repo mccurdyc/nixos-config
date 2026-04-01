@@ -14,7 +14,8 @@
       "defaultProvider": "amazon-bedrock",
       "defaultModel": "global.anthropic.claude-opus-4-6-v1",
       "theme": "mccurdyc-minimal",
-      "hideThinkingBlock": true
+      "hideThinkingBlock": true,
+      "quietStartup": true
     }
   '';
 }
