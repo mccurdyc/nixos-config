@@ -75,6 +75,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/git-diffstat.ts";
   home.file.".pi/agent/extensions/git-diff.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/git-diff.ts";
+  home.file.".pi/agent/extensions/collapse-tools.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/collapse-tools.ts";
 
   # Custom theme derived from the neovim colorscheme.
   home.file.".pi/agent/themes/mccurdyc-minimal.json".source =

@@ -786,10 +786,9 @@ export default function (pi: ExtensionAPI) {
 				let text = `${icon} ${theme.fg("toolTitle", theme.bold(r.agent))}${theme.fg("muted", ` (${r.agentSource})`)}`;
 				if (isError && r.stopReason) text += ` ${theme.fg("error", `[${r.stopReason}]`)}`;
 				if (isError && r.errorMessage) text += `\n${theme.fg("error", `Error: ${r.errorMessage}`)}`;
-				else if (displayItems.length === 0) text += `\n${theme.fg("muted", "(no output)")}`;
 				else {
-					text += `\n${renderDisplayItems(displayItems, COLLAPSED_ITEM_COUNT)}`;
-					if (displayItems.length > COLLAPSED_ITEM_COUNT) text += `\n${theme.fg("muted", "(Ctrl+O to expand)")}`;
+					const toolCount = displayItems.filter((i) => i.type === "toolCall").length;
+					if (toolCount > 0) text += theme.fg("muted", ` ${toolCount} tool calls`);
 				}
 				const usageStr = formatUsageStats(r.usage, r.model);
 				if (usageStr) text += `\n${theme.fg("dim", usageStr)}`;
@@ -880,14 +879,12 @@ export default function (pi: ExtensionAPI) {
 					theme.fg("accent", `${successCount}/${details.results.length} steps`);
 				for (const r of details.results) {
 					const rIcon = r.exitCode === 0 ? theme.fg("success", "✓") : theme.fg("error", "✗");
-					const displayItems = getDisplayItems(r.messages);
-					text += `\n\n${theme.fg("muted", `─── Step ${r.step}: `)}${theme.fg("accent", r.agent)} ${rIcon}`;
-					if (displayItems.length === 0) text += `\n${theme.fg("muted", "(no output)")}`;
-					else text += `\n${renderDisplayItems(displayItems, 5)}`;
+					const toolCount = getDisplayItems(r.messages).filter((i) => i.type === "toolCall").length;
+					text += `\n  ${rIcon} ${theme.fg("accent", r.agent)}`;
+					if (toolCount > 0) text += theme.fg("muted", ` ${toolCount} tool calls`);
 				}
 				const usageStr = formatUsageStats(aggregateUsage(details.results));
-				if (usageStr) text += `\n\n${theme.fg("dim", `Total: ${usageStr}`)}`;
-				text += `\n${theme.fg("muted", "(Ctrl+O to expand)")}`;
+				if (usageStr) text += `\n${theme.fg("dim", `Total: ${usageStr}`)}`;
 				return new Text(text, 0, 0);
 			}
 
@@ -966,17 +963,15 @@ export default function (pi: ExtensionAPI) {
 							: r.exitCode === 0
 								? theme.fg("success", "✓")
 								: theme.fg("error", "✗");
-					const displayItems = getDisplayItems(r.messages);
-					text += `\n\n${theme.fg("muted", "─── ")}${theme.fg("accent", r.agent)} ${rIcon}`;
-					if (displayItems.length === 0)
-						text += `\n${theme.fg("muted", r.exitCode === -1 ? "(running...)" : "(no output)")}`;
-					else text += `\n${renderDisplayItems(displayItems, 5)}`;
+					const toolCount = getDisplayItems(r.messages).filter((i) => i.type === "toolCall").length;
+					text += `\n  ${rIcon} ${theme.fg("accent", r.agent)}`;
+					if (r.exitCode === -1) text += theme.fg("muted", " running...");
+					else if (toolCount > 0) text += theme.fg("muted", ` ${toolCount} tool calls`);
 				}
 				if (!isRunning) {
 					const usageStr = formatUsageStats(aggregateUsage(details.results));
-					if (usageStr) text += `\n\n${theme.fg("dim", `Total: ${usageStr}`)}`;
+					if (usageStr) text += `\n${theme.fg("dim", `Total: ${usageStr}`)}`;
 				}
-				if (!expanded) text += `\n${theme.fg("muted", "(Ctrl+O to expand)")}`;
 				return new Text(text, 0, 0);
 			}
 

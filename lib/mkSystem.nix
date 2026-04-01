@@ -15,10 +15,10 @@ let
 in
 
 systemFn {
-  inherit system;
   specialArgs = extendedSpecialArgs;
   modules = darwin-modules ++ nixos-modules ++ [
     {
+      nixpkgs.hostPlatform = system;
       nixpkgs.config = {
         allowUnfree = true;
         allowBroken = true; #ghostty
