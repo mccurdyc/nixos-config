@@ -1,0 +1,10 @@
+{
+  "network": {
+    "allowedDomains": [
+      "github.com",
+      "*.github.com",
+      "api.github.com",
+      "raw.githubusercontent.com"
+    ]
+  }
+}
