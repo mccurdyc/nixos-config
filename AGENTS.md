@@ -74,11 +74,10 @@ deadnix .          # find dead code
 - **`allowBroken = true`**: required for ghostty; not a general policy.
 - **`autoupdate = true` in opencode**: accepted; opencode is installed
   outside Nix via its own updater on hosts that use it.
-- **pi-coding-agent packaged locally**: `@mariozechner/pi-coding-agent` is not
-  in nixpkgs and ships no `package-lock.json`. A lock file is generated via
-  `npm install --package-lock-only --ignore-scripts` against the published
-  tarball and committed to `pkgs/pi-coding-agent/`. The derivation uses
-  `buildNpmPackage`. Config is managed via `home-modules/{shared,nuc,work}/pi.nix`.
+- **pi-coding-agent from llm-agents.nix**: pi is installed via the
+  `numtide/llm-agents.nix` flake input and its overlay (`pkgs.llm-agents.pi`).
+  The flake wraps pi with fd, ripgrep, and `PI_SKIP_VERSION_CHECK=1`.
+  Config is managed via `home-modules/{shared,nuc,work}/pi.nix`.
 - **Shared skills across Claude, pi, and opencode**: Skill definitions live in
   `home-modules/shared/skills/<name>/SKILL.md` as a single source of truth.
   Each tool discovers or references them differently:

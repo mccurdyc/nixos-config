@@ -51,7 +51,7 @@
       fi
       eval "$(aws configure export-credentials --profile bedrock --format env)"
       export AWS_REGION=us-east-2
-      exec ${pi-coding-agent}/bin/pi "$@"
+      exec ${llm-agents.pi}/bin/pi "$@"
     '')
   ]
   ++ lib.optional stdenv.isLinux cntr;
