@@ -221,7 +221,7 @@
         git fetch origin || return 1
 
         if (( existing )); then
-          git -C "$main_root" worktree add "$wt" "origin/$1" || return 1
+          git -C "$main_root" worktree add "$wt" "$1" || return 1
         else
           local base="''${2:-origin/main}"
           git -C "$main_root" worktree add "$wt" -b "$1" "$base" || return 1
