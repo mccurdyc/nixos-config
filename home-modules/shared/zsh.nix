@@ -199,7 +199,7 @@
       # Usage: gw [-e] <name> [base-ref]
       #   gw feature-foo            → new branch feature-foo from origin/main
       #   gw feature-foo origin/v2  → new branch feature-foo from origin/v2
-      #   gw feature-foo -e         → checkout existing origin/feature-foo
+      #   gw -e feature-foo         → checkout existing origin/feature-foo
       function gw() {
         local existing=0
         if [[ "$1" == "-e" ]]; then
@@ -221,7 +221,7 @@
         git fetch origin || return 1
 
         if (( existing )); then
-          git -C "$main_root" worktree add "$wt" -b "$1" --track "origin/$1" || return 1
+          git -C "$main_root" worktree add "$wt" "origin/$1" || return 1
         else
           local base="''${2:-origin/main}"
           git -C "$main_root" worktree add "$wt" -b "$1" "$base" || return 1
