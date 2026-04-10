@@ -46,6 +46,7 @@
       g = ''nvim -c Neogit'';
       gr = ''nvim -c DiffReview'';
       grs = ''nvim -c DiffReviewStaged'';
+      d = ''nvim -c DiffReviewBranch'';
 
       gitfc = ''(){ git log --format = format: "%H" | tail - 1; }'';
       kubectl_pods_containers = ''kubectl get pods -o jsonpath='{ range .items[*]}{"\n"}{.metadata.name}{": \t "}{range .spec.containers[*]}{.name}{", "}{end}{end}' | sort'';
@@ -276,6 +277,36 @@
         fi
 
         git worktree remove "$wt" && echo "Removed worktree: $wt"
+      }
+
+      # Remove ALL git worktrees except the main worktree.
+      # Usage: gw-clean
+      function gw-clean() {
+        local main_root
+        main_root="$(git worktree list --porcelain | awk 'NR==1{print $2}')"
+
+        local worktrees
+        worktrees="$(git worktree list | tail -n +2 | awk '{print $1}')"
+        if [[ -z "$worktrees" ]]; then
+          echo "No extra worktrees to remove."
+          return 0
+        fi
+
+        echo "Will remove the following worktrees:"
+        echo "$worktrees"
+        echo ""
+        read -q "REPLY?Proceed? [y/N] " || { echo ""; echo "Aborted."; return 0; }
+        echo ""
+
+        # If we're inside a worktree being removed, go to main first
+        if [[ "$PWD" != "$main_root"* ]] || echo "$worktrees" | grep -qF "$PWD"; then
+          cd "$main_root"
+        fi
+
+        local wt
+        while IFS= read -r wt; do
+          git worktree remove "$wt" && echo "Removed: $wt" || echo "Failed to remove: $wt"
+        done <<< "$worktrees"
       }
     '';
   };
