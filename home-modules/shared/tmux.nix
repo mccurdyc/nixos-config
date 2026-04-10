@@ -102,6 +102,11 @@
       set-option -g pane-border-lines heavy
       set-option -g pane-border-style "fg=#040405"
       set-option -g pane-active-border-style "fg=#ffa500"
+      set-option -g pane-border-indicators colour
+
+      # dim inactive panes
+      set-window-option -g window-active-style "bg=#040405"
+      set-window-option -g window-style "bg=#0a0a0b"
 
       # message text
       set-option -g message-style "fg=#ffa500,bg=#040405"
