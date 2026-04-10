@@ -133,6 +133,19 @@
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
     '';
     initContent = lib.mkOrder 550 ''
+      # Set tmux pane title to cwd + git branch
+      autoload -Uz add-zsh-hook
+      _set_tmux_pane_title() {
+        [[ -n "$TMUX" ]] || return
+        local branch
+        branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        local title="''${PWD##*/}"
+        [[ -n "$branch" ]] && title="$title ($branch)"
+        tmux select-pane -T "$title"
+      }
+      add-zsh-hook precmd _set_tmux_pane_title
+      add-zsh-hook chpwd _set_tmux_pane_title
+
       zstyle ':completion:*' menu select
 
       # https://vninja.net/2024/12/28/ghostty-workaround-for-missing-or-unsuitable-terminal-xterm-ghostty/
