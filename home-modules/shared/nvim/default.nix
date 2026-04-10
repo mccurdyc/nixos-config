@@ -3,6 +3,8 @@
     enable = true;
     package = pkgs.neovim-unwrapped;
     vimdiffAlias = true;
+    withPython3 = false;
+    withRuby = false;
   };
 
   xdg.configFile.nvim = {
