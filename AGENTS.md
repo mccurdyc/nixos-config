@@ -100,3 +100,8 @@ deadnix .          # find dead code
   Fastly GitHub repositories. If any file being committed contains the
   word "fastly" (case-insensitive), refuse to commit it. Instead,
   prompt the user to review and manually commit if they are certain.
+- **pi AGENTS.md is Nix-managed**: The file at `~/.pi/agent/AGENTS.md` is a
+  Nix store symlink managed by home-manager (via `home-modules/shared/pi.nix`).
+  Always edit the source at `home-modules/shared/AGENTS.md` in this repo,
+  never the deployed path directly. Changes take effect after
+  `home-manager switch` or `darwin-rebuild switch`.

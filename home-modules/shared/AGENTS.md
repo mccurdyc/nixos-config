@@ -41,6 +41,13 @@ not raw file contents or command output.
 - Clarifying questions back to the user
 - Deciding what to delegate next
 
+## Google Workspace URLs
+
+When a user shares a Google Docs, Sheets, Drive, or other Google Workspace URL,
+use the `gws` CLI (from the `google-workspace` skill) to read the content.
+Do NOT use webfetch or ask the user to paste content. Delegate to a scout with
+instructions to use `gws docs documents get`, `gws drive comments list`, etc.
+
 ## Available agents
 
 | Agent     | Use for                              |
