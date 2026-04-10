@@ -27,7 +27,7 @@
     lsof
     ncurses
     nodejs
-    nodePackages_latest.bash-language-server
+    bash-language-server
     ookla-speedtest
     pinfo
     qmk
