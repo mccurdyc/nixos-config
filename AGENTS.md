@@ -95,3 +95,8 @@ deadnix .          # find dead code
   by the service vendor (e.g., Google, Atlassian, GitHub) or by the
   MCP project (`modelcontextprotocol` org). Do not adopt third-party
   community MCP servers.
+- **No Fastly context in this repo**: Never under any circumstances
+  allow Fastly context to be added to this repository. Never reference
+  Fastly GitHub repositories. If any file being committed contains the
+  word "fastly" (case-insensitive), refuse to commit it. Instead,
+  prompt the user to review and manually commit if they are certain.
