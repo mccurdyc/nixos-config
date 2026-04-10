@@ -100,9 +100,11 @@
 
       # pane border
       set-option -g pane-border-lines heavy
-      set-option -g pane-border-style "fg=#040405"
+      set-option -g pane-border-style "fg=#333333"
       set-option -g pane-active-border-style "fg=#ffa500"
       set-option -g pane-border-indicators colour
+      set-option -g pane-border-status top
+      set-option -g pane-border-format "#{?pane_active,#[fg=#ffa500] #{pane_index}: #{pane_title} ,#[fg=#333333] #{pane_index}: #{pane_title} }"
 
       # dim inactive panes
       set-window-option -g window-active-style "bg=#040405"
