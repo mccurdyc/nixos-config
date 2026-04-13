@@ -69,6 +69,7 @@
         ".aider*"
         "tilt.out"
         ".git-worktrees/"
+        ".DS_Store"
       ];
     };
 
