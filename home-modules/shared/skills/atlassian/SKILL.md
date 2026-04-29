@@ -7,44 +7,33 @@ description: >
 user-invocable: false
 ---
 
-## MCP tools (Claude, opencode)
+## URL parsing
 
-If Atlassian MCP tools are available, prefer them:
+When given an Atlassian URL, extract identifiers directly:
 
-### Jira
-- jira_search — JQL queries (e.g. `summary ~ "X" AND issuetype = Epic`)
-- jira_get_issue — fetch a specific issue by key
-- jira_create_issue, jira_update_issue — create/edit issues
-- jira_get_transitions, jira_transition_issue — workflow transitions
-- jira_search_fields, jira_get_field_options — field metadata
+- **Confluence page:** `https://fastly.atlassian.net/wiki/spaces/.../pages/<PAGE_ID>/...` → use page ID with `confluence_get_page`
+- **Jira issue:** `https://fastly.atlassian.net/browse/PROJ-123` → use key with `jira_get_issue`
+
+## MCP tools (preferred)
 
 ### Confluence
-- confluence_search — CQL queries
-- confluence_get_page — fetch a page by ID
+- `confluence_get_page` — fetch a page by ID
+- `confluence_search` — CQL queries (e.g. `title = "Varnishlog"`)
 
-## CLI fallback (pi, or when MCP is unavailable)
+### Jira
+- `jira_get_issue` — fetch by key (e.g. PROJ-123)
+- `jira_search` — JQL queries (e.g. `summary ~ "X" AND issuetype = Epic`)
+- `jira_create_issue`, `jira_update_issue` — create/edit issues
+- `jira_get_transitions`, `jira_transition_issue` — workflow transitions
+
+## CLI fallback (when MCP is unavailable)
 
 Use the `jira` CLI (`jira-cli-go`):
 
 ```sh
-# Search issues
 jira issue list -q "summary ~ 'control cache' AND issuetype = Epic"
-
-# Get a specific issue
 jira issue view PROJ-123
-
-# List epics in a project
 jira epic list --project PROJ
-
-# Create an issue
 jira issue create -t Bug -s "Title" -b "Description" -P PROJ
-
-# Transition an issue
 jira issue move PROJ-123 "In Progress"
-
-# Open in browser
-jira open PROJ-123
 ```
-
-Parse user requests and pick the right approach. For
-"what's the X epic" → search with JQL or `jira issue list -q`.
