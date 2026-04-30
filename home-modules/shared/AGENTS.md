@@ -48,6 +48,20 @@ use the `gws` CLI (from the `google-workspace` skill) to read the content.
 Do NOT use webfetch or ask the user to paste content. Delegate to a scout with
 instructions to use `gws docs documents get`, `gws drive comments list`, etc.
 
+## Git branching
+
+When asked to "create a branch and open a PR" (or similar), always create the
+new branch from `main` — not from the current branch. Fetch and use
+`origin/main` as the base:
+
+```sh
+git fetch origin main
+git checkout -b <branch-name> origin/main
+```
+
+Only branch from the current branch if the user explicitly says "create a
+branch from my current branch" or similar phrasing that makes the intent clear.
+
 ## Available agents
 
 | Agent     | Use for                              |
