@@ -233,7 +233,6 @@ require("lazy").setup({
 			require("nvim-treesitter").setup({
 				auto_install = true,
 				ensure_installed = {
-					"asm",
 					"go",
 					"nix",
 					"lua",
