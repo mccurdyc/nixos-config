@@ -83,8 +83,8 @@
     '';
 
     history = {
-      size = 2000;
-      save = 2000;
+      size = 100000;
+      save = 100000;
       ignoreDups = true;
       ignoreSpace = true;
       # - https://zsh.sourceforge.io/Doc/Release/Options.html#History
@@ -157,7 +157,7 @@
       setopt extendedglob
       setopt interactive_comments
       setopt nobeep
-      setopt HIST_IGNORE_ALL_DUPS
+      setopt HIST_EXPIRE_DUPS_FIRST
       setopt HIST_REDUCE_BLANKS
 
       typeset -A ZSH_HIGHLIGHT_STYLES
