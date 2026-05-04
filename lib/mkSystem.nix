@@ -37,7 +37,14 @@ systemFn {
       home-manager.useUserPackages = true;
 
       home-manager.extraSpecialArgs = extendedSpecialArgs;
-      home-manager.users."${specialArgs.user}" = import home-module;
+      home-manager.users."${specialArgs.user}" = {
+        imports = [ (import home-module) ];
+        home.username = specialArgs.user;
+        home.homeDirectory =
+          if darwin
+          then "/Users/${specialArgs.user}"
+          else "/home/${specialArgs.user}";
+      };
     }
   ];
 }

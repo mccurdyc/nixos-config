@@ -1,10 +1,8 @@
 { pkgs, config, ... }: {
-  programs.neovim = {
-    enable = true;
-    package = pkgs.neovim-unwrapped;
-    vimdiffAlias = true;
-    withPython3 = false;
-    withRuby = false;
+  home.packages = [ pkgs.neovim-unwrapped ];
+
+  home.shellAliases = {
+    vimdiff = "nvim -d";
   };
 
   xdg.configFile.nvim = {
