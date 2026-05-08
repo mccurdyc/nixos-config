@@ -73,10 +73,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/package-lock.json";
   home.file.".pi/agent/extensions/sandbox.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox.json";
-  home.file.".pi/agent/extensions/git-diffstat.ts".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/git-diffstat.ts";
-  home.file.".pi/agent/extensions/git-diff.ts".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/git-diff.ts";
+  home.file.".pi/agent/extensions/browser-diff.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/browser-diff.ts";
   home.file.".pi/agent/extensions/collapse-tools.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/collapse-tools.ts";
 
