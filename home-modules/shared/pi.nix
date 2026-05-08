@@ -17,6 +17,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/google-workspace/SKILL.md";
   home.file.".pi/agent/skills/atlassian/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/atlassian/SKILL.md";
+  home.file.".pi/agent/skills/demo-recording/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/demo-recording/SKILL.md";
   home.file.".pi/agent/skills/git-diff/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
   home.file.".pi/agent/skills/screenshot/SKILL.md".source =

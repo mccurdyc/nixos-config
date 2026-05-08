@@ -1,8 +1,8 @@
 ---
 name: screenshot
 description: >
-  Take a screenshot of a running web application using Playwright and a
-  Zen/Firefox browser. Offers to attach the screenshot as a PR comment.
+  Take a screenshot of a running web application using Playwright and Chromium.
+  Offers to attach the screenshot as a PR comment.
 user-invocable: true
 ---
 
@@ -17,50 +17,72 @@ Take a screenshot of a locally running web application.
    - If no, ask the user how to start it, then run the provided command and
      wait for the server to be ready before proceeding.
 
-2. **Take the screenshot with Playwright.**
-
-   Use `npx playwright screenshot` with the Firefox/Zen channel:
+2. **Install Playwright and Chromium to a temp directory.**
 
    ```bash
-   npx playwright screenshot --browser firefox "<URL>" screenshot.png
+   npm install --prefix /tmp/pw playwright
+   npx --prefix /tmp/pw playwright install chromium
    ```
 
-   If `npx playwright` is not available, install it first:
+3. **Take the screenshot with a Node.js script using the Playwright API.**
+
+   Write a script (e.g., `/tmp/pw/screenshot.mjs`):
+
+   ```javascript
+   import { chromium } from '/tmp/pw/node_modules/playwright/index.mjs';
+
+   const url = process.argv[2] || 'http://localhost:3000';
+   const outputPath = process.argv[3] || 'screenshot.png';
+
+   const browser = await chromium.launch();
+   const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+   await page.goto(url, { waitUntil: 'networkidle' });
+   await page.waitForTimeout(8000); // extra wait for JS-heavy apps (dashboards, SPAs)
+   await page.screenshot({ path: outputPath, fullPage: true });
+   await browser.close();
+   ```
+
+   Run it:
 
    ```bash
-   npm exec -- playwright install firefox
+   node /tmp/pw/screenshot.mjs "<URL>" screenshot.png
    ```
 
-   If the user requests a specific viewport, element, or full-page capture,
-   pass the appropriate Playwright flags (e.g., `--full-page`,
-   `--viewport-size 1280,720`).
+   **Adjust wait time and viewport as needed:**
+   - For simple apps, reduce `waitForTimeout` to 2000–3000ms.
+   - For dashboards (Grafana, etc.), keep 8000ms or more so panels finish
+     fetching data and rendering.
+   - If the user requests a specific viewport, change the `width`/`height`.
+   - If the user wants a specific element, use `page.locator('selector').screenshot()`
+     instead of full-page.
 
-3. **Show the screenshot to the user** using the read tool on the resulting
+4. **Show the screenshot to the user** using the read tool on the resulting
    PNG file so they can verify it.
 
-4. **Ask if the user wants the screenshot added as a comment on the current
+5. **Ask if the user wants the screenshot added as a comment on the current
    pull request.**
-   - If yes, determine the current PR number (e.g., via `gh pr view --json number -q .number`).
-   - Upload the image and comment using the GitHub CLI:
-
+   - If yes, determine the current PR number:
      ```bash
-     gh pr comment <number> --body "![screenshot](screenshot.png)" --attach screenshot.png
+     gh pr view --json number -q .number
      ```
-
-     Or if `--attach` is not supported in the installed `gh` version, upload
-     via the GitHub API:
-
+   - Commit the screenshot to the branch and push, then comment with an image
+     reference:
      ```bash
-     # Upload as a repo asset or embed via issue comment with base64
-     gh api repos/{owner}/{repo}/issues/<number>/comments \
-       -f body="![Screenshot](https://user-images.githubusercontent.com/...)"
+     git add screenshot.png
+     git commit --no-gpg-sign -m "docs: add screenshot"
+     git push
+     gh pr comment <number> --body "## Screenshot\n\n![screenshot](screenshot.png)"
      ```
-
-     Prefer the simplest approach that works: commit the screenshot to the
-     branch and reference it in the comment body if other methods fail.
+   - Alternatively, if the user prefers not to commit the file to the repo,
+     upload it externally and reference the URL in the comment.
 
 ## Notes
 
-- Always use Firefox (Zen) as the browser engine.
+- **Use Chromium, not Firefox.** The Playwright Firefox build has compatibility
+  issues with JS-heavy apps (e.g., Grafana fails to load application files).
+- **Use the programmatic API, not the Playwright CLI.** The API gives control
+  over viewport, wait conditions, selectors, and timeouts.
+- **Always use `waitUntil: 'networkidle'`** plus an additional timeout for
+  apps that render asynchronously after initial load.
+- Install to `/tmp/pw` to avoid polluting the project directory.
 - Clean up screenshot files after they are uploaded unless the user says otherwise.
-- If Playwright is not installed globally, use `npx` to run it ephemerally.
