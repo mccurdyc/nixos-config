@@ -19,6 +19,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/atlassian/SKILL.md";
   home.file.".pi/agent/skills/git-diff/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
+  home.file.".pi/agent/skills/screenshot/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/screenshot/SKILL.md";
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =
