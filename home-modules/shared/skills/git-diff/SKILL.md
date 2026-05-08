@@ -22,6 +22,7 @@ Open a visual, side-by-side diff in the browser using diff2html.
    and any new untracked files.
 
 3. **Ask the user**: "Do you want to commit and push these changes?"
+   Never offer to commit without pushing — commit always means commit AND push.
    - If **yes**: stage all changes (`git add -A`), generate a Conventional
      Commits message (type(scope): summary, <= 72 chars), commit, and push.
      If the commit fails due to a GPG signing error, retry with
