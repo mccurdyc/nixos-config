@@ -1,8 +1,29 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   cfg = "${config.home.homeDirectory}/.config/nixos-config/home-modules/shared";
+
+  # Build @anthropic-ai/sandbox-runtime and its transitive deps via Nix
+  # so the sandbox extension can resolve them via a co-located node_modules
+  # symlink.
+  sandboxDeps = pkgs.buildNpmPackage {
+    pname = "pi-extension-sandbox-deps";
+    version = "1.0.0";
+    src = ./pi/extensions/sandbox;
+    npmDepsHash = "sha256-C5OQ8v0jEGJPyXkMmtjV3IazuySGJzwM9rTilhgY0n8=";
+    dontNpmBuild = true;
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -r node_modules $out/
+      runHook postInstall
+    '';
+  };
 in
 {
+  # node_modules symlink so the sandbox extension's index.ts can resolve
+  # @anthropic-ai/sandbox-runtime via normal Node.js module resolution.
+  # Node uses the symlink path (not the Nix store realpath) for lookups.
+
   # https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent
   # pi is installed via Nix (see pkgs/pi-coding-agent/)
   # Config dir: ~/.pi/agent/
@@ -68,13 +89,12 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/custom-header.ts";
   home.file.".pi/agent/extensions/custom-footer.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/custom-footer.ts";
-  # Sandbox requires `npm install` in ~/.pi/agent/extensions/sandbox/
+  # Sandbox extension: index.ts is symlinked for live editing; npm deps
+  # are resolved via a co-located node_modules symlink.
   home.file.".pi/agent/extensions/sandbox/index.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/index.ts";
-  home.file.".pi/agent/extensions/sandbox/package.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/package.json";
-  home.file.".pi/agent/extensions/sandbox/package-lock.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/package-lock.json";
+  home.file.".pi/agent/extensions/sandbox/node_modules".source =
+    config.lib.file.mkOutOfStoreSymlink "${sandboxDeps}/node_modules";
   home.file.".pi/agent/extensions/sandbox.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox.json";
   home.file.".pi/agent/extensions/browser-diff.ts".source =
