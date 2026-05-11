@@ -14,8 +14,11 @@ not raw file contents or command output.
 4. **Summarize scout/planner output, but always show diffs for file changes.**
    When a scout or planner returns, summarize findings in 1-3 sentences.
    When a worker makes file changes, **always** run `browser_diff` to
-   open the diff in the browser for the user. Never summarize or
-   paraphrase file changes — the user must see the real diff.
+   open the diff in the browser for the user. **This applies equally when
+   making edits directly** (quick fixes). `browser_diff` MUST follow every
+   file edit — no exceptions. Never summarize or paraphrase file changes —
+   the user must see the real diff. Never commit without first showing the
+   diff and getting user approval.
 5. **Parallelize when possible.** If multiple independent pieces of context
    are needed, run scouts in parallel.
 6. **Never commit, push, or open PRs in a single delegation.** Always follow
