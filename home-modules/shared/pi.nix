@@ -93,8 +93,10 @@ in
   # are resolved via a co-located node_modules symlink.
   home.file.".pi/agent/extensions/sandbox/index.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox/index.ts";
-  home.file.".pi/agent/extensions/sandbox/node_modules".source =
-    config.lib.file.mkOutOfStoreSymlink "${sandboxDeps}/node_modules";
+  home.file.".pi/agent/extensions/sandbox/node_modules" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${sandboxDeps}/node_modules";
+    force = true;
+  };
   home.file.".pi/agent/extensions/sandbox.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox.json";
   home.file.".pi/agent/extensions/browser-diff.ts".source =
