@@ -81,3 +81,16 @@ branch from my current branch" or similar phrasing that makes the intent clear.
 | `/implement <task>`      | scout → planner → worker    |
 | `/scout-and-plan <task>` | scout → planner             |
 | `/implement-and-review`  | worker → reviewer → worker  |
+| `/review`                | see below                   |
+
+### `/review` workflow
+
+When the user invokes `/review`:
+
+1. **Always ask which PR** — prompt the user for a PR number and wait.
+2. If they provide a number, run `gh pr checkout <number>` to check out the
+   branch, then use `gh pr diff <number>` to get the diff for review.
+3. If they explicitly say "no PR" or "local", only review if there is a local
+   diff (staged + unstaged). If there is no local diff, tell the user there is
+   nothing to review.
+4. Never assume a PR number or review local changes without being told to.
