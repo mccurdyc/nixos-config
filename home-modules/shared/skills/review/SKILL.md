@@ -13,6 +13,17 @@ You are in code review mode. Focus on:
 - Performance implications
 - Security considerations
 
+## Workflow
+
+1. Run `git diff` (unstaged) and `git diff --staged` (staged) to check for
+   local changes.
+2. If both diffs are empty, ALWAYS immediately ask the user: "Which PR would
+   you like me to review?" — do not assume a PR number, do not attempt to
+   find one automatically, and do not proceed until the user responds.
+3. If the user provides a PR number, use `gh pr diff <number>` to fetch the
+   diff for review.
+4. If there are local changes, review those.
+
 ## Prohibited actions
 
 Do NOT call any of the following tools or commands under any
