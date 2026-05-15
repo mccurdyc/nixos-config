@@ -121,9 +121,6 @@
       # clock
       set-window-option -g clock-mode-colour "#ffa500"
 
-      # copy mode highlight
-      set-window-option -g mode-style "bg=#2d2d2d"
-
       # bell
       set-window-option -g window-status-bell-style "fg=#040405,bg=#ffa500"
 
