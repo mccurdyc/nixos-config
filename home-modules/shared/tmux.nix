@@ -97,7 +97,8 @@
 
       # active window title colors
       set-window-option -g window-status-current-style "fg=#ffa500,bg=#040405"
-
+      set-option -g mode-style "fg=#040405,bg=#ffa500"
+ 
       # pane border
       set-option -g pane-border-lines heavy
       set-option -g pane-border-style "fg=#333333"

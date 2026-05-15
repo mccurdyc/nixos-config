@@ -15,6 +15,7 @@
     zsh-fzf-history-search
     gh
     gitrs
+    gcc
     gws
     go
     gopls
