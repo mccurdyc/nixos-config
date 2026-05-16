@@ -4,7 +4,7 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.statix
     pkgs.deadnix
-    pkgs.nixpkgs-fmt
+    pkgs.nixfmt
     pkgs.google-cloud-sdk
     pkgs.lua54Packages.luacheck
     pkgs.nil

@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   programs = {
     git = {
       enable = true;
@@ -16,13 +17,20 @@
           ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
           cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
           m = "mergetool";
+          d = "!nvim -c DiffReviewBranch";
           review = "!nvim -c DiffReview";
           reviews = "!nvim -c DiffReviewStaged";
         };
 
-        help = { autoCorrect = 5; }; # Run guessed command after 500ms if there is only one reasonable guess
-        init = { defaultBranch = "main"; };
-        push = { autoSetupRemote = true; };
+        help = {
+          autoCorrect = 5;
+        }; # Run guessed command after 500ms if there is only one reasonable guess
+        init = {
+          defaultBranch = "main";
+        };
+        push = {
+          autoSetupRemote = true;
+        };
         core = {
           excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
         };
@@ -32,19 +40,15 @@
             insteadOf = "https://github.com/";
           };
         };
+        merge = {
+          tool = "diffview";
+        };
         mergetool = {
           prompt = false;
           keepBackup = false;
         };
-        merge = {
-          tool = "nvimmerge";
-          conflictStyle = "diff3";
-        };
-        mergetool."nvimmerge" = {
-          # http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
-          name = "nvimmerge";
-          trustExitCode = true;
-          cmd = "nvim -f -c Gdiffsplit! $MERGED";
+        mergetool."diffview" = {
+          cmd = "nvim -n -c \"DiffviewOpen\" \"$MERGED\"";
         };
         diff = {
           tool = "nvimdiff";

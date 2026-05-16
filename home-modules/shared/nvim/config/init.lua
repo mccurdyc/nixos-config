@@ -1181,9 +1181,10 @@ require("lazy").setup({
 			local actions = require("diffview.actions")
 			require("diffview").setup({
 				enhanced_diff_hl = true,
+				use_icons = false,
 				view = {
 					default = { layout = "diff2_vertical" },
-					merge_tool = { layout = "diff3_vertical" },
+					merge_tool = { layout = "diff3_mixed" },
 				},
 				file_panel = {
 					listing_style = "list",
