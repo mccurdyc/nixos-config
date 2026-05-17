@@ -1371,6 +1371,7 @@ require("lazy").setup({
 				"lua_ls", -- lua-language-server
 				"tflint",
 				"nil_ls",
+				"clangd",
 			}
 
 			-- NOTE: Call this base setup BEFORE per-language - https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
