@@ -17,7 +17,7 @@
           ld = "log --all --graph --abbrev-commit --decorate --pretty=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\"";
           cleanbranches = "!f() { git branch | grep -v 'main' | xargs git branch -D; }; f";
           m = "mergetool";
-          d = "!nvim -c DiffReviewBranch";
+          d = "!nvim -c DiffviewOpen";
           review = "!nvim -c DiffReview";
           reviews = "!nvim -c DiffReviewStaged";
         };
