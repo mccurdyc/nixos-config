@@ -38,6 +38,10 @@
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';
       whatsmyip = "curl -s https://ipinfo.io/ip";
+      # nix search nixpkgs <term> is also an option but doesn't
+      # support filtering where only the name attribute matches
+      # and not the description.
+      ns = "(){ nix-env -qaP \".*$1.*\" -f '<nixpkgs>' 2>/dev/null ;}";
       curls = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
       rmc = ''(){ git rm -rf "$@" && git commit -s -m "rm -rf $*"; }'';
@@ -159,6 +163,14 @@
       setopt nobeep
       setopt HIST_EXPIRE_DUPS_FIRST
       setopt HIST_REDUCE_BLANKS
+
+      # Force redraw after bracketed paste — fixes invisible pasted
+      # text in vi mode on some terminals (e.g., Blink.sh).
+      function _fix-paste-redraw() {
+        zle bracketed-paste "$@"
+        zle -R
+      }
+      zle -N bracketed-paste _fix-paste-redraw
 
       typeset -A ZSH_HIGHLIGHT_STYLES
       ZSH_HIGHLIGHT_STYLES[comment]='fg=251' # grey
