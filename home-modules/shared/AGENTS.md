@@ -65,6 +65,13 @@ git checkout -b <branch-name> origin/main
 Only branch from the current branch if the user explicitly says "create a
 branch from my current branch" or similar phrasing that makes the intent clear.
 
+After the PR is opened, check out the previous branch so the user is back
+where they started:
+
+```sh
+git checkout -
+```
+
 ## Available agents
 
 | Agent     | Use for                              |
