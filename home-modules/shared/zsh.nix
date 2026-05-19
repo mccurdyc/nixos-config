@@ -164,15 +164,6 @@
       setopt HIST_EXPIRE_DUPS_FIRST
       setopt HIST_REDUCE_BLANKS
 
-      # Force redraw after bracketed paste — fixes invisible pasted
-      # text in vi mode on some terminals (e.g., Blink.sh).
-      # Save the original widget so the wrapper doesn't recurse.
-      zle -N _orig-bracketed-paste bracketed-paste
-      function _fix-paste-redraw() {
-        zle _orig-bracketed-paste "$@"
-        zle -R
-      }
-      zle -N bracketed-paste _fix-paste-redraw
 
       typeset -A ZSH_HIGHLIGHT_STYLES
       ZSH_HIGHLIGHT_STYLES[comment]='fg=251' # grey
