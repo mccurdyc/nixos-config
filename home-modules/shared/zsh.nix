@@ -166,8 +166,10 @@
 
       # Force redraw after bracketed paste — fixes invisible pasted
       # text in vi mode on some terminals (e.g., Blink.sh).
+      # Save the original widget so the wrapper doesn't recurse.
+      zle -N _orig-bracketed-paste bracketed-paste
       function _fix-paste-redraw() {
-        zle bracketed-paste "$@"
+        zle _orig-bracketed-paste "$@"
         zle -R
       }
       zle -N bracketed-paste _fix-paste-redraw
