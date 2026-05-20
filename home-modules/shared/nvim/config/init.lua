@@ -1574,6 +1574,29 @@ require("lazy").setup({
 			map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
 		end,
 	},
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		version = false,
+		build = "make",
+		opts = {
+			provider = "pi",
+			acp_providers = {
+				["pi"] = {
+					command = "pi-acp",
+				},
+			},
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			{
+				"MeanderingProgrammer/render-markdown.nvim",
+				opts = { file_types = { "markdown", "Avante" } },
+				ft = { "markdown", "Avante" },
+			},
+		},
+	},
 }, {
 	ui = {
 		backdrop = 100, -- or 100 for solid background

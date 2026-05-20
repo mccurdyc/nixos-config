@@ -34,6 +34,7 @@
       zn = "(){ (zellij delete-session $1 || true) && zellij --session $1 options --default-cwd $(zoxide query $1) --default-layout ~/.config/zellij/layouts/main.kdl; }";
       zl = "(){ zellij list-sessions; }";
       za = "() {zellij attach $1; }";
+      avante = ''nvim -c "lua vim.defer_fn(function()require('avante.api').zen_mode()end, 100)"'';
       grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
       dudir = "(){ sudo du -cha --max-depth=1 --exclude=/{proc,sys,dev,run} --threshold=1 $1 | sort -hr ;}";
       tmpd = ''(){ cd "$(mktemp -d -t "tmp.XXXXXXXXXX")" ;}'';

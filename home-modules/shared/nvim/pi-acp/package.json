@@ -1,0 +1,8 @@
+{
+  "name": "pi-acp-wrapper",
+  "version": "0.0.27",
+  "private": true,
+  "dependencies": {
+    "pi-acp": "0.0.27"
+  }
+}
