@@ -113,6 +113,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/browser-diff.ts";
   home.file.".pi/agent/extensions/collapse-tools.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/collapse-tools.ts";
+  home.file.".pi/agent/extensions/safe-mode.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/safe-mode.ts";
 
   # Custom theme derived from the neovim colorscheme.
   home.file.".pi/agent/themes/mccurdyc-minimal.json".source =
