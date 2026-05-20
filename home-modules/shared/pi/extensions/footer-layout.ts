@@ -46,14 +46,97 @@
 
 import type { AssistantMessage } from "@mariozechner/pi-ai";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { getAgentDir } from "@mariozechner/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
 const CONFIG_FILE = join(homedir(), ".pi", "footer-layout.json");
+
+// --- Daily usage tracking -------------------------------------------------
+
+interface UsageStats {
+	input: number;
+	output: number;
+	cost: number;
+}
+
+/**
+ * Scan all session files created today across all projects.
+ * Parse each JSONL file looking for assistant message entries with usage.
+ */
+function getDailyUsageFromDisk(): UsageStats {
+	const sessionsDir = join(getAgentDir(), "sessions");
+	const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+	let input = 0,
+		output = 0,
+		cost = 0;
+
+	let projectDirs: string[];
+	try {
+		projectDirs = readdirSync(sessionsDir);
+	} catch {
+		return { input, output, cost };
+	}
+
+	for (const projectDir of projectDirs) {
+		const projectPath = join(sessionsDir, projectDir);
+		let files: string[];
+		try {
+			files = readdirSync(projectPath);
+		} catch {
+			continue;
+		}
+
+		for (const file of files) {
+			if (!file.endsWith(".jsonl")) continue;
+			// File format: YYYY-MM-DDTHH-MM-SS-mmmZ_uuid.jsonl
+			if (!file.startsWith(today)) continue;
+
+			try {
+				const content = readFileSync(join(projectPath, file), "utf-8");
+				for (const line of content.split("\n")) {
+					if (!line.trim()) continue;
+					try {
+						const entry = JSON.parse(line);
+						if (
+							entry.type === "message" &&
+							entry.message?.role === "assistant" &&
+							entry.message?.usage
+						) {
+							input += entry.message.usage.input || 0;
+							output += entry.message.usage.output || 0;
+							cost += entry.message.usage.cost?.total || 0;
+						}
+					} catch {
+						// skip malformed lines
+					}
+				}
+			} catch {
+				// skip unreadable files
+			}
+		}
+	}
+
+	return { input, output, cost };
+}
+
+function computeSessionUsageFromEntries(entries: unknown[]): UsageStats {
+	let input = 0, output = 0, cost = 0;
+	for (const entry of entries as Array<
+		{ type: string; message?: { role: string; usage: AssistantMessage["usage"] } }
+	>) {
+		if (entry.type === "message" && entry.message?.role === "assistant" && entry.message.usage) {
+			input += entry.message.usage.input;
+			output += entry.message.usage.output;
+			cost += entry.message.usage.cost.total;
+		}
+	}
+	return { input, output, cost };
+}
 
 // --- Drift detection ------------------------------------------------------
 //
@@ -239,6 +322,12 @@ export default function (pi: ExtensionAPI) {
 	// Warn about pi drift only once per session.
 	let driftWarned = false;
 
+	// Daily usage baseline from other sessions (computed once at start).
+	let dailyBaseline: UsageStats = { input: 0, output: 0, cost: 0 };
+	// Current session usage at baseline time so we can subtract it from the
+	// baseline (the disk scan includes the current session).
+	let sessionAtBaseline: UsageStats = { input: 0, output: 0, cost: 0 };
+
 	function requestRender(): void {
 		if (tuiRef) tuiRef.requestRender();
 	}
@@ -397,6 +486,16 @@ export default function (pi: ExtensionAPI) {
 			statsLeft = truncateToWidth(statsLeft, width, "...");
 			statsLeftWidth = visibleWidth(statsLeft);
 		}
+
+		// Daily usage = baseline - sessionAtBaseline + currentSession
+		const daily: UsageStats = {
+			input: dailyBaseline.input - sessionAtBaseline.input + totalInput,
+			output: dailyBaseline.output - sessionAtBaseline.output + totalOutput,
+			cost: dailyBaseline.cost - sessionAtBaseline.cost + totalCost,
+		};
+		const dailySuffix = ` │ daily: ↑${formatTokens(daily.input)} ↓${formatTokens(daily.output)} $${daily.cost.toFixed(3)}`;
+		const dailySuffixWidth = visibleWidth(dailySuffix);
+
 		const modelName = model?.id || "no-model";
 		// Append thinking-level indicator for reasoning-capable models, same as
 		// pi's default footer: "<model> • thinking off" or "<model> • <level>".
@@ -412,6 +511,13 @@ export default function (pi: ExtensionAPI) {
 			if (statsLeftWidth + 2 + visibleWidth(withProv) <= width) rightSide = withProv;
 		}
 		const rightWidth = visibleWidth(rightSide);
+
+		// Try adding daily suffix if it fits
+		if (statsLeftWidth + dailySuffixWidth + 2 + rightWidth <= width) {
+			statsLeft = statsLeft + dailySuffix;
+			statsLeftWidth = statsLeftWidth + dailySuffixWidth;
+		}
+
 		let statsLine: string;
 		if (statsLeftWidth + 2 + rightWidth <= width) {
 			statsLine = statsLeft + " ".repeat(width - statsLeftWidth - rightWidth) + rightSide;
@@ -477,6 +583,10 @@ export default function (pi: ExtensionAPI) {
 	}
 
 	pi.on("session_start", async (_event, ctx) => {
+		// Compute daily baseline from disk (includes current session's persisted state).
+		dailyBaseline = getDailyUsageFromDisk();
+		sessionAtBaseline = computeSessionUsageFromEntries(ctx.sessionManager.getEntries());
+
 		if (enabled) install(ctx as Parameters<typeof install>[0]);
 		checkDrift(ctx);
 	});

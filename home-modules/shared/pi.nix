@@ -97,8 +97,6 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/status-line.ts";
   home.file.".pi/agent/extensions/custom-header.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/custom-header.ts";
-  home.file.".pi/agent/extensions/custom-footer.ts".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/custom-footer.ts";
   home.file.".pi/agent/extensions/footer-layout.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/footer-layout.ts";
   # Sandbox extension: index.ts is symlinked for live editing; npm deps
