@@ -181,6 +181,8 @@ export function widgetIconForState(state: WorkerLifecycleState, frame: string): 
 			return { icon: "⊘", iconColor: "error", nameColor: "muted" };
 		case "exited-no-result":
 			return { icon: "✗", iconColor: "error", nameColor: "muted" };
+		case "awaiting-confirmation":
+			return { icon: "⚠️", iconColor: "warning", nameColor: "text" };
 	}
 }
 

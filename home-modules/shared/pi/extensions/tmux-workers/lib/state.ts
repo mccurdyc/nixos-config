@@ -26,7 +26,7 @@ import * as path from "node:path";
  *                        status being written; something killed the
  *                        window out from under the launcher.
  */
-export type WorkerLifecycleState = "running" | "done" | "exited-no-result" | "dead" | "hung";
+export type WorkerLifecycleState = "running" | "done" | "exited-no-result" | "dead" | "hung" | "awaiting-confirmation";
 
 /** Heartbeat is considered stale after this age. Launcher touches every 2s. */
 export const HEARTBEAT_STALE_MS = 10_000;
@@ -152,12 +152,20 @@ export function deriveWorkerState(
 		if (heartbeatAgeMs !== null && heartbeatAgeMs > HEARTBEAT_STALE_MS) {
 			return { state: "hung", heartbeatAgeMs };
 		}
+		const awaitingFile = path.join(workerDir, "awaiting-confirmation");
+		if (fs.existsSync(awaitingFile)) {
+			return { state: "awaiting-confirmation", heartbeatAgeMs };
+		}
 		return { state: "running", heartbeatAgeMs };
 	}
 
 	// No status.json at all — very fresh worker (launcher hasn't written it
 	// yet) or something died before the launcher ran.
 	if (!windowAlive) return { state: "dead", heartbeatAgeMs };
+	const awaitingFile2 = path.join(workerDir, "awaiting-confirmation");
+	if (fs.existsSync(awaitingFile2)) {
+		return { state: "awaiting-confirmation", heartbeatAgeMs };
+	}
 	return { state: "running", heartbeatAgeMs };
 }
 
@@ -174,5 +182,7 @@ export function formatState(state: WorkerLifecycleState): string {
 			return "⊘ dead";
 		case "exited-no-result":
 			return "✗ exited (no result)";
+		case "awaiting-confirmation":
+			return "⚠️ awaiting confirmation";
 	}
 }

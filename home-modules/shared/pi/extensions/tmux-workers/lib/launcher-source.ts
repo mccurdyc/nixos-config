@@ -60,7 +60,7 @@ const args = [];
 if (model) args.push("--model", model);
 if (thinking) args.push("--thinking", thinking);
 args.push(task);
-const child = spawn("pi", args, { stdio: "inherit", env: { ...process.env, PI_TMUX_WORKER: "1" } });
+const child = spawn("pi", args, { stdio: "inherit", env: { ...process.env, PI_TMUX_WORKER: "1", PI_TMUX_WORKER_DIR: workerDir } });
 const childPid = child.pid;
 
 writeStatus({ state: "running", pid: process.pid, childPid, startedAt });

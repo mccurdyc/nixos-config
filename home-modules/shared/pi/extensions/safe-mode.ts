@@ -21,7 +21,7 @@
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 
@@ -351,10 +351,20 @@ export default function (pi: ExtensionAPI) {
 			return { block: true, reason: `Safe mode blocked: ${reason} (no UI to confirm)` };
 		}
 
+		const workerDir = process.env["PI_TMUX_WORKER_DIR"];
+		const sentinelFile = workerDir ? join(workerDir, "awaiting-confirmation") : null;
+		if (sentinelFile) {
+			try { writeFileSync(sentinelFile, ""); } catch {}
+		}
+
 		const choice = await ctx.ui.select(
 			`Safe mode — ${reason}\n\n  ${detail}\n\nAllow?`,
 			["No, block it", "Yes, allow once"],
 		);
+
+		if (sentinelFile) {
+			try { unlinkSync(sentinelFile); } catch {}
+		}
 
 		if (choice !== "Yes, allow once") {
 			ctx.ui.notify(`Blocked by safe mode (${reason})`, "warning");
