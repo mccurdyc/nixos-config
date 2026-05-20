@@ -11,6 +11,10 @@ in
     source = config.lib.file.mkOutOfStoreSymlink "${cfg}/claude/config/PROMPT.md";
     force = true;
   };
+  home.file.".claude/settings.json" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${cfg}/claude/config/settings.json";
+    force = true;
+  };
   home.file.".claude/skills/github-mcp/SKILL.md" = {
     source = ../skills/github-mcp/SKILL.md;
     force = true;
