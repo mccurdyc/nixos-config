@@ -109,6 +109,17 @@ in
   };
   home.file.".pi/agent/extensions/sandbox.json".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/sandbox.json";
+  # tmux-workers extension
+  home.file.".pi/agent/extensions/tmux-workers/index.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/index.ts";
+  home.file.".pi/agent/extensions/tmux-workers/lib/config.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/config.ts";
+  home.file.".pi/agent/extensions/tmux-workers/lib/launcher-source.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/launcher-source.ts";
+  home.file.".pi/agent/extensions/tmux-workers/lib/state.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/state.ts";
+  home.file.".pi/agent/extensions/tmux-workers/lib/task.ts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/task.ts";
   home.file.".pi/agent/extensions/browser-diff.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/browser-diff.ts";
   home.file.".pi/agent/extensions/collapse-tools.ts".source =

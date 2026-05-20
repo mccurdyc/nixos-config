@@ -28,6 +28,12 @@ not raw file contents or command output.
       — this is mandatory for every file change, not just commits
    3. **Wait for user approval** before proceeding
    4. **Worker** commits, pushes, and opens PR only after approval
+7. **Never install pi packages/extensions manually.** Do not use `npm install`,
+   `pi install`, or clone repos into `~/.pi/packages/`. All pi extensions,
+   packages, themes, and skills must be managed through Nix (home-manager
+   `home.file` entries in `home-modules/shared/pi.nix`). Source files go in
+   `home-modules/shared/pi/` and are symlinked to `~/.pi/agent/` via
+   `mkOutOfStoreSymlink`.
 
 ## Delegation patterns
 
