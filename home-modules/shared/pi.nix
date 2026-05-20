@@ -44,8 +44,12 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
   home.file.".pi/agent/skills/diff-here/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/diff-here/SKILL.md";
+  home.file.".pi/agent/skills/interactive-questionnaire/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/interactive-questionnaire/SKILL.md";
   home.file.".pi/agent/skills/screenshot/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/screenshot/SKILL.md";
+  home.file.".pi/agent/skills/web-search/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/web-search/SKILL.md";
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =
