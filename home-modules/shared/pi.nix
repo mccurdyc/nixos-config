@@ -50,6 +50,10 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/screenshot/SKILL.md";
   home.file.".pi/agent/skills/web-search/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/web-search/SKILL.md";
+  home.file.".pi/agent/skills/headless-web/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/headless-web/SKILL.md";
+  home.file.".pi/agent/skills/headless-web/scripts".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/headless-web/scripts";
 
   # Prompt templates: type /review in pi to expand.
   home.file.".pi/agent/prompts/review.md".source =
