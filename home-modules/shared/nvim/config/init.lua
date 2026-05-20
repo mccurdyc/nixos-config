@@ -1256,8 +1256,8 @@ require("lazy").setup({
 			-- :DiffReviewBranch for reviewing changes against a branch
 			vim.api.nvim_create_user_command("DiffReviewBranch", function(opts)
 				local branch = opts.args ~= "" and opts.args or "main"
-				vim.cmd("DiffviewOpen " .. branch)
-			end, { nargs = "?", desc = "Review changes against branch (default: main)" })
+				vim.cmd("DiffviewOpen " .. branch .. "...HEAD")
+			end, { nargs = "?", desc = "Review committed changes against branch (default: main)" })
 		end,
 	},
 	{
