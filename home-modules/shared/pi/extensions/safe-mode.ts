@@ -100,6 +100,13 @@ function checkPathDanger(path: string, cwd: string): string | null {
 	// Writing outside the project directory
 	const absolute = isAbsolute(path) ? resolve(path) : resolve(cwd, path);
 	const projectRoot = resolve(cwd);
+
+	// Allow writes to the tmux-workers directory (worker result files, etc.)
+	const workersDir = join(homedir(), ".pi", "tmux-workers");
+	if (absolute.startsWith(workersDir + "/") || absolute === workersDir) {
+		return null;
+	}
+
 	if (!absolute.startsWith(projectRoot + "/") && absolute !== projectRoot) {
 		return `outside project directory (${absolute})`;
 	}
