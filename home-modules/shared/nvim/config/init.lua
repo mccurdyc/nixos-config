@@ -107,6 +107,7 @@ opt("hlsearch", false)
 opt("splitbelow", true)
 opt("signcolumn", "yes")
 opt("splitright", true)
+opt("equalalways", true)
 opt("showmode", false)
 opt("cursorline", true)
 opt("modifiable", true)
@@ -190,6 +191,8 @@ map(
 	":lua require('fzf-lua').git_files({git_command={'git','diff','--name-only','origin/main'}})<CR>",
 	opts
 )
+
+-- Window resize: use a count prefix to change step size, e.g., 20<C-w>+ (height) or 20<C-w>> (width)
 
 -- Source the colors configuration
 local mccurdyc_colors = require("colors")

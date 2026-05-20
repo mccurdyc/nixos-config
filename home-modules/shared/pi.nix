@@ -42,6 +42,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/demo-recording/SKILL.md";
   home.file.".pi/agent/skills/git-diff/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
+  home.file.".pi/agent/skills/diff-here/SKILL.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/diff-here/SKILL.md";
   home.file.".pi/agent/skills/screenshot/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/screenshot/SKILL.md";
 
