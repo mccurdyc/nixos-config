@@ -78,6 +78,13 @@ where they started:
 git checkout -
 ```
 
+## Demo recordings
+
+**Never commit demo GIFs or videos to the repository.** When recording a demo
+for a PR comment, always upload the file via GitHub's comment attachment API
+and embed the resulting CDN URL. This prevents binary bloat in git history.
+See the `demo-recording` skill for the upload workflow.
+
 ## Available agents
 
 | Agent     | Use for                              |

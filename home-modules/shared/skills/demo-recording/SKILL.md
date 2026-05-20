@@ -126,15 +126,31 @@ Record a demo of a running application or terminal session.
      ```bash
      gh pr view --json number -q .number
      ```
-   - Commit the GIF to the branch and push, then comment with an image reference:
+   - **Never commit the GIF to the repository.** Always upload it as a GitHub
+     comment attachment and reference the resulting URL:
      ```bash
-     git add demo.gif
-     git commit --no-gpg-sign -m "docs: add demo recording"
-     git push
-     gh pr comment <number> --body "## Demo\n\n![demo](demo.gif)"
+     # Upload the GIF as a GitHub comment attachment (returns markdown image URL)
+     # GitHub renders attached images hosted on user-attachments CDN
+     gh pr comment <number> --body "## Demo" --edit-last 2>/dev/null || true
+
+     # Use gh api to upload the file as a comment attachment:
+     REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+     ASSET_URL=$(curl -sS \
+       -H "Authorization: token $(gh auth token)" \
+       -H "Accept: application/json" \
+       -F "file=@demo.gif;type=image/gif" \
+       "https://uploads.github.com/repos/${REPO}/issues/${PR_NUMBER}/comments/assets" \
+       | jq -r '.[0].href // .[0].url')
+
+     # If the upload endpoint above fails, fall back to creating a gist:
+     # ASSET_URL=$(gh gist create demo.gif --public | tail -1)/raw/demo.gif
+
+     gh pr comment <number> --body "## Demo
+
+     ![demo](${ASSET_URL})"
      ```
-   - Alternatively, if the user prefers not to commit the file to the repo,
-     upload it externally and reference the URL in the comment.
+   - **Do NOT** use `git add`, `git commit`, or `git push` for demo GIFs.
+     They bloat the repository and are not source code.
 
 ## Notes
 

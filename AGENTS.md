@@ -91,6 +91,10 @@ deadnix .          # find dead code
   Frontmatter uses the Claude schema (`disable-model-invocation`,
   `allowed-tools`). Opencode and pi ignore unknown fields harmlessly.
   Do not create per-tool copies of skill files.
+- **Demo GIFs never committed**: Demo recordings (GIFs, videos) must never
+  be committed to the repository. Always upload via GitHub's comment
+  attachment API and embed the resulting CDN URL in the PR comment.
+  This prevents binary bloat in git history.
 - **First-party MCP servers only**: only use MCP servers published
   by the service vendor (e.g., Google, Atlassian, GitHub) or by the
   MCP project (`modelcontextprotocol` org). Do not adopt third-party
