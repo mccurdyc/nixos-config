@@ -1181,6 +1181,16 @@ require("lazy").setup({
 		"sindrets/diffview.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
+			-- Built-in conflict resolution keybindings (from diffview defaults):
+			--   <leader>cO  Resolve ALL conflicts in file → ours (HEAD/upstream during rebase)
+			--   <leader>cT  Resolve ALL conflicts in file → theirs (your branch during rebase)
+			--   <leader>cB  Resolve ALL conflicts in file → base
+			--   <leader>co  Resolve conflict under cursor → ours
+			--   <leader>ct  Resolve conflict under cursor → theirs
+			--   <leader>cb  Resolve conflict under cursor → base
+			--   dX          Delete all conflict markers in file
+			--   dx          Delete conflict under cursor
+			--   [x / ]x     Navigate between conflicts
 			local actions = require("diffview.actions")
 			require("diffview").setup({
 				enhanced_diff_hl = true,
