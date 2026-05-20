@@ -9,13 +9,13 @@ import * as fs from "node:fs";
 import { homedir } from "node:os";
 import * as path from "node:path";
 import type { Api, Model } from "@mariozechner/pi-ai";
-import { supportsXhigh } from "@mariozechner/pi-ai";
+
 
 export const CONFIG_PATH = path.join(homedir(), ".pi", "tmux-workers.yaml");
 
 // Thinking levels accepted by `pi --thinking`. `off` is pi-CLI-only (pi-ai's
 // ThinkingLevel type excludes it). `xhigh` is only supported by a subset of
-// models — guarded via `supportsXhigh(model)` at wizard time.
+// models — guarded via thinkingLevelMap check at wizard time.
 export const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"] as const;
 export type ThinkingLevel = typeof THINKING_LEVELS[number];
 export const DEFAULT_THINKING_LEVEL: ThinkingLevel = "medium";
@@ -200,7 +200,7 @@ export function applyCapabilityCheck(
 			warning: `Model "${resolved.model}" does not support thinking; --thinking dropped.`,
 		};
 	}
-	if (resolved.thinking === "xhigh" && !supportsXhigh(model)) {
+	if (resolved.thinking === "xhigh" && !(model.thinkingLevelMap != null && "xhigh" in model.thinkingLevelMap && model.thinkingLevelMap["xhigh"] != null)) {
 		return {
 			model: resolved.model,
 			thinking: "high",

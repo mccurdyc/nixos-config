@@ -21,7 +21,7 @@ import { execFileSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type { Api, Model } from "@mariozechner/pi-ai";
-import { supportsXhigh } from "@mariozechner/pi-ai";
+
 import type { ExtensionAPI, ExtensionUIContext, Theme, ThemeColor } from "@mariozechner/pi-coding-agent";
 import { getAgentDir } from "@mariozechner/pi-coding-agent";
 import { CURSOR_MARKER, type Component, type Focusable, matchesKey, Text, visibleWidth } from "@mariozechner/pi-tui";
@@ -1088,7 +1088,7 @@ class SetupWizardComponent implements Component, Focusable {
 			const preset = this.phase.preset;
 			const m = this.selectedModels[preset]!;
 			const levels = (THINKING_LEVELS as readonly ThinkingLevel[]).filter(
-				(l) => l !== "xhigh" || supportsXhigh(m),
+				(l) => l !== "xhigh" || (m.thinkingLevelMap != null && "xhigh" in m.thinkingLevelMap && m.thinkingLevelMap["xhigh"] != null),
 			);
 			const initial = this.selectedThinking[preset] ?? DEFAULT_THINKING_LEVEL;
 			return new ThinkingPickerComponent(
