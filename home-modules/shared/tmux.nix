@@ -26,6 +26,9 @@
       # clear scrollback buffer - https://stackoverflow.com/questions/10543684/how-can-i-clear-scrollback-buffer-in-tmux#10553992
       bind -n C-k clear-history
 
+      # Unbind C-u so pi can use it for tree filtering (filter user messages)
+      unbind C-u
+
       # bind key for synchronizing panes
       bind-key y set-window-option synchronize-panes \; display "toggled synchronize-pages #{?pane_synchronized,on,off}"
 

@@ -3,3 +3,5 @@ result
 .direnv/
 .direnv
 PLAN.md
+home-modules/shared/skills/headless-web/scripts/node_modules/
+home-modules/shared/skills/headless-web/scripts/package-lock.json

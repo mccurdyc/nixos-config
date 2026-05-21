@@ -32,6 +32,13 @@ in
   # Also symlinked for pi (~/.pi/agent/AGENTS.md).
   home.file.".pi/agent/AGENTS.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/AGENTS.md";
+
+  # Free ctrl+left/right and alt+left/right for tree fold/branch navigation
+  # by removing them from editor word-movement (keep alt+b / alt+f instead).
+  home.file.".pi/agent/keybindings.json".text = builtins.toJSON {
+    "tui.editor.cursorWordLeft" = [ "alt+b" ];
+    "tui.editor.cursorWordRight" = [ "alt+f" ];
+  };
   home.file.".pi/agent/skills/commit/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/commit/SKILL.md";
   home.file.".pi/agent/skills/google-workspace/SKILL.md".source =
