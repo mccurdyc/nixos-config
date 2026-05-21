@@ -627,6 +627,9 @@ function coreCheckWorker(workerId: string): {
 			// Handled above; keep a safe default.
 			text = "Worker completed.";
 			break;
+		case "awaiting-confirmation":
+			text = "Worker is awaiting confirmation (e.g. tool approval) before continuing.";
+			break;
 	}
 
 	return {
@@ -749,6 +752,13 @@ function coreCheckWorkers(sessionName: string | null): {
 					lines.push("--- error.log (last 20 lines) ---");
 					lines.push(w.errorExcerpt);
 				}
+				lines.push("");
+				break;
+			}
+			case "awaiting-confirmation": {
+				lines.push(
+					`⚠ ${w.windowName}  [id: ${w.workerId}]${sessionTag}  awaiting confirmation for ${elapsed}`,
+				);
 				lines.push("");
 				break;
 			}
