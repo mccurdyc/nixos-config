@@ -45,6 +45,7 @@
       ns = "(){ nix-env -qaP \".*$1.*\" -f '<nixpkgs>' 2>/dev/null ;}";
       curls = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       ghpr = "(){ gh pr create --fill --draft $@ ;}";
+      k9s = "k9s -n $(kubie info ns)";
       rmc = ''(){ git rm -rf "$@" && git commit -s -m "rm -rf $*"; }'';
       mvc = ''(){ git mv "$@" && git commit -s -m "mv $*"; }'';
       gits = "git status";
