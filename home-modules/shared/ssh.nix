@@ -1,5 +1,6 @@
-_: {
-  # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.ssh.matchBlocks
+{ ... }:
+{
+  # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.ssh.settings
   programs.ssh = {
     enableDefaultConfig = false;
     enable = true;
@@ -14,26 +15,20 @@ _: {
       "~/.ssh/config.d/work/jetpac.conf"
     ];
 
-    matchBlocks = {
+    settings = {
       "*" = {
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "30m";
-        forwardAgent = true;
-        serverAliveInterval = 30;
-        serverAliveCountMax = 120;
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "30m";
+        ForwardAgent = true;
+        ServerAliveInterval = 30;
+        ServerAliveCountMax = 120;
       };
 
-      # programs.ssh doesn't work well for darwin.
-      # home.file.".ssh/config".text = ''
-      #   Host *
-      #     IdentityFile ~/.ssh/fastly_rsa
-      # '';
-
       "github.com" = {
-        hostname = "ssh.github.com";
-        user = "git";
-        port = 443;
+        HostName = "ssh.github.com";
+        User = "git";
+        Port = 443;
       };
     };
   };
