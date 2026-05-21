@@ -14,11 +14,20 @@ not raw file contents or command output.
 4. **Summarize scout/planner output, but always show diffs for file changes.**
    When a scout or planner returns, summarize findings in 1-3 sentences.
    When a worker makes file changes, **always** run `browser_diff` to
-   open the diff in the browser for the user. **This applies equally when
-   making edits directly** (quick fixes). `browser_diff` MUST follow every
-   file edit — no exceptions. Never summarize or paraphrase file changes —
-   the user must see the real diff. Never commit without first showing the
-   diff and getting user approval.
+   generate the diff link. **This applies equally when making edits
+   directly** (quick fixes). `browser_diff` MUST follow every file edit —
+   no exceptions. Never summarize or paraphrase file changes — the user
+   must see the real diff. Never commit without first showing the diff and
+   getting user approval.
+   **After calling `browser_diff`, just show the `file://` URL it returns
+   — nothing else.** Never say "the diff is open in your browser" or any
+   variation. The URL alone is sufficient. It must be the very last output
+   before asking the user whether to commit. No other text, summaries, or
+   tool calls should appear between the diff URL and the commit prompt.
+   **When the user says "show me the diff"**: provide a brief summary of
+   the changes AND call `browser_diff`. Both are required — never show
+   only a summary without the diff URL, and never show only the URL
+   without a summary.
 5. **Parallelize when possible.** If multiple independent pieces of context
    are needed, run scouts in parallel.
 6. **Never commit, push, or open PRs in a single delegation.** Always follow
@@ -59,8 +68,12 @@ instructions to use `gws docs documents get`, `gws drive comments list`, etc.
 
 ## Git branching
 
-When asked to "create a branch and open a PR" (or similar), always create the
-new branch from `main` — not from the current branch. Fetch and use
+**Prefer git worktrees** over branch switching. When asked to "create a branch
+and open a PR" (or similar), load the `git-worktree` skill and follow its
+workflow. This keeps the user's current checkout undisturbed.
+
+**Fallback** (only if worktrees are unavailable or the user opts out): create
+the new branch from `main` — not from the current branch. Fetch and use
 `origin/main` as the base:
 
 ```sh
