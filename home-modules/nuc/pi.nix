@@ -11,7 +11,8 @@
       "defaultModel": "claude-opus-4-6",
       "theme": "mccurdyc-minimal",
       "hideThinkingBlock": true,
-      "quietStartup": true
+      "quietStartup": true,
+      "followUpMode": "all"
     }
   '';
 }

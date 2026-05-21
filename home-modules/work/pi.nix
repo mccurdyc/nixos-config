@@ -17,7 +17,8 @@
         "defaultModel": "global.anthropic.claude-opus-4-6-v1",
         "theme": "mccurdyc-minimal",
         "hideThinkingBlock": true,
-        "quietStartup": true
+        "quietStartup": true,
+        "followUpMode": "all"
       }
     '';
   };

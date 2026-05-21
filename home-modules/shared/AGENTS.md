@@ -43,6 +43,12 @@ not raw file contents or command output.
    `home.file` entries in `home-modules/shared/pi.nix`). Source files go in
    `home-modules/shared/pi/` and are symlinked to `~/.pi/agent/` via
    `mkOutOfStoreSymlink`.
+8. **Minimize follow-up message size.** When delegating to scouts or workers
+   whose output is expected to be large (>50 lines), instruct them to write
+   their full findings to a temp file (e.g., `/tmp/pi-worker-<description>.md`)
+   and return only a 1-3 sentence summary plus the file path. The orchestrator
+   can then `read` the file if details are needed. This reduces TUI flicker
+   from streaming large follow-up messages.
 
 ## Delegation patterns
 
