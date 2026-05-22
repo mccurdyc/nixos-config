@@ -203,7 +203,7 @@
       fi
 
       if [ -x "$(command -v k3d)" ]; then
-        source <(k3d completion zsh)
+        source <(DOCKER_CONTEXT= k3d completion zsh 2>/dev/null)
       fi
 
       eval $(keychain --eval --quiet ~/.ssh/config.d/work/fastly_rsa)
