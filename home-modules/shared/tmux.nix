@@ -66,9 +66,8 @@
       # NOTE: copy-paste doesn't work if you use mosh instead of ssh.
       # https://github.com/mobile-shell/mosh/pull/1054
 
-      # Copy & keep copy mode active with selection highlight
-      # Ideally, I wanted it to clear the selection, but hold its place in copy mode.
-      bind-key -T copy-mode-vi Enter send-keys -X copy-selection
+      # Yank in copy-mode-vi sends to tmux buffer (nvim reads from here)
+      bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
       # https://github.com/tmux/tmux/wiki/Clipboard/
       set -g set-clipboard external

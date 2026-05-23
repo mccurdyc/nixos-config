@@ -88,7 +88,24 @@ local buffer = { o, bo }
 local window = { o, wo }
 
 opt("title", false)
--- opt("clipboard", "unnamedplus") -- macos prints an annoying permission message every time I paste in NeoVim when ssh'd to a machine.
+
+-- Use tmux clipboard as the system clipboard.
+-- Yanks go to tmux paste buffer; puts read from it.
+if vim.env.TMUX then
+	vim.g.clipboard = {
+		name = "tmux",
+		copy = {
+			["+"] = { "tmux", "load-buffer", "-" },
+			["*"] = { "tmux", "load-buffer", "-" },
+		},
+		paste = {
+			["+"] = { "tmux", "save-buffer", "-" },
+			["*"] = { "tmux", "save-buffer", "-" },
+		},
+		cache_enabled = false,
+	}
+	opt("clipboard", "unnamedplus")
+end
 opt("swapfile", false, buffer)
 opt("wrap", false, window)
 opt("linebreak", true, window)
