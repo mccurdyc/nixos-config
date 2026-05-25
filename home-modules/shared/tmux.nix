@@ -9,6 +9,7 @@
     terminal = "tmux-256color";
     shortcut = "a";
     escapeTime = 1;
+    historyLimit = 100000;
     extraConfig = ''
       # Reload tmux config
       bind-key R source-file ~/.config/tmux/tmux.conf \; display "Reloaded"
