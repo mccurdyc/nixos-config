@@ -10,17 +10,22 @@ export default function (pi: ExtensionAPI) {
     name: "browser_diff",
     label: "Browser Diff",
     description:
-      "Generate a diff HTML file using diff2html. Returns a file:// URL the user can open in their browser.",
+      "Generate a diff HTML file using diff2html. Returns a file:// URL the user can open in their browser. The working directory is automatically detected — do NOT pass -C or --git-dir flags.",
     parameters: Type.Object({
       args: Type.Optional(
         Type.String({
           description:
-            'Git diff arguments, e.g. "HEAD", "HEAD~1", "--staged", a branch name, etc.',
+            'Git diff ref or flags only, e.g. "HEAD", "HEAD~1", "--staged", a branch name. Do NOT include -C, --git-dir, or path arguments — the cwd is handled automatically.',
         })
       ),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
-      const args = params.args ?? "HEAD";
+      // Strip any -C <path> or --git-dir=<path> that models sometimes inject;
+      // the cwd is already set correctly via ctx.cwd.
+      let args = (params.args ?? "HEAD")
+        .replace(/-C\s+\S+/g, "")
+        .replace(/--git-dir[=\s]\S+/g, "")
+        .trim() || "HEAD";
       const cmd = `git --no-pager diff ${args} -- . ':(exclude)*lock*' ':(exclude)*.lock'`;
       try {
         let diff = execSync(cmd, {
@@ -63,7 +68,7 @@ export default function (pi: ExtensionAPI) {
         writeFileSync(tmpFile, html, "utf-8");
 
         return {
-          content: [{ type: "text", text: "file://" + tmpFile }],
+          content: [{ type: "text", text: "file://" + tmpFile + "\n\nShow this URL as your final output — nothing else after it." }],
         };
       } catch (e: any) {
         return {
