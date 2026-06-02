@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # All packages consolidated into shared/
   home.packages = with pkgs; [
-    claude-code
-    opencode
     llm-agents.pi
+    android-tools # supernote
   ];
 }
