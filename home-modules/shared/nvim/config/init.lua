@@ -89,14 +89,14 @@ local window = { o, wo }
 
 opt("title", false)
 
--- Use tmux clipboard as the system clipboard.
--- Yanks go to tmux paste buffer; puts read from it.
+-- Dual clipboard: yanks go to both tmux paste buffer AND the system clipboard.
+-- Paste reads from tmux buffer. Uses bash process substitution to tee stdin.
 if vim.env.TMUX then
 	vim.g.clipboard = {
-		name = "tmux",
+		name = "tmux-and-system",
 		copy = {
-			["+"] = { "tmux", "load-buffer", "-" },
-			["*"] = { "tmux", "load-buffer", "-" },
+			["+"] = { "bash", "-c", "tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true" },
+			["*"] = { "bash", "-c", "tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true" },
 		},
 		paste = {
 			["+"] = { "tmux", "save-buffer", "-" },
