@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -23,7 +23,17 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, flake-parts, nix-darwin, disko, gws, llm-agents, ... }:
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      flake-parts,
+      nix-darwin,
+      disko,
+      gws,
+      llm-agents,
+      ...
+    }:
     let
       specialArgs = {
         user = "mccurdyc";
@@ -45,7 +55,14 @@
             ];
             home-module = ./home-modules/fgnix;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko gws llm-agents; # TODO - consider using 'inputs'
+            inherit
+              nixpkgs
+              nix-darwin
+              home-manager
+              disko
+              gws
+              llm-agents
+              ; # TODO - consider using 'inputs'
           };
 
           nucArgs = {
@@ -57,7 +74,14 @@
             ];
             home-module = ./home-modules/nuc;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko gws llm-agents; # TODO - consider using 'inputs'
+            inherit
+              nixpkgs
+              nix-darwin
+              home-manager
+              disko
+              gws
+              llm-agents
+              ; # TODO - consider using 'inputs'
           };
 
           faamacArgs = {
@@ -69,7 +93,14 @@
             ];
             home-module = ./home-modules/faamac;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
-            inherit nixpkgs nix-darwin home-manager disko gws llm-agents; # TODO - consider using 'inputs'
+            inherit
+              nixpkgs
+              nix-darwin
+              home-manager
+              disko
+              gws
+              llm-agents
+              ; # TODO - consider using 'inputs'
             # TODO: add lvk so that my mac can use the devbox for nix build, etc.
           };
 
@@ -113,29 +144,35 @@
         "x86_64-linux"
       ];
 
-      perSystem = { system, ... }:
+      perSystem =
+        { system, ... }:
         let
-          pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
         in
         {
           formatter = pkgs.nixpkgs-fmt;
           devShells.default = import ./shell.nix { inherit pkgs; };
 
-          checks = pkgs.lib.optionalAttrs (system == "x86_64-linux") {
-            fgnix = import ./tests/fgnix.nix {
-              inherit pkgs specialArgs;
-              inherit (inputs) home-manager;
+          checks =
+            pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+              fgnix = import ./tests/fgnix.nix {
+                inherit pkgs specialArgs;
+                inherit (inputs) home-manager;
+              };
+              nuc = import ./tests/nuc.nix {
+                inherit pkgs specialArgs;
+                inherit (inputs) home-manager;
+              };
+              # Eval-only: building the activation package confirms the config evaluates.
+              funix = inputs.self.homeConfigurations.funix.activationPackage;
+            }
+            // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+              # Eval-only: building the system drv confirms the darwin config evaluates.
+              faamac = inputs.self.darwinConfigurations.faamac.system;
             };
-            nuc = import ./tests/nuc.nix {
-              inherit pkgs specialArgs;
-              inherit (inputs) home-manager;
-            };
-            # Eval-only: building the activation package confirms the config evaluates.
-            funix = inputs.self.homeConfigurations.funix.activationPackage;
-          } // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
-            # Eval-only: building the system drv confirms the darwin config evaluates.
-            faamac = inputs.self.darwinConfigurations.faamac.system;
-          };
         };
     };
 }

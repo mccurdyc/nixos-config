@@ -10,7 +10,7 @@
   # Then, make sure in Tailscale DNS settings that "Override Local DNS" is true
   services.resolved = {
     enable = true;
-    fallbackDns = [
+    settings.Resolve.FallbackDNS = [
       "1.1.1.1"
       "8.8.8.8"
       "100.100.100.100"
