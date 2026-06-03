@@ -95,8 +95,16 @@ if vim.env.TMUX then
 	vim.g.clipboard = {
 		name = "tmux-and-system",
 		copy = {
-			["+"] = { "bash", "-c", "tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true" },
-			["*"] = { "bash", "-c", "tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true" },
+			["+"] = {
+				"bash",
+				"-c",
+				"tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true",
+			},
+			["*"] = {
+				"bash",
+				"-c",
+				"tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true",
+			},
 		},
 		paste = {
 			["+"] = { "tmux", "save-buffer", "-" },
@@ -199,6 +207,7 @@ map("n", "<Leader>rwc", ":lua ReplaceWordUnderCursorGlobally({global_confirmatio
 
 -- "search term" ctrl-g "file extension"
 map("n", "<leader>ff", ":lua require('fzf-lua').live_grep()<CR>", opts)
+map("n", "<leader>fw", ":lua require('fzf-lua').live_grep({ query = vim.fn.expand('<cword>') })<CR>", opts)
 map("n", "<leader>fb", ":lua require('fzf-lua').buffers()<CR>", opts)
 map("n", "<leader>fm", ":lua require('fzf-lua').marks()<CR>", opts)
 map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", opts)
