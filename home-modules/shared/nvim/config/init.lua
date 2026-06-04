@@ -976,6 +976,12 @@ require("lazy").setup({
 
 				-- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
 				on_attach = function(client, bufnr)
+					-- Skip diffview buffers (custom URI scheme breaks temp file creation)
+					local bufname = vim.api.nvim_buf_get_name(bufnr)
+					if bufname:match("^diffview:") then
+						return
+					end
+
 					client.server_capabilities.hoverProvider = false
 
 					vim.diagnostic.config({
@@ -1006,8 +1012,11 @@ require("lazy").setup({
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
-								-- Skip fugitive buffers to avoid interference with blame/commit views
+								-- Skip fugitive and diffview buffers
 								if vim.bo.filetype == "fugitiveblame" or vim.bo.filetype == "fugitive" then
+									return
+								end
+								if vim.api.nvim_buf_get_name(bufnr):match("^diffview:") then
 									return
 								end
 								-- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#choosing-a-client-for-formatting
