@@ -90,21 +90,22 @@ local window = { o, wo }
 opt("title", false)
 
 -- Dual clipboard: yanks go to both tmux paste buffer AND the system clipboard.
--- Paste reads from tmux buffer. Uses bash process substitution to tee stdin.
+-- Buffers stdin first, then sends to both destinations sequentially to avoid
+-- race conditions with process substitution.
 if vim.env.TMUX then
+	local copy_cmd = table.concat({
+		'input="$(cat)";',
+		'printf "%s" "$input" | tmux load-buffer -;',
+		'printf "%s" "$input" | pbcopy 2>/dev/null',
+		'|| printf "%s" "$input" | xclip -selection clipboard 2>/dev/null',
+		'|| printf "%s" "$input" | xsel --clipboard --input 2>/dev/null',
+		"|| true",
+	}, " ")
 	vim.g.clipboard = {
 		name = "tmux-and-system",
 		copy = {
-			["+"] = {
-				"bash",
-				"-c",
-				"tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true",
-			},
-			["*"] = {
-				"bash",
-				"-c",
-				"tee >(tmux load-buffer -) | pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || xsel --clipboard --input 2>/dev/null || true",
-			},
+			["+"] = { "bash", "-c", copy_cmd },
+			["*"] = { "bash", "-c", copy_cmd },
 		},
 		paste = {
 			["+"] = { "tmux", "save-buffer", "-" },
