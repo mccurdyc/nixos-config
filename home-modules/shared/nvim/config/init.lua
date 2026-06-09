@@ -1652,38 +1652,6 @@ require("lazy").setup({
 	},
 })
 
--- Tab-based pi coding agent terminal management.
--- pi_bufnr tracks the terminal buffer; pi_tabnr tracks the tab it lives in.
--- pi_chan holds the terminal job channel for sending text.
-local pi_bufnr, pi_tabnr, pi_chan
-
-local function pi_toggle()
-	if pi_bufnr == nil or not vim.api.nvim_buf_is_valid(pi_bufnr) then
-		-- First call (or buffer was wiped): open a new tab, start pi in it.
-		vim.cmd("tabnew")
-		pi_tabnr = vim.api.nvim_get_current_tabpage()
-		pi_chan = vim.fn.termopen("pi", {
-			on_exit = function()
-				pi_bufnr = nil
-				pi_tabnr = nil
-				pi_chan = nil
-			end,
-		})
-		pi_bufnr = vim.api.nvim_get_current_buf()
-		vim.cmd("startinsert")
-	elseif pi_tabnr ~= nil and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
-		-- Tab is open: switch to it and enter terminal mode.
-		vim.api.nvim_set_current_tabpage(pi_tabnr)
-		vim.cmd("startinsert")
-	else
-		-- Buffer exists but tab was closed: reopen in a new tab.
-		vim.cmd("tabnew")
-		vim.api.nvim_win_set_buf(0, pi_bufnr)
-		pi_tabnr = vim.api.nvim_get_current_tabpage()
-		vim.cmd("startinsert")
-	end
-end
-
 -- Get the visual selection or operator range as a string.
 local function get_selection()
 	local start_pos = vim.fn.getpos("'<")
@@ -1711,37 +1679,28 @@ local function selection_header()
 	return header .. text
 end
 
--- Send text to the running pi terminal, prefixed with an optional string.
-local function pi_send(prefix)
-	if not pi_chan then
-		vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
-		return
-	end
+-- Send selection to pi running in another tmux pane.
+local function pi_send_tmux(prefix)
 	local body = selection_header()
 	if not body then
 		return
 	end
 	local payload = (prefix or "") .. body
-	vim.api.nvim_chan_send(pi_chan, payload)
-	-- Switch to the pi tab.
-	if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
-		vim.api.nvim_set_current_tabpage(pi_tabnr)
-		vim.cmd("startinsert")
-	end
+	local tmpfile = vim.fn.tempname()
+	local f = io.open(tmpfile, "w")
+	f:write(payload)
+	f:close()
+	vim.fn.system("tmux load-buffer " .. tmpfile .. " && tmux paste-buffer -t '{last}' && tmux send-keys -t '{last}' Enter")
+	os.remove(tmpfile)
 end
 
-vim.keymap.set({ "n", "t" }, "<leader>.", pi_toggle, { desc = "Toggle pi" })
-
--- Send visual selection to pi's input.
 vim.keymap.set("x", "<leader>a", function()
-	-- Exit visual mode so '< and '> marks are set.
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
 	vim.schedule(function()
-		pi_send()
+		pi_send_tmux()
 	end)
-end, { desc = "Send selection to pi" })
+end, { desc = "Send selection to pi (tmux pane)" })
 
--- Send visual selection to pi with a prompt prefix and submit.
 vim.keymap.set("x", "<leader>A", function()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
 	vim.schedule(function()
@@ -1749,22 +1708,9 @@ vim.keymap.set("x", "<leader>A", function()
 		if question == "" then
 			return
 		end
-		if not pi_chan then
-			vim.notify("pi is not running. Press <leader>. to start it.", vim.log.levels.WARN)
-			return
-		end
-		local body = selection_header()
-		if not body then
-			return
-		end
-		local payload = question .. "\n\n" .. body .. "\n"
-		vim.api.nvim_chan_send(pi_chan, payload)
-		if pi_tabnr and vim.api.nvim_tabpage_is_valid(pi_tabnr) then
-			vim.api.nvim_set_current_tabpage(pi_tabnr)
-			vim.cmd("startinsert")
-		end
+		pi_send_tmux(question .. "\n\n")
 	end)
-end, { desc = "Ask pi about selection" })
+end, { desc = "Ask pi about selection (tmux pane)" })
 
 -- Autoread so pi's file edits are picked up automatically.
 vim.o.autoread = true

@@ -43,4 +43,8 @@ in
     source = ../skills/screenshot/SKILL.md;
     force = true;
   };
+  home.file.".claude/skills/go-do/SKILL.md" = {
+    source = ../skills/go-do/SKILL.md;
+    force = true;
+  };
 }
