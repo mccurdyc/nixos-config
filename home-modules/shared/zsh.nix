@@ -27,6 +27,7 @@
           awk '{print $1}' \
         )";
       }'';
+      chafa = "chafa --passthrough tmux --format kitty";
       tl = "tmux list-sessions";
       ta = "tmux attach -t ";
       # https://www.perplexity.ai/search/tmux-newsession-but-gv__phO6TVuT6dxY.15Nrw#1

@@ -35,6 +35,10 @@
 
       set -ag terminal-overrides ",xterm-256color:RGB"
 
+      # Kitty graphics protocol passthrough for image rendering
+      # (chafa, yazi, image.nvim) inside tmux
+      set -ag terminal-features ',xterm-256color:sixel'
+
       # Undercurl
       # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
       # https://github.com/alacritty/alacritty/issues/109#issuecomment-507026155

@@ -24,6 +24,8 @@ in
   home.packages = [
     pkgs.neovim-unwrapped
     pkgs.gnumake
+    pkgs.imagemagick
+    pkgs.luajitPackages.magick
     pi-acp
   ];
 

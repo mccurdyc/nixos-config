@@ -15,6 +15,7 @@
     ./ripgrep.nix
     ./ssh.nix
     ./tmux.nix
+    ./yazi.nix
     ./zellij.nix
     ./zoekt.nix
     ./zoxide.nix
