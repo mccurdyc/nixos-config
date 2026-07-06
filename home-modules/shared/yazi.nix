@@ -4,6 +4,7 @@
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
+    shellWrapperName = "y";
     settings = {
       preview = {
         image_filter = "lanczos3";
