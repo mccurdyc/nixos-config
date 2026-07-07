@@ -74,28 +74,15 @@ instructions to use `gws docs documents get`, `gws drive comments list`, etc.
 
 ## Git branching
 
-**Prefer git worktrees** over branch switching. When asked to "create a branch
-and open a PR" (or similar), load the `git-worktree` skill and follow its
-workflow. This keeps the user's current checkout undisturbed.
+**Always use git worktrees.** When asked to "create a branch", "open a PR",
+"make a change on a new branch", or any similar request, you MUST load the
+`git-worktree` skill and follow its workflow. Never use `git checkout -b` or
+`git switch -c` to create a branch in the current working tree. The user's
+current checkout must never be disturbed.
 
-**Fallback** (only if worktrees are unavailable or the user opts out): create
-the new branch from `main` — not from the current branch. Fetch and use
-`origin/main` as the base:
-
-```sh
-git fetch origin main
-git checkout -b <branch-name> origin/main
-```
-
-Only branch from the current branch if the user explicitly says "create a
-branch from my current branch" or similar phrasing that makes the intent clear.
-
-After the PR is opened, check out the previous branch so the user is back
-where they started:
-
-```sh
-git checkout -
-```
+There is no fallback. Do not offer to "just create a branch" as an
+alternative. If worktree creation fails, report the error and stop — do not
+fall back to branch switching.
 
 ## Demo recordings
 
