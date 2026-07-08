@@ -37,11 +37,11 @@
           ],
           "environment": {
             "JIRA_URL": "https://fastly.atlassian.net",
-            "JIRA_USERNAME": "{file:~/.atlassian-email}",
-            "JIRA_API_TOKEN": "{file:~/.atlassian-api-token}",
+            "JIRA_USERNAME": "{file:~/.fastly/atlassian-email}",
+            "JIRA_API_TOKEN": "{file:~/.fastly/atlassian-api-token}",
             "CONFLUENCE_URL": "https://fastly.atlassian.net/wiki",
-            "CONFLUENCE_USERNAME": "{file:~/.atlassian-email}",
-            "CONFLUENCE_API_TOKEN": "{file:~/.atlassian-api-token}"
+            "CONFLUENCE_USERNAME": "{file:~/.fastly/atlassian-email}",
+            "CONFLUENCE_API_TOKEN": "{file:~/.fastly/atlassian-api-token}"
           }
         }
       },

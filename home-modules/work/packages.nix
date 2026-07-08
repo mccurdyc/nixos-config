@@ -15,8 +15,8 @@
     zoekt
 
     (writeShellScriptBin "jira" ''
-      JIRA_API_TOKEN=$(cat ~/.atlassian-api-token) \
-      JIRA_USERNAME=$(cat ~/.atlassian-email) \
+      JIRA_API_TOKEN=$(cat ~/.fastly/atlassian-api-token) \
+      JIRA_USERNAME=$(cat ~/.fastly/atlassian-email) \
       JIRA_URL=https://fastly.atlassian.net \
       exec ${jira-cli-go}/bin/jira "$@"
     '')

@@ -20,11 +20,11 @@
             "-c"
             ''
               export JIRA_URL="https://fastly.atlassian.net"
-              export JIRA_USERNAME="$(cat ~/.atlassian-email)"
-              export JIRA_API_TOKEN="$(cat ~/.atlassian-api-token)"
+              export JIRA_USERNAME="$(cat ~/.fastly/atlassian-email)"
+              export JIRA_API_TOKEN="$(cat ~/.fastly/atlassian-api-token)"
               export CONFLUENCE_URL="https://fastly.atlassian.net/wiki"
-              export CONFLUENCE_USERNAME="$(cat ~/.atlassian-email)"
-              export CONFLUENCE_API_TOKEN="$(cat ~/.atlassian-api-token)"
+              export CONFLUENCE_USERNAME="$(cat ~/.fastly/atlassian-email)"
+              export CONFLUENCE_API_TOKEN="$(cat ~/.fastly/atlassian-api-token)"
               exec uvx mcp-atlassian \
                 --enabled-tools jira_create_issue,jira_update_issue,jira_get_issue,jira_search,jira_get_transitions,jira_transition_issue,jira_search_fields,jira_get_field_options,confluence_search,confluence_get_page
             ''
