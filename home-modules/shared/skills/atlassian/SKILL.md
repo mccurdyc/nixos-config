@@ -7,6 +7,22 @@ description: >
 user-invocable: false
 ---
 
+## Ticket ID detection
+
+Any reference matching the pattern `[A-Za-z]{2,4}-\d+` (2–4 letters, a dash,
+then one or more digits — e.g. CP-78, cp-78, ENG-1234, abcd-5) is a **Jira
+issue key**. When the user mentions one of these:
+
+1. **Always** treat it as a Jira issue — never as a GitHub issue.
+2. Normalize to uppercase before passing to Jira (e.g. `cp-78` → `CP-78`).
+3. Use the MCP `jira_get_issue` / `jira_update_issue` tools (or CLI fallback)
+   to interact with it.
+4. If the user says "add a comment to cp-78", use Jira comment tools — do
+   NOT use `gh issue comment`.
+
+GitHub issues are referenced with a bare `#78` (hash prefix, no letters).
+A letter-prefix like `CP-78` or `cp-78` is **never** a GitHub issue.
+
 ## URL parsing
 
 When given an Atlassian URL, extract identifiers directly:
