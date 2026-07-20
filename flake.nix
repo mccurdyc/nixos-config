@@ -125,7 +125,7 @@
               config.allowUnfree = true;
               config.allowBroken = true;
               overlays = [
-                llm-agents.overlays.default
+                llm-agents.overlays.shared-nixpkgs
                 (final: _prev: {
                   gws = gws.packages.${final.system}.default;
                 })

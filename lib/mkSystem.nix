@@ -24,7 +24,7 @@ systemFn {
         allowBroken = true; #ghostty
       };
       nixpkgs.overlays = [
-        llm-agents.overlays.default
+        llm-agents.overlays.shared-nixpkgs
         (final: _prev: {
           gws = gws.packages.${final.system}.default;
         })
