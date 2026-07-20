@@ -141,6 +141,9 @@
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
     '';
     initContent = lib.mkOrder 550 ''
+      # Ensure krew plugins are discoverable by kubectl
+      export PATH="''${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
       # Set tmux pane title to cwd + git branch
       autoload -Uz add-zsh-hook
       _set_tmux_pane_title() {

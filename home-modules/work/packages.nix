@@ -9,6 +9,11 @@
     k9s
     kubectl
     kubernetes-helm
+
+    # krew must be available as "kubectl-krew" in PATH for kubectl plugin discovery
+    (writeShellScriptBin "kubectl-krew" ''
+      exec ${krew}/bin/krew "$@"
+    '')
     kubie
     ssm-session-manager-plugin
     wireguard-tools

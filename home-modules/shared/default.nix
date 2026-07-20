@@ -27,6 +27,7 @@
   home.sessionPath = [
     "$HOME/go/bin"
     "$HOME/.cargo/bin"
+    "\${KREW_ROOT:-$HOME/.krew}/bin"
   ];
 
   # Hide "last login" message on new terminal.
