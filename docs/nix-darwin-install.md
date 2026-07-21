@@ -42,8 +42,7 @@ sudo NIXPKGS_ALLOW_UNFREE=1 \
 ### 4. Activate
 
 ```bash
-export NIXPKGS_ALLOW_UNFREE=1
-./result/sw/bin/darwin-rebuild switch --impure --flake '.#<hostname>'
+sudo NIXPKGS_ALLOW_UNFREE=1 ./result/sw/bin/darwin-rebuild switch --impure --flake '.#<hostname>'
 rm -rf result
 ```
 
@@ -52,13 +51,13 @@ After activation, close and reopen your terminal to pick up the new shell enviro
 ## Day-to-day rebuilds
 
 ```bash
-darwin-rebuild switch --flake '.#<hostname>'
+sudo darwin-rebuild switch --flake '.#<hostname>'
 ```
 
 If you hit unfree package errors:
 
 ```bash
-NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#<hostname>'
+sudo NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#<hostname>'
 ```
 
 ## Troubleshooting
