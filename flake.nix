@@ -84,14 +84,14 @@
               ; # TODO - consider using 'inputs'
           };
 
-          faamacArgs = {
+          paamacArgs = {
             system = "aarch64-darwin";
             darwin = true;
             darwin-modules = [
-              ./hosts/faamac
+              ./hosts/paamac
               ./modules/darwin
             ];
-            home-module = ./home-modules/faamac;
+            home-module = ./home-modules/paamac;
             inherit specialArgs; # passed to every module and home-module (via extraSpecialArgs)
             inherit
               nixpkgs
@@ -101,7 +101,28 @@
               gws
               llm-agents
               ; # TODO - consider using 'inputs'
-            # TODO: add lvk so that my mac can use the devbox for nix build, etc.
+          };
+
+          faamacArgs = {
+            system = "aarch64-darwin";
+            darwin = true;
+            darwin-modules = [
+              ./hosts/faamac
+              ./modules/darwin
+            ];
+            home-module = ./home-modules/faamac;
+            specialArgs = specialArgs // {
+              user = "cmccurdy";
+              zshPath = "/etc/profiles/per-user/cmccurdy/bin/zsh";
+            };
+            inherit
+              nixpkgs
+              nix-darwin
+              home-manager
+              disko
+              gws
+              llm-agents
+              ; # TODO - consider using 'inputs'
           };
 
           funixArgs = {
@@ -114,6 +135,9 @@
 
           # sudo nixos-rebuild switch --flake '.#nuc'
           nixosConfigurations.nuc = mkSystem nucArgs;
+
+          # darwin-rebuild switch --flake '.#paamac'
+          darwinConfigurations.paamac = mkSystem paamacArgs;
 
           # darwin-rebuild switch --flake '.#faamac'
           darwinConfigurations.faamac = mkSystem faamacArgs;
@@ -171,6 +195,7 @@
             }
             // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
               # Eval-only: building the system drv confirms the darwin config evaluates.
+              paamac = inputs.self.darwinConfigurations.paamac.system;
               faamac = inputs.self.darwinConfigurations.faamac.system;
             };
         };

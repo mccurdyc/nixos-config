@@ -68,6 +68,12 @@
 
 ## Common Commands
 
+### paamac Rebuild
+
+```bash
+sudo darwin-rebuild switch --flake '.#paamac'
+```
+
 ### faamac Rebuild
 
 ```bash
@@ -120,6 +126,7 @@ Checks are exposed under `checks.<system>.<name>` and run by `nix flake check`.
 | `fgnix` | NixOS VM test (boots the config, asserts nftables) | `x86_64-linux` |
 | `nuc` | NixOS VM test (boots the config, asserts nftables) | `x86_64-linux` |
 | `funix` | Eval-only (builds `activationPackage`) | `x86_64-linux` |
+| `paamac` | Eval-only (builds darwin `system` drv) | `aarch64-darwin` |
 | `faamac` | Eval-only (builds darwin `system` drv) | `aarch64-darwin` |
 
 #### Eval all checks (no build, fast)
@@ -140,6 +147,7 @@ nix flake check
 nix build '.#checks.x86_64-linux.fgnix'
 nix build '.#checks.x86_64-linux.nuc'
 nix build '.#checks.x86_64-linux.funix'
+nix build '.#checks.aarch64-darwin.paamac'  # on macOS only
 nix build '.#checks.aarch64-darwin.faamac'  # on macOS only
 ```
 

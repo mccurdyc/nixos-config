@@ -8,13 +8,14 @@ Personal NixOS/nix-darwin flake. Single user: `mccurdyc`.
 |--------|----------------|-------------------|------------------------------------------------|-----------------------------------------------------|
 | fgnix  | x86_64-linux   | GCE VM            | `sudo nixos-rebuild switch --flake '.#fgnix'`  | `nix build '.#checks.x86_64-linux.fgnix'`           |
 | nuc    | x86_64-linux   | Intel NUC         | `sudo nixos-rebuild switch --flake '.#nuc'`    | `nix build '.#checks.x86_64-linux.nuc'`             |
+| paamac | aarch64-darwin | Apple Silicon Mac | `darwin-rebuild switch --flake '.#paamac'`     | `nix build '.#checks.aarch64-darwin.paamac'`        |
 | faamac | aarch64-darwin | Apple Silicon Mac | `darwin-rebuild switch --flake '.#faamac'`     | `nix build '.#checks.aarch64-darwin.faamac'`        |
 | funix  | x86_64-linux   | Work VM           | `home-manager switch --flake '.#funix'`        | `nix build '.#checks.x86_64-linux.funix'`           |
 
-fgnix and nuc run full `pkgs.testers.runNixOSTest` VM tests. faamac and funix
-are eval-only; building the activation package confirms the config evaluates.
-Hardware modules are excluded from tests; the VM framework supplies its own
-root filesystem and bootloader.
+fgnix and nuc run full `pkgs.testers.runNixOSTest` VM tests. paamac, faamac,
+and funix are eval-only; building the activation package confirms the config
+evaluates. Hardware modules are excluded from tests; the VM framework supplies
+its own root filesystem and bootloader.
 
 The VM test nodes in `tests/` do not go through `lib/mkSystem.nix` and do not
 inherit its `nixpkgs.overlays`. They also receive their `pkgs` from the
