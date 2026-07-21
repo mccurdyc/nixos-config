@@ -20,7 +20,7 @@
       "signal"
       "slack"
       "spotify"
-      "zen-browser"
+      "zen"
       "zoom"
     ];
   };
