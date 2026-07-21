@@ -1,6 +1,7 @@
 {
   imports = [
     ../shared
+    ../shared/nix.nix
 
     ./docker.nix
     ./nix.nix
