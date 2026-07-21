@@ -18,6 +18,7 @@ let
       runHook postInstall
     '';
   };
+
 in
 {
   # node_modules symlink so the sandbox extension's index.ts can resolve
@@ -47,10 +48,6 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/atlassian/SKILL.md";
   home.file.".pi/agent/skills/demo-recording/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/demo-recording/SKILL.md";
-  home.file.".pi/agent/skills/git-diff/SKILL.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/git-diff/SKILL.md";
-  home.file.".pi/agent/skills/diff-here/SKILL.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/diff-here/SKILL.md";
   home.file.".pi/agent/skills/interactive-questionnaire/SKILL.md".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/skills/interactive-questionnaire/SKILL.md";
   home.file.".pi/agent/skills/screenshot/SKILL.md".source =
@@ -131,8 +128,6 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/state.ts";
   home.file.".pi/agent/extensions/tmux-workers/lib/task.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/tmux-workers/lib/task.ts";
-  home.file.".pi/agent/extensions/browser-diff.ts".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/browser-diff.ts";
   home.file.".pi/agent/extensions/collapse-tools.ts".source =
     config.lib.file.mkOutOfStoreSymlink "${cfg}/pi/extensions/collapse-tools.ts";
   home.file.".pi/agent/extensions/safe-mode.ts".source =
