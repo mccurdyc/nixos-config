@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 
 {
   # Add ability to used TouchID for sudo authentication
@@ -6,7 +6,7 @@
 
 
   system = {
-    primaryUser = "mccurdyc";
+    primaryUser = user;
 
     defaults = {
       menuExtraClock.Show24Hour = true; # show 24 hour clock

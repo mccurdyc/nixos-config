@@ -1,6 +1,6 @@
 # nixos-config
 
-Personal NixOS/nix-darwin flake. Single user: `mccurdyc`.
+Personal NixOS/nix-darwin flake. Primary user: `mccurdyc` (except `faamac` which uses `cmccurdy`).
 
 ## Hosts
 
@@ -8,8 +8,8 @@ Personal NixOS/nix-darwin flake. Single user: `mccurdyc`.
 |--------|----------------|-------------------|------------------------------------------------|-----------------------------------------------------|
 | fgnix  | x86_64-linux   | GCE VM            | `sudo nixos-rebuild switch --flake '.#fgnix'`  | `nix build '.#checks.x86_64-linux.fgnix'`           |
 | nuc    | x86_64-linux   | Intel NUC         | `sudo nixos-rebuild switch --flake '.#nuc'`    | `nix build '.#checks.x86_64-linux.nuc'`             |
-| paamac | aarch64-darwin | Apple Silicon Mac | `darwin-rebuild switch --flake '.#paamac'`     | `nix build '.#checks.aarch64-darwin.paamac'`        |
-| faamac | aarch64-darwin | Apple Silicon Mac | `darwin-rebuild switch --flake '.#faamac'`     | `nix build '.#checks.aarch64-darwin.faamac'`        |
+| paamac | aarch64-darwin | Apple Silicon Mac | `sudo darwin-rebuild switch --flake '.#paamac'`     | `nix build '.#checks.aarch64-darwin.paamac'`        |
+| faamac | aarch64-darwin | Apple Silicon Mac | `sudo darwin-rebuild switch --flake '.#faamac'`     | `nix build '.#checks.aarch64-darwin.faamac'`        |
 | funix  | x86_64-linux   | Work VM           | `home-manager switch --flake '.#funix'`        | `nix build '.#checks.x86_64-linux.funix'`           |
 
 fgnix and nuc run full `pkgs.testers.runNixOSTest` VM tests. paamac, faamac,
