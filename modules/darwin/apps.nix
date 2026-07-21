@@ -21,7 +21,6 @@
       "slack"
       "spotify"
       "zen"
-      "zoom"
     ];
   };
 }
