@@ -81,7 +81,7 @@ g.fzf_colors = {
 	["marker"] = { "fg", "Keyword" },
 	["spinner"] = { "fg", "Label" },
 	["header"] = { "fg", "Comment" },
-	["gutter"] = "-1",
+	["gutter"] = { "bg", "-1" },
 }
 
 local buffer = { o, bo }
