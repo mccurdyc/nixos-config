@@ -1125,6 +1125,11 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{ "junegunn/fzf", build = "./install --bin" },
+	{
+		"junegunn/fzf.vim",
+		dependencies = { "junegunn/fzf" },
+	},
 	{
 		"ibhagwan/fzf-lua",
 		config = function()
