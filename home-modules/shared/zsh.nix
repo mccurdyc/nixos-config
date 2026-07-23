@@ -32,7 +32,7 @@
       ta = "tmux attach -t ";
       # https://www.perplexity.ai/search/tmux-newsession-but-gv__phO6TVuT6dxY.15Nrw#1
       t2 = "(){ tmux new-session -s $1 \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -v -l 12 \\; send-keys \"__zoxide_z $1\" Enter \\; select-pane -t 0; }";
-      t3 = "(){ tmux new-session -s $1 \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -h \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -v \\; send-keys \"__zoxide_z $1\" Enter \\; select-pane -t 0; }";
+      t3 = "(){ tmux new-session -s $1 \\; send-keys \"__zoxide_z $1\" Enter \\; split-window -v -l 12 \\; send-keys \"__zoxide_z $1\" Enter \\; select-pane -t 0 \\; new-window \\; send-keys \"__zoxide_z $1\" Enter \\; new-window \\; send-keys \"__zoxide_z $1\" Enter \\; select-window -t 0; }";
       zn = "(){ (zellij delete-session $1 || true) && zellij --session $1 options --default-cwd $(zoxide query $1) --default-layout ~/.config/zellij/layouts/main.kdl; }";
       zl = "(){ zellij list-sessions; }";
       za = "() {zellij attach $1; }";
