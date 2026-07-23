@@ -6,7 +6,6 @@
     google-cloud-sdk
     infra
     k3d
-    k9s
     kubectl
     kubernetes-helm
 
