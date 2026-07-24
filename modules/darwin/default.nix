@@ -6,7 +6,5 @@
     ./nix.nix
     ./system.nix
     ./user.nix
-    # ./skhd.nix
-    # ./yabai.nix
   ];
 }
