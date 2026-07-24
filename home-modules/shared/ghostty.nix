@@ -43,5 +43,7 @@ _: {
     palette = 13=#cc99cc
     palette = 14=#66cccc
     palette = 16=#e4e4e4
+
+    macos-option-as-alt = true
   '';
 }

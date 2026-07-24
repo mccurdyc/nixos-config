@@ -141,6 +141,11 @@
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
     '';
     initContent = lib.mkOrder 550 ''
+      # Edit current command line in $EDITOR (Ctrl+X Ctrl+E)
+      autoload -U edit-command-line
+      zle -N edit-command-line
+      bindkey '^X^E' edit-command-line
+
       # Ensure krew plugins are discoverable by kubectl
       export PATH="''${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
