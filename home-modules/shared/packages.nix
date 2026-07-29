@@ -60,5 +60,5 @@
   ++ lib.optional stdenv.isLinux _1password-cli # darwin uses brew-managed desktop app + CLI
   ++ lib.optional stdenv.isLinux bubblewrap
   ++ lib.optional stdenv.isLinux socat
-  ++ lib.optionals stdenv.isDarwin [ docker-client lima lima-additional-guestagents ];
+  ++ lib.optionals stdenv.isDarwin [ docker-client (lima.override { withAdditionalGuestAgents = true; }) ];
 }
