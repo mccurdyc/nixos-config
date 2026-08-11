@@ -9,12 +9,6 @@
     # have a way to "inject" or "consume" secret Nix modules.
     # https://man7.org/linux/man-pages/man5/ssh_config.5.html
     #
-    # eval $(op signin) && op document get <name> --output $HOME/.ssh/main
-    includes = [
-      "~/.ssh/config.d/work/main.conf"
-      "~/.ssh/config.d/work/jetpac.conf"
-    ];
-
     settings = {
       "*" = {
         ControlMaster = "no";
