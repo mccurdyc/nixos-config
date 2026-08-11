@@ -3,6 +3,7 @@
 {
   imports = [
     ../darwin
-    ../work
+    ./packages.nix
+    ./pi.nix
   ];
 }
