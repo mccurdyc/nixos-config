@@ -40,6 +40,7 @@
     tree
     unzip
     uv
+    watch
     wdiff
     yamlfmt
     yamllint

@@ -14,6 +14,7 @@
       "1password"
       "1password-cli"
       "ghostty"
+      "monitorcontrol"
       "obsidian"
       "raycast"
       "signal"

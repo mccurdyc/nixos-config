@@ -30,6 +30,7 @@ in
   ];
 
   home.shellAliases = {
+    gd = "(){ nvim +\"DiffviewOpen $*\"; }";
     vimdiff = "nvim -d";
   };
 
