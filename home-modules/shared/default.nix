@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./claude
     ./nvim
 
     ./alacritty.nix

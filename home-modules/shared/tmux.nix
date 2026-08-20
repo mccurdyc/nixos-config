@@ -33,6 +33,9 @@
       # bind key for synchronizing panes
       bind-key y set-window-option synchronize-panes \; display "toggled synchronize-pages #{?pane_synchronized,on,off}"
 
+      # Make all panes equal size (tiled layout)
+      bind-key = select-layout tiled
+
       set -ag terminal-overrides ",xterm-256color:RGB"
 
       # Kitty graphics protocol passthrough for image rendering
